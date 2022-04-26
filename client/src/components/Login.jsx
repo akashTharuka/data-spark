@@ -3,8 +3,48 @@ import React, { Component } from 'react';
 export default class Login extends Component {
     render() {
         return (
-            <div className='container'>
-                Login
+            <div className='modal fade' id='login-modal' aria-hidden='true' aria-labelledby='login-modal' tabIndex="-1">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            <h2 className="title display-6 my-4 text-center">LOGIN</h2>
+                            <form>
+                                <label htmlFor="email-login" className="form-label">Email Address:</label>
+                                <div className="input-group mb-2">
+                                    <span className="input-group-text">
+                                        <i className="bi bi-envelope-fill text-secondary"></i>
+                                    </span>
+                                    <input type="text" id="email-login" className="form-control" />
+                                    {/* tooltip */}
+                                    <span className="input-group-text">
+                                        <span className="tt" data-bs-placement="bottom" title="Enter an email address we can contact you.">
+                                        <i className="bi bi-question-circle text-muted"></i>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <label htmlFor="password-login" className="form-label">Password:</label>
+                                <div className="input-group mb-2">
+                                    <span className="input-group-text">
+                                        <i className="bi bi-unlock text-secondary"></i>
+                                    </span>
+                                    <input type="password" id="password-login" className="form-control" />
+                                    {/* tooltip */}
+                                    <span className="input-group-text">
+                                        <span className="tt" data-bs-placement="bottom" title="Enter an alphanumeric password with characters between 6-20.">
+                                            <i className="bi bi-question-circle text-muted"></i>
+                                        </span>
+                                    </span>
+                                </div>
+
+
+                                <div className="text-center">
+                                    <button type="submit" className="btn btn-outline-dark">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
