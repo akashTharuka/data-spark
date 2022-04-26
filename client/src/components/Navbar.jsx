@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 import Register from './Register';
 import Login from './Login';
 
-export default class Navbar extends Component {
-  render() {
-    return (
+const Navbar = () => {
+	return (
         <div>
             <nav className="navbar navbar-expand-sm navbar-light" role="navigation">
 			<div className="container-fluid">
@@ -33,9 +32,13 @@ export default class Navbar extends Component {
 			</div>
 
 		</nav>
+
 		<Register />
+		
 		<Login />
+
         </div>
-    )
-  }
+    );
 }
+
+export default Navbar;

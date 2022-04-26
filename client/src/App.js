@@ -1,15 +1,21 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Home } from './components';
+import { Home, DatasetDetails } from './components';
 
 function App() {
 	return (
 		<Router>
 			<div className="App">
-				<Switch>
-					<Route exact path='/'>
-						<Home />
-					</Route>
-				</Switch>
+				<div id='content'>
+					<Switch>
+						<Route exact path="/">
+							<Home />
+						</Route>
+						<Route path="/details">
+							<DatasetDetails />
+						</Route>
+					</Switch>
+				</div>
+				
 			</div>
 		</Router>
 	);

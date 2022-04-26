@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class DatasetDetails extends Component {
-	render() {
-		return (
-			<div>
-				
-			</div>
-		)
-	}
+const DatasetDetails = () => {
+	return (
+		<div>
+			Details
+		</div>
+	);
 }
+
+export default DatasetDetails;
