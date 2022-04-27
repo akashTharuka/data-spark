@@ -57,20 +57,38 @@ body::-webkit-scrollbar{
 /* filters */
 .filetype{
     cursor: pointer;
-    height: 1.2rem;
-    width: 1.2rem;
-    transform: translateY(0.3rem);
+    height: 1rem;
+    width: 1rem;
 }
 .filetype-label{
     font-size: 1.2rem;
 }
 
 /* dataset cards */
-.card{
+.card.home{
     transition: 0.4s ease-in-out;
 }
-.card:hover{
+.card.home:hover{
     transform: scale(1.05);
     /* box-sizing: border-box;
     box-shadow: 0 1rem 3rem rgba(#121212, .175); */
+}
+
+
+/* reviews */
+::-webkit-scrollbar{
+    width: 5px;
+}
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(to right, #bdc3c7 , #2c3e50);
+    /* background: #40798c; */
+    border-radius: 5px;
+}
+
+.ratings i {
+    color: #cecece;
+}
+
+.rating-color {
+    color: #fbc634 !important
 }

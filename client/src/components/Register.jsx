@@ -13,7 +13,7 @@ const Register = () => {
                                 <span className="input-group-text">
                                     <i className="bi bi-person text-secondary"></i>
                                 </span>
-                                <input type="text" id="username-register" className="form-control" />
+                                <input type="text" id="username-register" className="form-control" placeholder="e.g. SuperMario123" />
                                 {/* tooltip */}
                                 <span className="input-group-text">
                                     <span className="tt" data-bs-placement="bottom" title="Enter a valid username.">
@@ -41,7 +41,7 @@ const Register = () => {
                                 <span className="input-group-text">
                                     <i className="bi bi-unlock text-secondary"></i>
                                 </span>
-                                <input type="password" id="password-register" className="form-control" />
+                                <input type="password" id="password-register" className="form-control" placeholder='Try a little harder to remember this' />
                                 {/* tooltip */}
                                 <span className="input-group-text">
                                     <span className="tt" data-bs-placement="bottom" title="Enter an alphanumeric password with characters between 6-20.">
@@ -55,7 +55,7 @@ const Register = () => {
                                 <span className="input-group-text">
                                     <i className="bi bi-unlock text-secondary"></i>
                                 </span>
-                                <input type="password" id="confirm-password-register" className="form-control" />
+                                <input type="password" id="confirm-password-register" className="form-control" placeholder='Do not type "CONFIRMED"' />
                                 {/* tooltip */}
                                 <span className="input-group-text">
                                     <span className="tt" data-bs-placement="bottom" title="Enter the above password the sameway">

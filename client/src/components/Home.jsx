@@ -8,12 +8,13 @@ import { images } from '../javascript/imageImports';
 
 const Home = () => {
 
+    // need to request basic dataset details to display in the homepage
     const getDataSets = () => {
         let content = [];
         for (let i = 0; i < 20; i++){
             content.push(
                 <div className="d-flex col-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
-                    <div className="card" style={{width: "18rem"}}>
+                    <div className="card home" style={{width: "18rem"}}>
                         <img src={images.imageCap} className="card-img-top" alt=''/>
                         <div className="card-body">
                             <h5 className="card-title">Card title</h5>
@@ -26,6 +27,10 @@ const Home = () => {
         }
         return content;
     };
+
+    // there should be functions here to sort, filter etc.
+    
+
     
     return (
         <div>
@@ -49,22 +54,32 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="d-flex-column col-10 col-md-4 align-items-center">
+                <div className="d-flex-column col-6 col-md-2 align-items-center">
                     <div className="row">
-                        <label className='col-4 text-center'>file type</label>
+                        <label className='col-12 text-start'>file type</label>
                     </div>
                         
                     <div className="row">
-                        <div className="col-4">
-                            <input type="checkbox" className='csv filetype mx-3' id='csv-checkbox' />
+                        <div className="col-6">
+                            <input type="checkbox" className='csv filetype me-3' id='csv-checkbox' />
                             <label htmlFor="csv-checkbox" className='filetype-label'>.csv</label>
                         </div>
 
-                        <div className="col-4">
-                            <input type="checkbox" className='txt filetype mx-3' id='txt-checkbox' />
+                        <div className="col-6">
+                            <input type="checkbox" className='txt filetype me-3' id='txt-checkbox' />
                             <label htmlFor="txt-checkbox" className='filetype-label'>.txt</label>
                         </div>
                     </div>
+                </div>
+
+                <div className="col-6 col-md-2">
+                    <select className="form-select" aria-label="Default select example">
+                        <option selected>Sort Here</option>
+                        <option value="Alphabetical">Alphabetical</option>
+                        <option value="Date modified">Date modified</option>
+                        <option value="Downloads">Downloads</option>
+                        <option value="Ratings">Ratings</option>
+                    </select>
                 </div>
 
                 <div className="d-flex col-10 align-items-center mx-auto my-4">
