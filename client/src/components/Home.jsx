@@ -74,7 +74,7 @@ const Home = () => {
 
                 <div className="col-6 col-md-2">
                     <select className="form-select" aria-label="Default select example">
-                        <option selected>Sort Here</option>
+                        <option defaultValue="SortHere">Sort Here</option>
                         <option value="Alphabetical">Alphabetical</option>
                         <option value="Date modified">Date modified</option>
                         <option value="Downloads">Downloads</option>

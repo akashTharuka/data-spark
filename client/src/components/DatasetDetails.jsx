@@ -45,7 +45,7 @@ const DatasetDetails = () => {
 					<h4 className="title display-6 float-start">Dataset Name</h4>
 				</div>
 				<div className="col-10 mx-auto mt-3">
-					<button className="btn btn-dark px-4 float-start"><i class="bi bi-download me-3"></i>Download</button>
+					<button className="btn btn-dark px-4 float-start"><i className="bi bi-download me-3"></i>Download</button>
 				</div>
 			</div>
 

@@ -92,3 +92,32 @@ body::-webkit-scrollbar{
 .rating-color {
     color: #fbc634 !important
 }
+
+
+
+
+
+
+
+
+
+/* error messages */
+.error{
+    visibility: hidden;
+}
+.invalid .error{
+    visibility: visible;
+}
+.invalid .form-control{
+    border-color: #dc3545;
+}
+/* success */
+.success{
+    visibility: hidden;
+}
+.valid .success{
+    visibility: visible;
+}
+.valid .form-control{
+    border-color: #198754;
+}

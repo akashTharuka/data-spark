@@ -7,38 +7,29 @@ const Login = () => {
                 <div className="modal-content">
                     <div className="modal-body">
                         <h2 className="title display-6 my-4 text-center">LOGIN</h2>
-                        <form>
-                            <label htmlFor="email-login" className="form-label">Email Address:</label>
-                            <div className="input-group mb-2">
-                                <span className="input-group-text">
-                                    <i className="bi bi-envelope-fill text-secondary"></i>
-                                </span>
-                                <input type="text" id="email-login" className="form-control" />
-                                {/* tooltip */}
-                                <span className="input-group-text">
-                                    <span className="tt" data-bs-placement="bottom" title="Enter an email address we can contact you.">
-                                    <i className="bi bi-question-circle text-muted"></i>
-                                    </span>
-                                </span>
+                        <form className='col-10 mx-auto pt-4'>
+                            {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
+                            <div className="form-floating mb-3">
+                                <input type="email" className="form-control" id='loginEmail' />
+                                <label htmlFor="loginEmail">Email address<i className="fa fa-check-circle ms-3 text-success success"></i></label>
+                                <div className="error">
+                                    <i className="fa fa-exclamation-circle me-3 text-danger"></i>
+                                    <small className="err-msg text-danger">Error Message</small>
+                                </div>
+                                
                             </div>
 
-                            <label htmlFor="password-login" className="form-label">Password:</label>
-                            <div className="input-group mb-2">
-                                <span className="input-group-text">
-                                    <i className="bi bi-unlock text-secondary"></i>
-                                </span>
-                                <input type="password" id="password-login" className="form-control" />
-                                {/* tooltip */}
-                                <span className="input-group-text">
-                                    <span className="tt" data-bs-placement="bottom" title="Enter an alphanumeric password with characters between 6-20.">
-                                        <i className="bi bi-question-circle text-muted"></i>
-                                    </span>
-                                </span>
+                            <div className="form-floating mb-3">
+                                <input type="password" className="form-control" id='loginPassword' />
+                                <label htmlFor="loginPassword">Password<i className="fa fa-check-circle ms-3 text-success success"></i></label>
+                                <div className="error">
+                                    <i className="fa fa-exclamation-circle me-3 text-danger"></i>
+                                    <small className="err-msg text-danger">Error Message</small>
+                                </div>
                             </div>
 
-
-                            <div className="text-center">
-                                <button type="submit" className="btn btn-outline-dark">Submit</button>
+                            <div className="d-grid col-6 mx-auto text-center my-4">
+                                <button type="submit" className="btn btn-outline-dark py-2">LOGIN</button>
                             </div>
                         </form>
                     </div>
