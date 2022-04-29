@@ -50,7 +50,7 @@ const Navbar = () => {
 
 		</nav>
 
-		<Register />
+		<Register type="register" />
 		
 		<Login />
 
