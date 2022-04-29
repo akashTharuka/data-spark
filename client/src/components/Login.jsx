@@ -10,26 +10,24 @@ const Login = () => {
                         <form className='col-10 mx-auto pt-4'>
                             {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
                             <div className="form-floating mb-3">
-                                <input type="email" className="form-control" id='loginEmail' />
-                                <label htmlFor="loginEmail">Email address<i className="fa fa-check-circle ms-3 text-success success"></i></label>
-                                <div className="error">
-                                    <i className="fa fa-exclamation-circle me-3 text-danger"></i>
-                                    <small className="err-msg text-danger">Error Message</small>
-                                </div>
-                                
+                                <input type="email" className="form-control is-invalid" id='loginEmail' tabIndex="-1" />
+                                <label htmlFor="loginEmail">Email address</label>
                             </div>
 
                             <div className="form-floating mb-3">
-                                <input type="password" className="form-control" id='loginPassword' />
-                                <label htmlFor="loginPassword">Password<i className="fa fa-check-circle ms-3 text-success success"></i></label>
-                                <div className="error">
-                                    <i className="fa fa-exclamation-circle me-3 text-danger"></i>
-                                    <small className="err-msg text-danger">Error Message</small>
-                                </div>
+                                <input type="password" className="form-control is-invalid" id='loginPassword' tabIndex="-1" />
+                                <label htmlFor="loginPassword">Password</label>
+                            </div>
+                            
+                            <div className="err-div">
+                                <small className="err-msg text-danger">
+                                    <i className="fa fa-exclamation-circle me-2 text-danger"></i>
+                                    Authentication Error
+                                </small> 
                             </div>
 
                             <div className="d-grid col-6 mx-auto text-center my-4">
-                                <button type="submit" className="btn btn-outline-dark py-2">LOGIN</button>
+                                <button type="submit" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1">LOGIN</button>
                             </div>
                         </form>
                     </div>

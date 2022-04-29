@@ -19,7 +19,7 @@ const Home = () => {
                         <div className="card-body">
                             <h5 className="card-title">Card title</h5>
                             <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="/details" className="btn btn-warning">View Details</a>
+                            <a href="/details" className="btn btn-warning shadow-lg px-3">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@ const Home = () => {
 
             <div className="row d-flex justify-content-start">
                 <div className="col-10 col-md-4">
-                    <button className="btn btn-dark m-3 px-4" data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
+                    <button type='button' className="btn btn-dark m-3 px-4 shadow-lg" data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
                 </div>
             </div>
 
@@ -82,22 +82,22 @@ const Home = () => {
                     </select>
                 </div>
 
-                <div className="d-flex col-10 align-items-center mx-auto my-4">
+                <div className="d-flex col-12 align-items-center mx-auto my-4 d-flex">
                     <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" className="btn-check" id="btncheck1" autoComplete="off" />
-                        <label className="btn btn-outline-dark" htmlFor="btncheck1">Computer Science</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck1">Computer Science</label>
 
                         <input type="checkbox" className="btn-check" id="btncheck2" autoComplete="off" />
-                        <label className="btn btn-outline-dark" htmlFor="btncheck2">Education</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck2">Education</label>
 
                         <input type="checkbox" className="btn-check" id="btncheck3" autoComplete="off" />
-                        <label className="btn btn-outline-dark" htmlFor="btncheck3">Data Visualization</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck3">Data Visualization</label>
 
                         <input type="checkbox" className="btn-check" id="btncheck4" autoComplete="off" />
-                        <label className="btn btn-outline-dark" htmlFor="btncheck4">Pre-trained Modal</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck4">Pre-trained Modal</label>
 
                         <input type="checkbox" className="btn-check" id="btncheck5" autoComplete="off" />
-                        <label className="btn btn-outline-dark" htmlFor="btncheck5">All</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck5">All</label>
                     </div>
                 </div>
 

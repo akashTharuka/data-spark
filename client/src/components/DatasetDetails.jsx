@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Navbar from './Navbar';
+import Review from './Review';
 
 const DatasetDetails = () => {
 
@@ -45,7 +46,7 @@ const DatasetDetails = () => {
 					<h4 className="title display-6 float-start">Dataset Name</h4>
 				</div>
 				<div className="col-10 mx-auto mt-3">
-					<button className="btn btn-dark px-4 float-start"><i className="bi bi-download me-3"></i>Download</button>
+					<button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i>Download</button>
 				</div>
 			</div>
 
@@ -81,8 +82,10 @@ const DatasetDetails = () => {
 					{getReviews()}
 				</div>
 				<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
-                    <button className="btn btn-dark my-3 mx-auto px-4" data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
+                    <button className="btn btn-dark my-3 mx-auto px-4 shadow-lg" data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
                 </div>
+
+				<Review />
 			</div>
 			
 

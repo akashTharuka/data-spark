@@ -24,7 +24,7 @@ body::-webkit-scrollbar{
 	background: whitesmoke;
 	height: 2.5rem;
 	width: 100%;
-	border-radius: 2.5em;
+	border-radius: 0.3em;
 	padding: 0.3em;
 	display: flex;
 	align-items: center;
@@ -35,7 +35,7 @@ body::-webkit-scrollbar{
     color: #fff;
     width: 2.1em;
     height: 2.1em;
-    border-radius: 50%;
+    border-radius: 0.3em;
     background: #2f3640;
     display: flex;
     justify-content: center;
@@ -94,30 +94,12 @@ body::-webkit-scrollbar{
 }
 
 
-
-
-
-
-
-
-
-/* error messages */
-.error{
-    visibility: hidden;
+.btn{
+    transition: 0.4s ease-in-out;
 }
-.invalid .error{
-    visibility: visible;
+.btn:hover{
+    transform: scale(1.05);
 }
-.invalid .form-control{
-    border-color: #dc3545;
-}
-/* success */
-.success{
-    visibility: hidden;
-}
-.valid .success{
-    visibility: visible;
-}
-.valid .form-control{
-    border-color: #198754;
+.btn:active{
+    transform: scale(0.95);
 }

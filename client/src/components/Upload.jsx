@@ -11,34 +11,31 @@ const Upload = () => {
                                 <form className='col-10 mx-auto pt-4'>
                                     {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
                                     <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" id='floatingTitle' />
-                                        <label htmlFor="floatingTitle">Title<i className="fa fa-check-circle ms-3 text-success success"></i></label>
-                                        <div className="error">
-                                            <i className="fa fa-exclamation-circle me-3 text-danger"></i>
-                                            <small className="err-msg text-danger">Error Message</small>
+                                        <input type="text" className="form-control is-valid" id='floatingTitle' tabIndex="-1" />
+                                        <label htmlFor="floatingTitle">Title</label>
+                                        <div className="invalid-feedback">
+                                            Error message
                                         </div>
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="formFileMultiple" className="form-label mx-3">Add Dataset Files</label>
-                                        <input className="form-control" type="file" id="formFileMultiple" multiple />
-                                        <div className="error">
-                                            <i className="fa fa-exclamation-circle me-3 text-danger"></i>
-                                            <small className="err-msg text-danger">Error Message</small>
+                                        <input className="form-control is-valid" type="file" id="formFileMultiple" tabIndex="-1" multiple />
+                                        <div className="invalid-feedback">
+                                            Error message
                                         </div>
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="formFileImage" className="form-label mx-3">Add Image</label>
-                                        <input className="form-control" type="file" id="formFileImage" />
-                                        <div className="error">
-                                            <i className="fa fa-exclamation-circle me-3 text-danger"></i>
-                                            <small className="err-msg text-danger">Error Message</small>
+                                        <input className="form-control is-invalid" type="file" id="formFileImage" tabIndex="-1" />
+                                        <div className="invalid-feedback">
+                                            Error message
                                         </div>
                                     </div>
 
                                     <div className="d-grid col-6 mx-auto text-center my-4">
-                                        <button type="submit" className="btn btn-outline-dark py-2">UPLOAD</button>
+                                        <button type="submit" className="btn btn-outline-dark py-2" tabIndex="-1">UPLOAD</button>
                                     </div>
                                 </form>
                             </div>
