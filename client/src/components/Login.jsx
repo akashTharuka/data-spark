@@ -8,7 +8,7 @@ const Login = () => {
                     <div className="modal-body">
                         <h2 className="title display-6 my-4 text-center">LOGIN</h2>
                         <form className='col-10 mx-auto pt-4'>
-                            {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
+                            {/* add the classnames "is-invalid" or "is-valid" to the input parent div to see error and success */}
                             <div className="form-floating mb-3">
                                 <input type="email" className="form-control is-invalid" id='loginEmail' tabIndex="-1" />
                                 <label htmlFor="loginEmail">Email address</label>

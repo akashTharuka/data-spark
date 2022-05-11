@@ -1,0 +1,12 @@
+after logging in -> server sets cookie called "session_id"
+
+everytime client make requests -> server receives that session_id
+
+server will check any session which refers to the session_id
+
+if there is a session with that id, you are authenticated
+
+
+flask
+flask-sqlalchemy
+flask-bcrypt

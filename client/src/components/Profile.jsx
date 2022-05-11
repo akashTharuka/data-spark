@@ -12,7 +12,7 @@ const Profile = () => {
                 <div className="row my-3 d-flex">
                     <h2 className="lead">Account Details</h2>
                 </div>
-                <form className='col-10 mx-auto pt-4'>
+                <div className='col-10 mx-auto pt-4'>
                     <div className="form-floating mb-3">
                         <input type="email" readOnly className="form-control" id='editReadOnlyEmail' tabIndex="-1" value="akash_tharuka@yahoo.com" />
                         <label htmlFor="editReadOnlyEmail">Email address</label>
@@ -31,9 +31,9 @@ const Profile = () => {
                     <div className="d-grid col-6 mx-auto text-center my-4">
                         <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
                     </div>
-                </form>
 
-                <Register type="edit" />
+                    <Register type="edit" />
+                </div>
 
                 <div className="row my-3 d-flex">
                     <h2 className="lead">Your Datasets</h2>

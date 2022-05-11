@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Home, DatasetDetails } from './components';
+import { DashboardLogin, Dashboard } from './dashboard_components';
 
 function App() {
 	return (
@@ -12,6 +13,9 @@ function App() {
 						</Route>
 						<Route path="/details">
 							<DatasetDetails />
+						</Route>
+						<Route path='/dashboardLogin'>
+							<DashboardLogin />
 						</Route>
 					</Switch>
 				</div>
