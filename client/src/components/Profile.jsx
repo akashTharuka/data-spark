@@ -2,6 +2,28 @@ import React from 'react';
 import Register from './Register';
 
 const Profile = () => {
+
+    const getPersonalDataSets = () => {
+        let content = [];
+        for (let i = 0; i < 6; i++){
+            content.push(
+                <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
+                    <div className="card personal" style={{width: "100%", cursor: "pointer"}}>
+                        <div className="card-body d-flex flex-row justify-content-between">
+                            <h5 className="card-title">Card title</h5>
+                            <small className='timeleft'>1 h</small>
+                        </div>
+                        <div className="edit-btns d-flex float-end">
+                            <i class="btn bi bi-pen"></i>
+                            <i class="btn bi bi-trash3"></i>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return content;
+    };
+
     return (
         <div className="offcanvas offcanvas-end" tabIndex="-1" id='profileOffCanvas' aria-labelledby='profileOffCanvasLabel' aria-hidden="true">
             <div className="offcanvas-header">
@@ -23,11 +45,6 @@ const Profile = () => {
                         <label htmlFor="editReadOnlyUsername">Username</label>
                     </div>
 
-                    <div className="form-floating mb-3">
-                        <input type="password" readOnly className="form-control" id='editReadOnlyPassword' tabIndex="-1" value="admin1234" />
-                        <label htmlFor="editReadOnlyPassword">Password</label>
-                    </div>
-
                     <div className="d-grid col-6 mx-auto text-center my-4">
                         <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
                     </div>
@@ -37,6 +54,8 @@ const Profile = () => {
 
                 <div className="row my-3 d-flex">
                     <h2 className="lead">Your Datasets</h2>
+
+                    {getPersonalDataSets()}
                 </div>
             </div>
         </div>
