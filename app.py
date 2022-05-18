@@ -6,16 +6,23 @@ from api.RegisterApiHandler import RegisterApiHandler
 from datetime import datetime
 import os
 
+from api.SearchUserHandler import SerachUserHandler
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
 api = Api(app)
 
 # database configure
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_NAME")
+# DB_USERNAME = os.getenv('DB_USERNAME')
+# DB_PASSWORD = os.getenv('DB_PASSWORD')
+# DB_HOST = os.getenv('DB_HOST')
+# DB_NAME = os.getenv('DB_NAME')
+DB_USERNAME='root'
+DB_PASSWORD=''
+DB_HOST='localhost'
+DB_NAME='datasparkdb'
+
+print ("mysql+pymysql://"+str(DB_USERNAME)+":"+str(DB_PASSWORD)+"@"+str(DB_HOST)+"/"+str(DB_NAME))
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{}:{}@{}/{}".format(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
