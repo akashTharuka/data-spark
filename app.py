@@ -6,7 +6,8 @@ from api.RegisterApiHandler import RegisterApiHandler
 from datetime import datetime
 import os
 
-from api.SearchUserHandler import SerachUserHandler
+from api.AddDatasetAPIHandler import AddDatasetApiHandler
+from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
@@ -47,6 +48,10 @@ def serve(path):
 #     print(request.json);
 
 api.add_resource(RegisterApiHandler, '/register')
+api.add_resource(AddDatasetApiHandler, '/adddataset')
+#api.add_resource(AddDatasetApiHandler, '/AddDataset/<int:uploader_id>/<int:Status_id>/<string:title>/<string:file_path>')
+api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
