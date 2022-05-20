@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+// import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 const Register = ({type}) => {
@@ -16,17 +16,21 @@ const Register = ({type}) => {
     
     //   }, [])
 
-    const [email, setEmail] = useState();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [confirmPassword, setConfirmPassword] = useState();
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [isPending, setIsPending] = useState(false);
+
+    const [msg, setMsg] = useState("");
 
     const history = useHistory();
 
     // console.log(email, username, password, confirmPassword);
     const handleSubmit = (e) => {
         e.preventDefault();
+
+
 
         const register = {email, username, password, confirmPassword};
 
@@ -38,10 +42,15 @@ const Register = ({type}) => {
             body: JSON.stringify(register)
         })
         .then((response) => {
-//             if(!response.ok) throw Error(response.status);
-            response.json().then((data) => {
-                console.log(data.message);
-            })
+            if(!response.ok){
+                response.json().then((data) => {
+                    console.log(data.message);
+                    setMsg(data.message);
+                });
+
+                // throw Error("Authentication error");
+            }
+            
             setIsPending(false);
         })
 //         .then((response) => {
@@ -56,7 +65,7 @@ const Register = ({type}) => {
 //             console.log(result);
 //         })
         .catch((error) => {
-            console.log('error: ' + error.message )
+            console.log('error: ' + error.message);
             setIsPending(false);
         });
     }
@@ -72,7 +81,7 @@ const Register = ({type}) => {
                             <div className="form-floating mb-3">
                                 <input 
                                     type="email" 
-                                    className="form-control is-invalid" 
+                                    className={`form-control ${(msg !== "") ? "is-valid" : "is-invalid"}`}
                                     id={type + 'Email'} 
                                     tabIndex="-1" 
                                     value={email}
@@ -81,14 +90,14 @@ const Register = ({type}) => {
                                 />
                                 <label htmlFor="registerEmail">Email address</label>
                                 <div className="invalid-feedback">
-                                    Error message
+                                    {msg}
                                 </div>
                             </div>
 
                             <div className="form-floating mb-3">
                                 <input 
                                     type="text" 
-                                    className="form-control is-invalid" 
+                                    className="form-control" 
                                     id={type + 'Username'} 
                                     tabIndex="-1" 
                                     value={username}
@@ -104,7 +113,7 @@ const Register = ({type}) => {
                             <div className="form-floating mb-3">
                                 <input 
                                     type="password" 
-                                    className="form-control is-valid" 
+                                    className="form-control" 
                                     id={type + 'Password'} 
                                     tabIndex="-1" 
                                     value={password}

@@ -8,6 +8,8 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 
+from flask_jwt_extended import JWTManager
+
 load_dotenv()
 
 import os
@@ -15,6 +17,10 @@ import os
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
 api = Api(app)
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+jwt = JWTManager(app)
 
 # database configure
 DB_USERNAME = os.getenv("DB_USERNAME")

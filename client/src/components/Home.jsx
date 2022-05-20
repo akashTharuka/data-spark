@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 
 import Navbar from './Navbar';
 import Upload from './Upload';
@@ -7,8 +6,6 @@ import Upload from './Upload';
 import { images } from '../javascript/imageImports';
 
 const Home = (props) => {
-
-    
 
     // need to request basic dataset details to display in the homepage
     const getDataSets = () => {
@@ -36,11 +33,11 @@ const Home = (props) => {
     
     return (
         <div>
-            <Navbar loginStatus={props.loginStatus} />
+            <Navbar status={props.status} />
 
             <div className="row d-flex justify-content-start">
                 <div className="col-10 col-md-4">
-                    <button type='button' className={`btn btn-dark m-3 px-4 shadow-lg ${(props.loginStatus) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
+                    <button type='button' className={`btn btn-dark m-3 px-4 shadow-lg ${(props.status) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
                 </div>
             </div>
 

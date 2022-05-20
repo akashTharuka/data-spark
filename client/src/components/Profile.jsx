@@ -14,8 +14,8 @@ const Profile = () => {
                             <small className='timeleft'>1 h</small>
                         </div>
                         <div className="edit-btns d-flex float-end">
-                            <i class="btn bi bi-pen"></i>
-                            <i class="btn bi bi-trash3"></i>
+                            <i className="btn bi bi-pen"></i>
+                            <i className="btn bi bi-trash3"></i>
                         </div>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ class RegisterApiHandler(Resource):
         email = args.get("email")
         username = args.get("username")
         password = args.get("password")
-        confirmPassword = args.get("confirmPassword")
+        # confirmPassword = args.get("confirmPassword")
 
         # if password != confirmPassword:
         #     return {"message": "Password is mismatching"}, 400

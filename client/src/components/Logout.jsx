@@ -1,6 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Logout = () => {
+
+    const history = useHistory();
+
+    const handleLogout = (e) => {
+        sessionStorage.removeItem("token");
+        console.log("Logged out");
+        history.push('/');
+        document.location.reload();
+    }
+
     return (
         <div className='modal fade' id='logout-modal' aria-hidden='true' aria-labelledby='logout-modal' tabIndex="-1">
             <div className="modal-dialog modal-dialog-centered">
@@ -12,7 +23,7 @@ const Logout = () => {
                                 <button type="button" className="btn btn-outline-dark px-5 my-5 shadow-lg" data-bs-dismiss="modal">Cancel</button>
                             </div>
                             <div className="col-4 d-flex justify-content-start">
-                                <button type="button" className="btn btn-dark px-5 my-5 shadow-lg">Confirm</button>
+                                <button type="button" onClick={handleLogout} className="btn btn-dark px-5 my-5 shadow-lg">Confirm</button>
                             </div>
                         </div>
                     </div>

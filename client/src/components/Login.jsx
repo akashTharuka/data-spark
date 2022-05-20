@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 const Login = () => {
 
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isPending, setIsPending] = useState(false);
 
     const history = useHistory();
@@ -22,11 +22,16 @@ const Login = () => {
             body: JSON.stringify(login)
         })
         .then((response) => {
-            console.log(response);
-            if(!response.ok) throw Error(response.status);
+            // console.log(response);
+            if(response.status === 200) return response.json();
             setIsPending(false);
             // history.go(-1);
+            
+        })
+        .then((result) => {
+            sessionStorage.setItem("token", result.access_token);
             history.push('/');
+            document.location.reload();
         })
         .catch((error) => {
             console.log('error: ' + error.message )
@@ -45,7 +50,7 @@ const Login = () => {
                             <div className="form-floating mb-3">
                                 <input
                                     type="email"
-                                    className="form-control is-invalid"
+                                    className="form-control"
                                     id='loginEmail'
                                     tabIndex="-1"
                                     value={email}
@@ -58,7 +63,7 @@ const Login = () => {
                             <div className="form-floating mb-3">
                                 <input
                                     type="password"
-                                    className="form-control is-invalid"
+                                    className="form-control"
                                     id='loginPassword'
                                     tabIndex="-1"
                                     value={password}
@@ -68,7 +73,7 @@ const Login = () => {
                                 <label htmlFor="loginPassword">Password</label>
                             </div>
                             
-                            <div className="err-div">
+                            <div className="err-div d-none">
                                 <small className="err-msg text-danger">
                                     <i className="fa fa-exclamation-circle me-2 text-danger"></i>
                                     Authentication Error
