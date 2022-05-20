@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import Review from './Review';
 
-const DatasetDetails = () => {
+const DatasetDetails = ({dataset_id}) => {
 
 	// need the following data about a dataset
 	// 		1. Title
@@ -39,7 +39,7 @@ const DatasetDetails = () => {
 
 	return (
 		<div>
-			<Navbar />
+			<Navbar logged={0} />
 
 			<div className="row my-4">
 				<div className="col-10 mx-auto">

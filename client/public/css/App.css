@@ -73,6 +73,15 @@ body::-webkit-scrollbar{
     /* box-sizing: border-box;
     box-shadow: 0 1rem 3rem rgba(#121212, .175); */
 }
+.card.personal:hover{
+    transform: none;
+}
+.bi-trash3{
+    transition: 0.4s ease-in;
+}
+.bi-trash3:hover{
+    color: crimson;
+}
 
 
 /* reviews */
