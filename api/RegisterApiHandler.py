@@ -3,12 +3,13 @@ from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.User import User
 
+
 class RegisterApiHandler(Resource):
     register_args = reqparse.RequestParser()
-    register_args.add_argument("email", type=str, help="Email", required=True)
-    register_args.add_argument("username", type=str, help="Username", required=True)
-    register_args.add_argument("password", type=str, help="Password", required=True)
-    register_args.add_argument("confirmPassword", type=str, help="Confirm Password", required=True)
+    register_args.add_argument("email", type=str, help="Email is required", required=True)
+    register_args.add_argument("username", type=str, help="Username is required", required=True)
+    register_args.add_argument("password", type=str, help="Password is required", required=True)
+    register_args.add_argument("confirmPassword", type=str, help="Confirm Password is required", required=True)
 
     def get(self):
         return {
@@ -24,6 +25,9 @@ class RegisterApiHandler(Resource):
         username = args.get("username")
         password = args.get("password")
         confirmPassword = args.get("confirmPassword")
+
+        if password != confirmPassword:
+            return {"message": "Password is mismatching"}, 400
 
         user = User(email=email, username=username, password=password)
 

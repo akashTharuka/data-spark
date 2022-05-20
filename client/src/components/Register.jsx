@@ -16,10 +16,10 @@ const Register = ({type}) => {
     
     //   }, [])
 
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState();
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState();
     const [isPending, setIsPending] = useState(false);
 
     const history = useHistory();
@@ -36,12 +36,22 @@ const Register = ({type}) => {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(register)
-        }).then(() => {
-            console.log('new user registered');
+        })
+        .then((response) => {
+//             console.log(response);
+            if(!response.ok) throw Error(response.status);
             setIsPending(false);
             // history.go(-1);
-            history.push('/');
+//             history.push('/');
         })
+        .then((result) => {
+//             result = response.JSON();
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log('error: ' + error.message )
+            setIsPending(false);
+        });
     }
 
 	return (
