@@ -26,8 +26,11 @@ class RegisterApiHandler(Resource):
         password = args.get("password")
         confirmPassword = args.get("confirmPassword")
 
-        if password != confirmPassword:
-            return {"message": "Password is mismatching"}, 400
+        # if password != confirmPassword:
+        #     return {"message": "Password is mismatching"}, 400
+
+        if User.find_by_email(email):
+            return {"message": "email already exists"}, 400
 
         user = User(email=email, username=username, password=password)
 
@@ -35,4 +38,4 @@ class RegisterApiHandler(Resource):
             user.save()
         except:
             return {"message": "An error occurred adding user to database"}, 500
-        flash("User added Successfully")
+        return {"message": "User added Successfully"}, 200

@@ -38,16 +38,23 @@ const Register = ({type}) => {
             body: JSON.stringify(register)
         })
         .then((response) => {
-//             console.log(response);
-            if(!response.ok) throw Error(response.status);
+//             if(!response.ok) throw Error(response.status);
+            response.json().then((data) => {
+                console.log(data.message);
+            })
             setIsPending(false);
-            // history.go(-1);
-//             history.push('/');
         })
-        .then((result) => {
-//             result = response.JSON();
-            console.log(result);
-        })
+//         .then((response) => {
+//             console.log(response, status);
+//             if(!response.ok) throw Error(response.status);
+//             setIsPending(false);
+//             // history.go(-1);
+// //             history.push('/');
+//         })
+//         .then((result) => {
+// //             result = response.JSON();
+//             console.log(result);
+//         })
         .catch((error) => {
             console.log('error: ' + error.message )
             setIsPending(false);
