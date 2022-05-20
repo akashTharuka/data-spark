@@ -21,12 +21,13 @@ run these commands in the terminal
     (use a new terminal for following commands)
     5. py -3 -m pip install virtualenv
     6. py -3 -m venv venv
-    6. venv\Scripts\activate
-    7. pip install -r requirements.txt
+    7. venv\Scripts\activate
+    8. pip install wheel
+    9. pip install -r requirements.txt
 
 Then get a copy of .env.example and rename it as .env and set environmental variables. After that run the following command in the command line
 
-    8. python app.py
+    10. python app.py
 
 
 
