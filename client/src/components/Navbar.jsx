@@ -6,7 +6,7 @@ import Login from './Login';
 import Profile from './Profile';
 import Logout from './Logout';
 
-const Navbar = () => {
+const Navbar = (props) => {
 	return (
         <div>
             <nav className="navbar navbar-expand-sm navbar-light" role="navigation">
@@ -19,7 +19,7 @@ const Navbar = () => {
 			</div>
 			
 			<div className="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-				{/* <ul className="navbar-nav">
+				<ul className={`navbar-nav ${(props.loginStatus) ? 'd-none' : ''}`}>
 					<li className="nav-item m-2">
                         <button type="button" className="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#register-modal" data-bs-dismiss="modal">
                             Register
@@ -30,8 +30,8 @@ const Navbar = () => {
                             Login
                         </button>
 					</li>
-				</ul> */}
-				<ul className="navbar-nav">
+				</ul>
+				<ul className={`navbar-nav ${(props.loginStatus) ? '' : 'd-none'}`}>
 					<li className="nav-item m-2">
                         <button type="button" className="logout btn btn-outline-danger px-4 shadow-lg" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-dismiss="modal">
                             Logout
