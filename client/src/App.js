@@ -12,13 +12,16 @@ function App() {
 				<div id='content'>
 					<Switch>
 						<Route exact path="/">
-							<Home logged={true}/>
+							<Home loginStatus={true}/>
 						</Route>
 						<Route path="/details">
 							<DatasetDetails />
 						</Route>
 						<Route path='/dashboardLogin'>
 							<DashboardLogin />
+						</Route>
+						<Route path='/dashboard'>
+							<Dashboard />
 						</Route>
 					</Switch>
 				</div>
