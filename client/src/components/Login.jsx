@@ -21,9 +21,11 @@ const Login = () => {
             .then((res) => {
                 sessionStorage.setItem("token", res.data.access_token);
                 setIsPending(false);
+
                 history.push('/');
                 document.location.reload();
             }).catch((error) => {
+                setIsPending(false);
                 console.log(error);
             });
     }

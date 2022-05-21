@@ -97,6 +97,7 @@ const Register = ({type}) => {
 
         const register = {email, username, password, confirmPassword};
 
+
         const valid = validateData(register);
 
         if (valid){
@@ -110,20 +111,31 @@ const Register = ({type}) => {
                 setIsPending(false);
                 setEmailMsg(res.data.emailErr);
                 setUsernameMsg(res.data.usernameErr);
-                console.log(emailMsg);
-                console.log(usernameMsg);
-                console.log(emailMsg=="");
+//                 console.log(res.data.emailErr);
+//                 console.log(res.data.usernameErr);
+
+//                 console.log(emailMsg);
+//                 console.log(usernameMsg);
+//                 console.log(emailMsg=="");
 
                 let emailUsernameCheck = false;
 
-                if (emailMsg == "" && usernameMsg == ""){
-                    
-                    console.log("here");
-                    history.push('/');
-                    document.location.reload();
-                }
+//                 if (emailMsg == "success" && usernameMsg == "success"){
+//
+//                     console.log("here");
+//                     history.push('/');
+//                     document.location.reload();
+//                 }
+
+                   if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
+                        console.log("here");
+                        sessionStorage.setItem("token", res.data.access_token)
+                        history.push('/');
+                        document.location.reload();
+                   }
                 
             }).catch((error) => {
+                setIsPending(false);
                 console.log(error);
             });
         }
