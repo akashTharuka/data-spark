@@ -1,4 +1,5 @@
 from audioop import avgpp
+from email.policy import default
 from turtle import title
 
 from sqlalchemy import false
@@ -13,9 +14,9 @@ class Dataset(db.Model):
     file_path = db.Column(db.String(200),nullable=False)
     file_type = db.Column(db.String(20), nullable=True)
     file_size = db.Column(db.Float, nullable=True)
-    num_downloads = db.Column(db.Integer, nullable=True)
-    avg_rating = db.Column(db.Float, nullable=True)
-    num_ratings = db.Column(db.Integer, nullable=True)
+    num_downloads = db.Column(db.Integer, nullable=True, default = 0)
+    avg_rating = db.Column(db.Float, nullable=True, default = 0.0)
+    num_ratings = db.Column(db.Integer, nullable=True, default = 0)
 
     def __init__(self, uploader_id, status_id, title, file_path):
         self.uploader_id = uploader_id
@@ -42,16 +43,8 @@ class Dataset(db.Model):
         return self.query.filter_by(status_id=status_id).all()
     
     @classmethod
-    def filter_by_Catogary(self,status_id,filter_id):
-        return self.query.filter_by(status_id=status_id,filter_id=filter_id).all()
-    
-    # @classmethod
-    # def filter_by_filetype(self,status_id, file_type):
-    #     return self.query.filter_by(status_id=status_id,file_type=file_type).all()
-    
-    # @classmethod
-    # def filter_by_filetype_and_catogary(self,status_id,filter_id, file_type):
-    #     return self.query.filter_by(status_id=status_id,filter_id=filter_id, file_type=file_type).all()
+    def filter_by_id(self, dataset_id):
+        return self.query.filter_by(id=dataset_id).first()
     
     def save(self):
         db.session.add(self)
