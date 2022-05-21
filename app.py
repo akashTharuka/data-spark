@@ -6,6 +6,8 @@ from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
 from datetime import datetime
 
+from api.AddDatasetAPIHandler import AddDatasetApiHandler
+from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -24,12 +26,10 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 jwt = JWTManager(app)
 
 # database configure
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_NAME")
-
-# print(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
 
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + DB_USERNAME + ':' + DB_PASSWORD + '@' + DB_HOST + '/' + DB_NAME
@@ -50,16 +50,9 @@ def create_tables():
 def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
-
-# @app.route('/register', methods=['POST', 'GET'])
-# def register():
-#     print(request.json);
-
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     print(request.json)
-
 api.add_resource(RegisterApiHandler, '/register')
+api.add_resource(AddDatasetApiHandler, '/adddataset')
+api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
 api.add_resource(LoginApiHandler, '/login')
 
 if __name__ == "__main__":
