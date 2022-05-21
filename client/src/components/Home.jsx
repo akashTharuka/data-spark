@@ -8,6 +8,20 @@ import { images } from '../javascript/imageImports';
 
 const Home = (props) => {
 
+    //get all datasets 
+    const getALLDataSets = () => {
+    fetch('http://localhost:5000/SearchDataset', {
+        method: 'GET',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify()
+    }).then(response => response.json())
+    .then( data => {console.log('The response was....', data);
+        console.log(' dataset loadded');
+        
+        // history.go(-1);
+    })
+    }
+
     // need to request basic dataset details to display in the homepage
     const getDataSets = () => {
         let content = [];
@@ -28,6 +42,7 @@ const Home = (props) => {
         return content;
     };
 
+
     // there should be functions here to sort, filter etc.
     
     const [key_word, setSearch] = useState('');
@@ -39,32 +54,6 @@ const Home = (props) => {
     const [filter_DataVisual, setDatavidual] = useState('');
     const [filter_PreTModel, setPreTModel] = useState('');
     const [filter_all, setAll] = useState('');
-    const [isPending, setIsPending] = useState(false);
-
-    const history = useHistory();
-
-    console.log(key_word, sort_by);
-    const handleSearch = (e) => {
-        e.preventDefault();
-
-        const Search = {key_word, filetype_csv, filetype_txt, sort_by, filter_ComSci, 
-                        filter_Edu, filter_DataVisual, filter_PreTModel,filter_all};
-
-        setIsPending(true);
-
-        fetch('http://localhost:5000/SearchDataset', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(Search)
-        }).then(response => response.json())
-        .then( data => {console.log('The response was....', data);
-            console.log('new dataset added');
-            
-            setIsPending(false);
-            // history.go(-1);
-            history.push('/');
-        })
-    }
 
     
     return (
@@ -78,7 +67,7 @@ const Home = (props) => {
             </div>
 
             <Upload />
-            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2">
+            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2" onLoadStart={getALLDataSets()}>
                 <div className="search col-10 col-md-8">
                     <div className="search-box ps-3">
                         <input 
@@ -87,7 +76,6 @@ const Home = (props) => {
                             placeholder="search here..." 
                             value={key_word}
                             onChange={(e) => setSearch(e.target.value)}
-                            onInput={handleSearch}
                         />
                         <span className="search-btn">
                             <i className="fas fa-search"></i>
@@ -100,7 +88,7 @@ const Home = (props) => {
                         <label className='col-12 text-start'>file type</label>
                     </div>
                         
-                    <div className="row">
+                    <div className="row" >
                         <div className="col-6">
                             <input 
                                 type="checkbox" 
