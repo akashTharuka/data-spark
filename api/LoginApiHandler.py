@@ -28,7 +28,7 @@ class LoginApiHandler(Resource):
 
         # test
         if email!="test@test.com" or password!="test":
-            return jsonify(msg="authentication error"), 401
+            return jsonify(msg="authentication error")
 
         # user = User.find_by_email(email)
 
