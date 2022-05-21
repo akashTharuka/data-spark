@@ -7,6 +7,7 @@ from api.LoginApiHandler import LoginApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
+from api.ReviewApiHandler import ReviewApiHandler
 from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from dotenv import load_dotenv
 
@@ -54,6 +55,7 @@ api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/adddataset')
 api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
 api.add_resource(LoginApiHandler, '/login')
+api.add_resource(ReviewApiHandler, '/review')
 
 if __name__ == "__main__":
     app.run(debug=True)

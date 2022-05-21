@@ -19,7 +19,7 @@ class AddDatasetApiHandler(Resource):
     def post(self):
         print(request.json)
         args = AddDatasetApiHandler.addDataset_args.parse_args()
-        uploader_id = 1
+        uploader_id = 1 #uploder id should get from the session and put it on here
         status_id = 1
         title = args.get('title')
         file_path = args.get('file_path')
