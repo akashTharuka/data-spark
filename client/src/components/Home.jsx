@@ -57,8 +57,10 @@ const Home = () => {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(Search)
-        }).then(() => {
+        }).then(response => response.json())
+        .then( data => {console.log('The response was....', data);
             console.log('new dataset added');
+            
             setIsPending(false);
             // history.go(-1);
             history.push('/');
@@ -77,7 +79,6 @@ const Home = () => {
             </div>
 
             <Upload />
-
             <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2">
                 <div className="search col-10 col-md-8">
                     <div className="search-box ps-3">
@@ -87,6 +88,7 @@ const Home = () => {
                             placeholder="search here..." 
                             value={key_word}
                             onChange={(e) => setSearch(e.target.value)}
+                            onInput={handleSearch}
                         />
                         <span className="search-btn">
                             <i className="fas fa-search"></i>
