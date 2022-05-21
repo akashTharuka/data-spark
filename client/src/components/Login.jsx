@@ -46,6 +46,7 @@ const Login = () => {
                     history.push('/');
                     document.location.reload();
                 }).catch((error) => {
+                    setIsPending(false);
                     console.log(error);
                 });
         }

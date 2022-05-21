@@ -1,4 +1,4 @@
-from flask import flash
+from flask import flash, make_response
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.User import User
@@ -27,13 +27,13 @@ class LoginApiHandler(Resource):
         password = args.get("password")
 
         # test
-        if email!="test@test.com" or password!="test":
-            return jsonify(msg="authentication error")
+        # if email!="test@test.com" or password!="test":
+        #     return jsonify(msg="authentication error"), 401
 
-        # user = User.find_by_email(email)
+        user = User.find_by_email(email)
 
-        # if not user or user.verify_password(password):
-        #     return {'message': 'Wrong username or password'}
+        if not user or not user.verify_password(password):
+            return make_response(jsonify(msg="authentication error"), 401)
 
         access_token = create_access_token(identity=email)
         return jsonify(access_token=access_token)
