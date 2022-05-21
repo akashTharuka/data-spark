@@ -25,6 +25,7 @@ mysql-connector-python==8.0.29
 mysql-connector-python-rf==2.2.2
 pymysql==1.0.2
 cryptography==37.0.2
+wtforms==3.0.1
 
 # Automated tests
 pytest==7.1.2

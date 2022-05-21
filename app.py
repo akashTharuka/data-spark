@@ -1,31 +1,39 @@
 from email.policy import default
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS  # comment this on deployement
+from flask_cors import CORS, cross_origin  # comment this on deployement
 from api.RegisterApiHandler import RegisterApiHandler
+from api.LoginApiHandler import LoginApiHandler
 from datetime import datetime
-import os
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+from dotenv import load_dotenv
+
+from flask_jwt_extended import JWTManager
+
+load_dotenv()
+
+import os
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
 api = Api(app)
 
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+# app.config['CORS_HEADERS'] = 'Content-Type'
+jwt = JWTManager(app)
+
 # database configure
-# DB_USERNAME = os.getenv('DB_USERNAME')
-# DB_PASSWORD = os.getenv('DB_PASSWORD')
-# DB_HOST = os.getenv('DB_HOST')
-# DB_NAME = os.getenv('DB_NAME')
-DB_USERNAME='root'
-DB_PASSWORD=''
-DB_HOST='localhost'
-DB_NAME='datasparkdb'
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
 
-print ("mysql+pymysql://"+str(DB_USERNAME)+":"+str(DB_PASSWORD)+"@"+str(DB_HOST)+"/"+str(DB_NAME))
-
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{}:{}@{}/{}".format(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + DB_USERNAME + ':' + DB_PASSWORD + '@' + DB_HOST + '/' + DB_NAME
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{}:{}@{}/{}".format(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.secret_key = "secret"
@@ -42,16 +50,10 @@ def create_tables():
 def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
-
-# @app.route('/register', methods=['POST', 'GET'])
-# def register():
-#     print(request.json);
-
 api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/adddataset')
-#api.add_resource(AddDatasetApiHandler, '/AddDataset/<int:uploader_id>/<int:Status_id>/<string:title>/<string:file_path>')
 api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
-
+api.add_resource(LoginApiHandler, '/login')
 
 if __name__ == "__main__":
     app.run(debug=True)

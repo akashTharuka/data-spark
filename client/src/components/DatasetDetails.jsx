@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import Review from './Review';
 
-const DatasetDetails = () => {
+const DatasetDetails = (props) => {
 
 	// need the following data about a dataset
 	// 		1. Title
@@ -17,7 +17,7 @@ const DatasetDetails = () => {
 			content.push(
 				<div className="col" key={i}>
 					<div className="card review m-3" style={{width: '25rem'}}>
-					{/* <img src="..." class="card-img-top" alt="..." /> */}
+					{/* <img src="..." className="card-img-top" alt="..." /> */}
 						<div className="card-body">
 							<h5 className="card-title">Akash Tharuka</h5>
 							<div className="ratings"> 
@@ -39,7 +39,7 @@ const DatasetDetails = () => {
 
 	return (
 		<div>
-			<Navbar />
+			<Navbar status={props.status} />
 
 			<div className="row my-4">
 				<div className="col-10 mx-auto">

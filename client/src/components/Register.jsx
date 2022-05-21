@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -16,32 +16,117 @@ const Register = ({type}) => {
     
     //   }, [])
 
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isPending, setIsPending] = useState(false);
+    const [email, setEmail]                     = useState("");
+    const [username, setUsername]               = useState("");
+    const [password, setPassword]               = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isPending, setIsPending]             = useState(false);
+    
+    const [emailMsg, setEmailMsg] = useState("");
+    const [usernameMsg, setUsernameMsg] = useState("");
+    const [pswMsg, setPswMsg] = useState("");
+    const [confirmPswMsg, setConfirmPswMsg] = useState("");
 
     const history = useHistory();
 
-    // console.log(email, username, password, confirmPassword);
+    const validateData = (register) => {
+        let email = register.email;
+        let username = register.username;
+        let password = register.password;
+        let confirmPassword = register.confirmPassword;
+
+        let valid = true;
+
+        // validate email
+        if (email === ""){
+            setEmailMsg("Email cannot be empty");
+            valid = false;
+        }
+        else if (! /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+            setEmailMsg("not a valid email");
+            valid = false;
+        }
+        else{
+            setEmailMsg("success");
+        }
+
+        // validate username
+        if (username === ""){
+            setUsernameMsg("Username cannot be empty");
+            valid = false;
+        }
+        else if (! /^[a-zA-Z0-9]+$/.test(username)){
+            setUsernameMsg("Only alphanumeric characters");
+            valid = false;
+        }
+        else{
+            setUsernameMsg("success");
+        }
+
+        // password validation
+        if (password === ""){
+            setPswMsg("Password cannot be empty");
+            valid = false;
+        }
+        else if (! /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{7,}$/.test(password)){
+            setPswMsg("At least one digit, one lowercase & uppercase, and min 8 characters");
+            valid = false;
+        }
+        else{
+            setPswMsg("success");
+        }
+
+        // confirm password validation
+        if (confirmPassword === ""){
+            setConfirmPswMsg("Please confirm the password");
+            valid = false;
+        }
+        else if (password !== confirmPassword){
+            setConfirmPswMsg("Password mismatch");
+            valid = false;
+        }
+        else{
+            setConfirmPswMsg("success");
+        }
+
+        return valid;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const register = {email, username, password, confirmPassword};
 
-        setIsPending(true);
+        const valid = validateData(register);
 
-        fetch('http://localhost:5000/register', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(register)
-        }).then(() => {
-            console.log('new user registered');
-            setIsPending(false);
-            // history.go(-1);
-            history.push('/');
-        })
+        if (valid){
+            setIsPending(true);
+
+            axios.post('http://localhost:5000/register', register, {headers: {
+                'Authorization': '',
+                'Content-Type': 'application/json',
+            }})
+            .then((res) => {
+                setIsPending(false);
+                setEmailMsg(res.data.emailErr);
+                setUsernameMsg(res.data.usernameErr);
+                console.log(emailMsg);
+                console.log(usernameMsg);
+                console.log(emailMsg=="");
+
+                let emailUsernameCheck = false;
+
+                if (emailMsg == "" && usernameMsg == ""){
+                    
+                    console.log("here");
+                    history.push('/');
+                    document.location.reload();
+                }
+                
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
 	return (
@@ -50,12 +135,12 @@ const Register = ({type}) => {
                 <div className="modal-content">
                     <div className="modal-body d-flex-column">
                         <h2 className="title display-6 my-4 text-center text-uppercase">{type}</h2>
-                        <form onSubmit={handleSubmit} className='col-10 mx-auto pt-4 needs-validation' noValidate>
+                        <form className='col-10 mx-auto pt-4 needs-validation' noValidate>
                             {/* add the classnames "is-invalid" or "is-valid" to the input element to see error and success */}
                             <div className="form-floating mb-3">
                                 <input 
                                     type="email" 
-                                    className="form-control is-invalid" 
+                                    className={`form-control ${(emailMsg == "") ? "" : (emailMsg != "success" ? "is-invalid" : "is-valid")}`}
                                     id={type + 'Email'} 
                                     tabIndex="-1" 
                                     value={email}
@@ -64,14 +149,14 @@ const Register = ({type}) => {
                                 />
                                 <label htmlFor="registerEmail">Email address</label>
                                 <div className="invalid-feedback">
-                                    Error message
+                                    {emailMsg}
                                 </div>
                             </div>
 
                             <div className="form-floating mb-3">
                                 <input 
                                     type="text" 
-                                    className="form-control is-invalid" 
+                                    className={`form-control ${(usernameMsg == "") ? "" : (usernameMsg != "success" ? "is-invalid" : "is-valid")}`}
                                     id={type + 'Username'} 
                                     tabIndex="-1" 
                                     value={username}
@@ -80,14 +165,14 @@ const Register = ({type}) => {
                                 />
                                 <label htmlFor="registerUsername">Username</label>
                                 <div className="invalid-feedback">
-                                    Error message
+                                    {usernameMsg}
                                 </div>
                             </div>
 
                             <div className="form-floating mb-3">
                                 <input 
                                     type="password" 
-                                    className="form-control is-valid" 
+                                    className={`form-control ${(pswMsg == "") ? "" : (pswMsg != "success" ? "is-invalid" : "is-valid")}`}
                                     id={type + 'Password'} 
                                     tabIndex="-1" 
                                     value={password}
@@ -96,14 +181,14 @@ const Register = ({type}) => {
                                 />
                                 <label htmlFor="registerPassword">Password</label>
                                 <div className="invalid-feedback">
-                                    Error message
+                                    {pswMsg}
                                 </div>
                             </div>
                             
                             <div className="form-floating mb-3">
                                 <input 
                                     type="password" 
-                                    className="form-control" 
+                                    className={`form-control ${(confirmPswMsg == "") ? "" : (confirmPswMsg != "success" ? "is-invalid" : "is-valid")}`}
                                     id={type + 'ConfirmPassword'} 
                                     tabIndex="-1" 
                                     value={confirmPassword}
@@ -112,12 +197,12 @@ const Register = ({type}) => {
                                 />
                                 <label htmlFor="registerConfirmPassword">Confirm Password</label>
                                 <div className="invalid-feedback">
-                                    Error message
+                                    {confirmPswMsg}
                                 </div>
                             </div>
 
                             <div className="d-grid col-6 mx-auto text-center my-4">
-                                { !isPending && <button type="submit" className="btn btn-outline-dark py-2 shadow-lg text-uppercase" tabIndex="-1">{type}</button>}
+                                { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2 shadow-lg text-uppercase" tabIndex="-1">{type}</button>}
                                 { isPending && <button type="submit" className="btn btn-outline-dark py-2 shadow-lg text-uppercase" tabIndex="-1" disabled>{type}</button>}
                             </div>
                         </form>

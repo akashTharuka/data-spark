@@ -2,6 +2,8 @@ import imageCap from '../images/image-cap.png';
 
 import avatar1 from '../images/avatars/avatar1.png';
 
+import backgroundImage from '../images/svg/polygon-scatter.svg';
+
 import rating0 from '../images/svg/rating0.svg';
 import rating1 from '../images/svg/rating1.svg';
 import rating2 from '../images/svg/rating2.svg';
@@ -12,5 +14,6 @@ import rating5 from '../images/svg/rating5.svg';
 export const images = {
     imageCap,
     avatar1,
-    rating0, rating1, rating2, rating3, rating4, rating5
+    rating0, rating1, rating2, rating3, rating4, rating5,
+    backgroundImage
 }
