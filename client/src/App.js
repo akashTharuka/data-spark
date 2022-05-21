@@ -9,8 +9,7 @@ function App() {
 
     useEffect(() => {
         const token = sessionStorage.getItem("token");
-        console.log(token);
-        if (token !== null || token !== undefined){
+        if (token !== null && token !== undefined){
             setStatus(true);
         }
     }, []);

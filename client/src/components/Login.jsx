@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
 
@@ -16,27 +17,15 @@ const Login = () => {
 
         setIsPending(true);
 
-        fetch('http://localhost:5000/login', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(login)
-        })
-        .then((response) => {
-            // console.log(response);
-            if(response.status === 200) return response.json();
-            setIsPending(false);
-            // history.go(-1);
-            
-        })
-        .then((result) => {
-            sessionStorage.setItem("token", result.access_token);
-            history.push('/');
-            document.location.reload();
-        })
-        .catch((error) => {
-            console.log('error: ' + error.message )
-            setIsPending(false);
-        });
+        axios.post('http://localhost:5000/login', login)
+            .then((res) => {
+                sessionStorage.setItem("token", res.data.access_token);
+                setIsPending(false);
+                history.push('/');
+                document.location.reload();
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     return (

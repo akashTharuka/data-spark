@@ -1,7 +1,7 @@
 from email.policy import default
 from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS  # comment this on deployement
+from flask_cors import CORS, cross_origin  # comment this on deployement
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
 from datetime import datetime
@@ -20,6 +20,7 @@ api = Api(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+# app.config['CORS_HEADERS'] = 'Content-Type'
 jwt = JWTManager(app)
 
 # database configure
@@ -57,7 +58,6 @@ def serve(path):
 # @app.route('/login', methods=['POST', 'GET'])
 # def login():
 #     print(request.json)
-
 
 api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(LoginApiHandler, '/login')

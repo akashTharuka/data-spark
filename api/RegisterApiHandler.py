@@ -1,8 +1,9 @@
-from flask import flash
+import json
+from flask import flash, jsonify
+from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.User import User
-
 
 class RegisterApiHandler(Resource):
     register_args = reqparse.RequestParser()
@@ -11,31 +12,42 @@ class RegisterApiHandler(Resource):
     register_args.add_argument("password", type=str, help="Password is required", required=True)
     register_args.add_argument("confirmPassword", type=str, help="Confirm Password is required", required=True)
 
+    emailErr = ""
+    usernameErr = ""
+    valid = True
+
     def get(self):
         return {
             'resultStatus': 'SUCCESS',
             'message': "Register Api Handler"
         }
 
+    @cross_origin()
     def post(self):
-        # print(request.json)
-
         args = RegisterApiHandler.register_args.parse_args()
         email = args.get("email")
         username = args.get("username")
         password = args.get("password")
-        # confirmPassword = args.get("confirmPassword")
-
-        # if password != confirmPassword:
-        #     return {"message": "Password is mismatching"}, 400
 
         if User.find_by_email(email):
-            return {"message": "email already exists"}, 400
+            self.emailErr = "Email already exists"
+            self.valid = False
+
+        if User.find_by_username(username):
+            self.usernameErr = "Username already exists"
+            self.valid = False
+
+        if not self.valid:
+            response = jsonify(emailErr=self.emailErr, usernameErr=self.usernameErr)
+            return response
 
         user = User(email=email, username=username, password=password)
 
         try:
             user.save()
         except:
-            return {"message": "An error occurred adding user to database"}, 500
-        return {"message": "User added Successfully"}, 200
+            response = jsonify(message="An error occured while adding user to the database")
+            return response
+            
+        response = jsonify(message="User added successfully")
+        return response
