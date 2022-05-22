@@ -5,8 +5,6 @@ from models.User import User
 from flask import jsonify
 
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
 
 
 class LoginApiHandler(Resource):
@@ -26,16 +24,11 @@ class LoginApiHandler(Resource):
         email = args.get("email")
         password = args.get("password")
 
-        # test
-        # if email!="test@test.com" or password!="test":
-        #     return jsonify(msg="authentication error"), 401
-
         user = User.find_by_email(email)
 
         if not user or not user.verify_password(password):
-            return make_response(jsonify(msg="authentication error"), 401)
+            return jsonify(msg="authentication error")
 
         access_token = create_access_token(identity=email)
         return jsonify(access_token=access_token)
 
-        # print("success")

@@ -8,11 +8,11 @@ from models.Dataset import Dataset
 
 
 class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    dataset_id = db.Column(db.Integer, nullable=True)
+    id          = db.Column(db.Integer, primary_key=True)
+    dataset_id  = db.Column(db.Integer, nullable=True)
     reviewer_id = db.Column(db.Integer,nullable=True)
-    review = db.Column(db.String(50),nullable=True)
-    rating = db.Column(db.String(200),nullable=True)
+    review      = db.Column(db.String(50),nullable=True)
+    rating      = db.Column(db.String(200),nullable=True)
 
     def __init__(self, dataset_id, reviewer_id, review, rating):
         self.dataset_id = dataset_id

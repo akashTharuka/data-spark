@@ -9,7 +9,7 @@ from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 from api.ReviewApiHandler import ReviewApiHandler
-from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+from api.GetDatasetAPIHandler import GetDatasetAPIHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -53,8 +53,8 @@ def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 api.add_resource(RegisterApiHandler, '/register')
-api.add_resource(AddDatasetApiHandler, '/adddataset')
-api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
+api.add_resource(AddDatasetApiHandler, '/addDataSet')
+api.add_resource(GetDatasetAPIHandler, '/getDataset')
 api.add_resource(LoginApiHandler, '/login')
 api.add_resource(ReviewApiHandler, '/review')
 # api.add_resource(ProfileApiHandler, '/profile')

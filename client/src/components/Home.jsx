@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import Navbar from './Navbar';
 import Upload from './Upload';
@@ -8,31 +9,27 @@ import { images } from '../javascript/imageImports';
 
 const Home = (props) => {
 
-    //get all datasets 
-    const getALLDataSets = () => {
-    fetch('http://localhost:5000/SearchDataset', {
-        method: 'GET',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify()
-    }).then(response => response.json())
-    .then( data => {console.log('The response was....', data);
-        console.log(' dataset loadded');
-        
-        // history.go(-1);
-    })
-    }
+    const [datasets, setDatasets] = useState([]);
 
-    // need to request basic dataset details to display in the homepage
+    useEffect(() => {
+        axios.get('http://localhost:5000/getDataset')
+            .then(response => {
+                setDatasets(response.data.datasets);
+            });
+    }, []);
+
+    const datasetLength = datasets.length;
+
     const getDataSets = () => {
         let content = [];
-        for (let i = 0; i < 20; i++){
+        for (let i = 0; i < datasetLength; i++){
             content.push(
                 <div className="d-flex col-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
                     <div className="card home" style={{width: "18rem"}}>
-                        <img src={images.imageCap} className="card-img-top" alt=''/>
+                        {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
                         <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <h5 className="card-title">{datasets[i].title}</h5>
+                            <p className="card-text">{datasets[i].description}</p>
                             <a href="/details" className="btn btn-warning shadow-lg px-3">View Details</a>
                         </div>
                     </div>
@@ -45,15 +42,16 @@ const Home = (props) => {
 
     // there should be functions here to sort, filter etc.
     
-    const [key_word, setSearch] = useState('');
-    const [filetype_csv, setCsv] = useState('');
-    const [filetype_txt, setTxt] = useState('');
-    const [sort_by, setSort] = useState();
-    const [filter_ComSci, setCompSci] = useState('');
-    const [filter_Edu, setEdu] = useState('');
-    const [filter_DataVisual, setDatavidual] = useState('');
-    const [filter_PreTModel, setPreTModel] = useState('');
-    const [filter_all, setAll] = useState('');
+    const [keyword, setKeyword]                     = useState('');
+    const [csvFileType, setCsvFileType]             = useState('');
+    const [txtFileType, setTxtFileType]             = useState('');
+    const [sort, setSort]                           = useState('');
+
+    const [compSciFilter, setCompSciFilter]         = useState('');
+    const [eduFilter, setEduFilter]                 = useState('');
+    const [dataVisualFilter, setDatavisualFilter]   = useState('');
+    const [preMpdalFilter, setPreTModalFilter]      = useState('');
+    const [allFilter, setAllFilter]                 = useState('');
 
     
     return (
@@ -67,15 +65,15 @@ const Home = (props) => {
             </div>
 
             <Upload />
-            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2" onLoadStart={getALLDataSets()}>
+            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2">
                 <div className="search col-10 col-md-8">
                     <div className="search-box ps-3">
                         <input 
                             className="search-txt" 
                             type="text" 
                             placeholder="search here..." 
-                            value={key_word}
-                            onChange={(e) => setSearch(e.target.value)}
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
                         />
                         <span className="search-btn">
                             <i className="fas fa-search"></i>
@@ -94,8 +92,8 @@ const Home = (props) => {
                                 type="checkbox" 
                                 className='csv filetype me-3' 
                                 id='csv-checkbox' 
-                                value={filetype_csv}
-                                onChange={(e) => setCsv(e.target.value)}
+                                value={csvFileType}
+                                onChange={(e) => setCsvFileType(e.target.value)}
                             />
                             <label htmlFor="csv-checkbox" className='filetype-label'>.csv</label>
                         </div>
@@ -104,8 +102,8 @@ const Home = (props) => {
                             <input type="checkbox" 
                                 className='txt filetype me-3' 
                                 id='txt-checkbox' 
-                                value={filetype_txt}
-                                onChange={(e) => setTxt(e.target.value)}
+                                value={txtFileType}
+                                onChange={(e) => setTxtFileType(e.target.value)}
                             />
                             <label htmlFor="txt-checkbox" className='filetype-label'>.txt</label>
                         </div>
@@ -113,7 +111,7 @@ const Home = (props) => {
                 </div>
 
                 <div className="col-6 col-md-2">
-                    <select className="form-select" aria-label="Default select example" onSelect={(e) => setTxt(e.target.value)} value={sort_by}>
+                    <select className="form-select" aria-label="Default select example" onChange={(e) => setSort(e.target.value)} value={sort}>
                         <option defaultValue="SortHere">Sort Here</option>
                         <option value="Alphabetical">Alphabetical</option>
                         <option value="Date modified">Date modified</option>
@@ -142,7 +140,7 @@ const Home = (props) => {
                 </div>
 
                 <div className="d-flex col-10 align-items-center mx-auto my-4">
-                    <span className='lead dataset-count'>#xx Datasets</span>
+                    <span className='lead dataset-count'>{datasetLength} Datasets</span>
                 </div>
 
                 <div className="row d-flex justify-content-evenly my-4">

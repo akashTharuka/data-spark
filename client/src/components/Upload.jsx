@@ -1,35 +1,81 @@
 import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const Upload = () => {
 
+    const [title, setTitle]             = useState('');
+    const [description, setDescription] = useState('');
+    const [filepath, setFilepath]       = useState('fakepath');
+    const [isPending, setIsPending]     = useState(false);
 
-
-    const [title, setTitle] = useState('');
-    const [file_path, setFilepath] = useState('');
-    const [isPending, setIsPending] = useState(false);
+    const [titleErr, setTitleErr]       = useState('');
+    const [desErr, setDesErr]           = useState('');
+    const [filepathErr, setFilepathErr] = useState('');
 
 
     const history = useHistory();
 
-    console.log(title, file_path);
+    const handleFile = (e) => {
+        console.log(e.target.files);
+        console.log(e.target.files[0]);
+    }
+
+    const validateData = (upload) => {
+        let title = upload.title;
+        let description = upload.description;
+        let filepath = upload.filepath;
+        let valid = true;
+
+        if (title == ""){
+            setTitleErr("Please enter a title");
+            valid = false;
+        }
+        else{
+            setTitleErr("success");
+        }
+        
+        if (description == ""){
+            setDesErr("Please enter a description");
+            valid = false;
+        }
+        else{
+            setDesErr("success");
+        }
+
+        if (filepath == ""){
+            setFilepathErr("Please upload a file");
+            valid = false;
+        }
+        else{
+            setFilepathErr("success");
+        }
+
+        return valid;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const upload = {title, file_path };
+        const token = sessionStorage.getItem("token");
 
-        setIsPending(true);
+        const upload = {title, description, filepath, token};
 
-        fetch('http://localhost:5000/adddataset', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(upload)
-        }).then(() => {
-            console.log('new dataset added');
-            setIsPending(false);
-            // history.go(-1);
-            history.push('/');
-        })
+        let valid = validateData(upload);
+
+        if (valid){
+            setIsPending(true);
+        
+            // axios.post('http://localhost:5000/addDataSet', upload)
+            //     .then((res) => {
+            //         setIsPending(false);
+            //         console.log(res.data);
+            //     }).catch((error) => {
+            //         setIsPending(false);
+            //         console.log(error);
+            //     });
+        }
+        
     }
 
     return (
@@ -39,12 +85,12 @@ const Upload = () => {
                         <div className="modal-content">
                             <div className="modal-body">
                                 <h2 className="title display-6 my-4 text-center">ADD DATASET</h2>
-                                <form onSubmit={handleSubmit} className='col-10 mx-auto pt-4'>
+                                <form className='col-10 mx-auto pt-4'>
                                     {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
                                     <div className="form-floating mb-3">
                                         <input 
                                             type="text" 
-                                            className="form-control is-valid"  
+                                            className={`form-control ${(titleErr == "") ? "" : (titleErr != "success") ? "is-invalid" : "is-valid"}`} 
                                             id='floatingTitle' 
                                             tabIndex="-1" 
                                             value = {title}
@@ -53,23 +99,40 @@ const Upload = () => {
                                         />
                                         <label htmlFor="floatingTitle">Title</label>
                                         <div className="invalid-feedback">
-                                            Error message
+                                            {titleErr}
+                                        </div>
+                                    </div>
+
+                                    <div className="form-floating mb-3">
+                                        <textarea 
+                                            className={`form-control ${(desErr == "") ? "" : (desErr != "success") ? "is-invalid" : "is-valid"}`} 
+                                            placeholder="Leave a comment here" 
+                                            id="fileDescription" 
+                                            style={{height: "100px"}}
+                                            tabIndex="-1"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            required
+                                        ></textarea>
+                                        <label htmlFor="fileDescription">Description</label>
+                                        <div className="invalid-feedback">
+                                            {desErr}
                                         </div>
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="formFileMultiple" className="form-label mx-3">Add Dataset Files</label>
                                         <input 
-                                            className="form-control is-valid" 
+                                            className={`form-control ${(filepathErr == "") ? "" : (filepathErr != "success") ? "is-invalid" : "is-valid"}`}
                                             type="file"
+                                            name='file'
                                             id="formFileMultiple" 
                                             tabIndex="-1" 
-                                            value={file_path}
-                                            onChange={(e) => setFilepath(e.target.value)}
+                                            onChange={(e) => handleFile(e)}
                                             multiple 
                                         />
                                         <div className="invalid-feedback">
-                                            Error message
+                                            {filepathErr}
                                         </div>
                                     </div>
 
@@ -86,7 +149,7 @@ const Upload = () => {
                                     </div> */}
                                     
                                     <div className="d-grid col-6 mx-auto text-center my-4">
-                                    { !isPending && <button type="submit" className="btn btn-outline-dark py-2" tabIndex="-1">Upload</button>}
+                                    { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2" tabIndex="-1">Upload</button>}
                                     { isPending && <button type="submit" className="btn btn-outline-dark py-2" tabIndex="-1" disabled>Upload</button>}
                                     </div>
                                 </form>

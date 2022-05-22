@@ -23,7 +23,7 @@ const Login = () => {
             valid = false;
         }
         else{
-            setErrMsg("success");
+            setErrMsg("");
         }
 
         return valid;
@@ -41,6 +41,7 @@ const Login = () => {
 
             axios.post('http://localhost:5000/login', login)
                 .then((res) => {
+                    console.log(res);
                     sessionStorage.setItem("token", res.data.access_token);
                     setIsPending(false);
                     history.push('/');
@@ -86,7 +87,7 @@ const Login = () => {
                                 <label htmlFor="loginPassword">Password</label>
                             </div>
                             
-                            <div className={`err-div ${(errMsg == "") ? "" : (errMsg != "success" ? "" : "d-none")}`}>
+                            <div className={`err-div ${(errMsg == "") ? "d-none" : ""}`}>
                                 <small className="err-msg text-danger">
                                     <i className="fa fa-exclamation-circle me-2 text-danger"></i>
                                     {errMsg}
