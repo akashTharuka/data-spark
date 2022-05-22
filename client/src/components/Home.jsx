@@ -30,7 +30,7 @@ const Home = (props) => {
                         <div className="card-body">
                             <h5 className="card-title">{datasets[i].title}</h5>
                             <p className="card-text">{datasets[i].description}</p>
-                            <a href="/details" className="btn btn-warning shadow-lg px-3">View Details</a>
+                            <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
                         </div>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ function App() {
 						<Route exact path="/">
 							<Home status={status} />
 						</Route>
-						<Route path="/details">
+						<Route path="/details/:id">
 							<DatasetDetails status={status} />
 						</Route>
 						<Route path='/dashboardLogin'>
