@@ -51,6 +51,6 @@ class RegisterApiHandler(Resource):
             response = jsonify(message="An error occured while adding user to the database")
             return response
 
-        access_token = create_access_token(identity=email)
+        access_token = create_access_token(identity=user.id)
         response = jsonify(access_token=access_token, message="User added successfully", emailErr="success", usernameErr="success")
         return response

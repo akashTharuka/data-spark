@@ -4,6 +4,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin  # comment this on deployement
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
+from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
@@ -22,6 +23,7 @@ app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
 api = Api(app)
 
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # app.config['CORS_HEADERS'] = 'Content-Type'
@@ -57,7 +59,7 @@ api.add_resource(AddDatasetApiHandler, '/addDataSet')
 api.add_resource(GetDatasetAPIHandler, '/getDataset')
 api.add_resource(LoginApiHandler, '/login')
 api.add_resource(ReviewApiHandler, '/review')
-# api.add_resource(ProfileApiHandler, '/profile')
+api.add_resource(ProfileApiHandler, '/profile')
 
 if __name__ == "__main__":
     app.run(debug=True)

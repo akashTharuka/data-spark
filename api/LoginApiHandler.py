@@ -29,6 +29,6 @@ class LoginApiHandler(Resource):
         if not user or not user.verify_password(password):
             return jsonify(msg="authentication error")
 
-        access_token = create_access_token(identity=email)
+        access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token)
 

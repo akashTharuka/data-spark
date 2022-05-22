@@ -30,6 +30,19 @@ class User(db.Model, UserMixin):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+    def update(self, email, username):
+        self.email = email
+        self.username = username
+        db.session.commit()
+
+    def update_num_uploads(self, num_uploads):
+        self.num_uploads += num_uploads
+        db.session.commit()
+
     def save(self):
         db.session.add(self)
         db.session.commit()
