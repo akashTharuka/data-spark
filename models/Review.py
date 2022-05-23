@@ -28,14 +28,31 @@ class Review(db.Model):
     def getReview(self,dataset_id):
         return self.query.filter_by(dataset_id=dataset_id).all()
     
+    @classmethod
+    def getReview_by_id(self,review_id):
+        return self.query.filter_by(id=review_id).first()
+    
     def save(self):
         dataset = Dataset.filter_by_id(self.dataset_id)
-        dataset.avg_rating = (dataset.avg_rating * dataset.num_ratings + self.rating)/ (dataset.num_ratings+1)
+        total_rating = (dataset.avg_rating * dataset.num_ratings)
+        dataset.avg_rating = (total_rating + self.rating)/ (dataset.num_ratings+1)
         dataset.num_ratings+=1
         db.session.add(self)
         db.session.commit()
 
+    def update(self,reviewer_id,review,rating):
+        dataset = Dataset.filter_by_id(self.dataset_id)
+        total_rating = (dataset.avg_rating * dataset.num_ratings)
+        dataset.avg_rating = (total_rating - self.rating + rating)/ (dataset.num_ratings)
+        self.rating = rating
+        self.review = review
+        db.session.commit()
+    
     def delete(self):
+        dataset = Dataset.filter_by_id(self.dataset_id)
+        total_rating = (dataset.avg_rating * dataset.num_ratings)
+        dataset.avg_rating = (total_rating - self.rating)/ (dataset.num_ratings - 1)
+        dataset.num_ratings-=1
         db.session.delete(self)
         db.session.commit()
     
