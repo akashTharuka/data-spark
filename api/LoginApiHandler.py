@@ -34,6 +34,6 @@ class LoginApiHandler(Resource):
             response = jsonify(msg=self.msg);
             return response
 
-        access_token = create_access_token(identity=email)
+        access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token, msg=self.msg)
 

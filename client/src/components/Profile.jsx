@@ -1,7 +1,41 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Register from './Register';
+import axios from 'axios';
 
 const Profile = () => {
+
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+
+        const access_token = sessionStorage.getItem("token");
+
+        if(access_token !== null && access_token !== undefined) {
+            axios.get('http://localhost:5000/profile', { headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-type': 'application/json'
+            }})
+            .then((res) => {
+                setEmail(res.data.email);
+                setUsername(res.data.username);
+                console.log(email);
+                console.log(username);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    });
+
+
+
+    // handle profile edit request
+    const handleEdit = (e) => {
+        e.preventDefault();
+
+
+    }
 
     const getPersonalDataSets = () => {
         let content = [];
@@ -36,17 +70,17 @@ const Profile = () => {
                 </div>
                 <div className='col-10 mx-auto pt-4'>
                     <div className="form-floating mb-3">
-                        <input type="email" readOnly className="form-control" id='editReadOnlyEmail' tabIndex="-1" value="akash_tharuka@yahoo.com" />
+                        <input type="email" readOnly className="form-control" id='editReadOnlyEmail' tabIndex="-1" value={email} />
                         <label htmlFor="editReadOnlyEmail">Email address</label>
                     </div>
 
                     <div className="form-floating mb-3">
-                        <input type="text" readOnly className="form-control" id='editReadOnlyUsername' tabIndex="-1" value="Tharukaeaa.19" />
+                        <input type="text" readOnly className="form-control" id='editReadOnlyUsername' tabIndex="-1" value={username} />
                         <label htmlFor="editReadOnlyUsername">Username</label>
                     </div>
 
                     <div className="d-grid col-6 mx-auto text-center my-4">
-                        <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
+                        <button type="button" onClick={handleEdit} className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
                     </div>
 
                     <Register type="edit" />

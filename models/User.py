@@ -6,7 +6,6 @@ class User(db.Model, UserMixin):
     id          = db.Column(db.Integer, primary_key=True)
     email       = db.Column(db.String(50), nullable=False, unique=True)
     username    = db.Column(db.String(50), nullable=False)
-    logged_flag = db.Column(db.Boolean, nullable=True)
     password    = db.Column(db.String(255), nullable=False)
     num_uploads = db.Column(db.Integer, nullable=True)
 
@@ -33,6 +32,15 @@ class User(db.Model, UserMixin):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+
+    def update(self, email, username):
+        self.email = email
+        self.username = username
+        db.session.commit()
+
+    def update_num_uploads(self, num_uploads):
+        self.num_uploads += num_uploads
+        db.session.commit()
 
     def save(self):
         db.session.add(self)
