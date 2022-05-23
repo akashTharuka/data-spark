@@ -19,8 +19,6 @@ const Profile = () => {
             .then((res) => {
                 setEmail(res.data.email);
                 setUsername(res.data.username);
-                console.log(email);
-                console.log(username);
             })
             .catch((error) => {
                 console.log(error);
@@ -28,13 +26,9 @@ const Profile = () => {
         }
     });
 
-
-
     // handle profile edit request
     const handleEdit = (e) => {
         e.preventDefault();
-
-
     }
 
     const getPersonalDataSets = () => {

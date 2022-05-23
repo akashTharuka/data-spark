@@ -21,7 +21,7 @@ class AddReviewApiHandler(Resource):
     def put(self):
         identity = get_jwt_identity()
 
-        user = User.find_by_email(identity)
+        user = User.find_by_id(identity)
         args = AddReviewApiHandler.addreview_args.parse_args()
         dataset_id = args.get('dataset_id')
         reviewer_id = user.id
@@ -36,11 +36,3 @@ class AddReviewApiHandler(Resource):
             return jsonify(msg="success")
         except:
             return jsonify(message="An error occurred adding review to database"), 500
-
-    # def get(self,dataset_id):
-        
-    #     result = Review.getReview(dataset_id)
-    #     datasets = []
-    #     for x in result:
-    #         datasets.append(x.json())
-    #     return jsonify(datasets)
