@@ -12,6 +12,7 @@ class Dataset(db.Model):
     uploader_id     = db.Column(db.Integer, nullable=False)
     status_id       = db.Column(db.Integer,nullable=False)
     title           = db.Column(db.String(50),nullable=False)
+    description     = db.Column(db.Text, nullable=False)
     file_path       = db.Column(db.String(200),nullable=False)
     file_type       = db.Column(db.String(20), nullable=True)
     file_size       = db.Column(db.Float, nullable=True)
@@ -30,6 +31,7 @@ class Dataset(db.Model):
                 'uploader_id': self.uploader_id, 
                 'status_id': self.status_id, 
                 'title': self.title,
+                'description': self.description,
                 'file_path': self.file_path, 
                 'file_type': self.file_type, 
                 'file_size': self.file_size, 

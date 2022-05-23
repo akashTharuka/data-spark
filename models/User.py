@@ -30,6 +30,10 @@ class User(db.Model, UserMixin):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -43,4 +47,5 @@ class User(db.Model, UserMixin):
         return '<Name %r>' % self.email
 
     def verify_password(self, password):
+        print(check_password_hash(self.password, password))
         return check_password_hash(self.password, password)

@@ -21,8 +21,8 @@ class Review(db.Model):
         self.rating = rating
 
     def json(self):
-        return {'id': self.id, 'uploader_id': self.dataset_id, 'status_id': self.reviewer_id, 'title': self.review,
-                'file_path': self.rating}
+        return {'id': self.id, 'dataset_id': self.dataset_id, 'reviewer_id': self.reviewer_id, 'review': self.review,
+                'rating': self.rating}
         
     @classmethod
     def getReview(self,dataset_id):
