@@ -1,3 +1,4 @@
+import json
 from flask import flash, make_response
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
@@ -11,6 +12,8 @@ class LoginApiHandler(Resource):
     login_args = reqparse.RequestParser()
     login_args.add_argument("email", type=str, help="Email is required", required=True)
     login_args.add_argument("password", type=str, help="Password is required", required=True)
+
+    msg = ""
 
     def get(self):
         return {
@@ -27,8 +30,10 @@ class LoginApiHandler(Resource):
         user = User.find_by_email(email)
 
         if not user or not user.verify_password(password):
-            return jsonify(msg="authentication error")
+            self.msg = "Authentication error"
+            response = jsonify(msg=self.msg);
+            return response
 
         access_token = create_access_token(identity=email)
-        return jsonify(access_token=access_token)
+        return jsonify(access_token=access_token, msg=self.msg)
 

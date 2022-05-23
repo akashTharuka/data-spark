@@ -41,11 +41,17 @@ const Login = () => {
 
             axios.post('http://localhost:5000/login', login)
                 .then((res) => {
-                    console.log(res);
-                    sessionStorage.setItem("token", res.data.access_token);
+                    let msg = res.data.msg;
+                    console.log(msg);
+                    if (msg != ""){
+                        setErrMsg(msg);
+                    }
+                    else{
+                        sessionStorage.setItem("token", res.data.access_token);
+                        history.push('/');
+                        document.location.reload();
+                    }
                     setIsPending(false);
-                    history.push('/');
-                    document.location.reload();
                 }).catch((error) => {
                     setIsPending(false);
                     console.log(error);
