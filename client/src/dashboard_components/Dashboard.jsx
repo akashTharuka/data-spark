@@ -3,6 +3,15 @@ import Navbar from '../components/Navbar';
 
 const Dashboard = () => {
 
+    const [allDatasets, setAllDatasets] = useState([]);
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:5000/getAllDatasets')
+    //         .then(response => {
+    //             setAllDatasets(response.data.datasets);
+    //         });
+    // }, []);
+
     const getAllDatasets = () => {
         let content = [];
         for (let i = 0; i < 20; i++){
