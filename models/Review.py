@@ -2,17 +2,17 @@ from audioop import avg, avgpp
 from turtle import title
 from unittest import result
 
-from sqlalchemy import false
+from sqlalchemy import false, ForeignKey
 from db import db
 from models.Dataset import Dataset
 
 
 class Review(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
-    dataset_id  = db.Column(db.Integer, nullable=True)
-    reviewer_id = db.Column(db.Integer,nullable=True)
-    review      = db.Column(db.String(50),nullable=True)
-    rating      = db.Column(db.String(200),nullable=True)
+    dataset_id  = db.Column(db.Integer, ForeignKey('dataset.id'), nullable=True)
+    reviewer_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=True)
+    review      = db.Column(db.Text(), nullable=True)
+    rating      = db.Column(db.Integer, nullable=True)
 
     def __init__(self, dataset_id, reviewer_id, review, rating):
         self.dataset_id = dataset_id
@@ -60,4 +60,4 @@ class Review(db.Model):
 
     # Create A String
     def __repr__(self):
-        return '<Name %r>' % self.email
+        return '<Review %r>' % self.review

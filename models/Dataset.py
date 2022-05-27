@@ -3,14 +3,14 @@ from email.policy import default
 import json
 from turtle import title
 
-from sqlalchemy import false
+from sqlalchemy import false, ForeignKey
 from db import db
 
 
 class Dataset(db.Model):
     id              = db.Column(db.Integer, primary_key=True)
-    uploader_id     = db.Column(db.Integer, nullable=False)
-    status_id       = db.Column(db.Integer,nullable=False)
+    uploader_id     = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    status_id       = db.Column(db.Integer, ForeignKey('datasetStatus.id'), nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
     file_path       = db.Column(db.String(200),nullable=False)
@@ -67,4 +67,4 @@ class Dataset(db.Model):
 
     # Create A String
     def __repr__(self):
-        return '<Name %r>' % self.email
+        return '<Title %r>' % self.title
