@@ -19,6 +19,7 @@ class AddDatasetApiHandler(Resource):
             'message': "Register Api Handler"
         }
 
+    @jwt_required()
     def post(self):
         args = AddDatasetApiHandler.addDataset_args.parse_args()
         uploader_id = 1 #uploder id should get from the session and put it on here
@@ -27,10 +28,10 @@ class AddDatasetApiHandler(Resource):
         file_path = args.get('filepath')
         token = args.get('token')
 
-        identity = get_jwt_identity(token);
+        identity = get_jwt_identity();
         print(identity);
 
-        dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title,file_path=file_path)
+        dataset = Dataset(uploader_id=identity, status_id=status_id, title=title,file_path=file_path)
 
         try:
             dataset.save()
