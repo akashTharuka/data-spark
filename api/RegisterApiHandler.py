@@ -5,12 +5,14 @@ from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.User import User
 
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+
+
 class RegisterApiHandler(Resource):
     register_args = reqparse.RequestParser()
     register_args.add_argument("email", type=str, help="Email is required", required=True)
     register_args.add_argument("username", type=str, help="Username is required", required=True)
     register_args.add_argument("password", type=str, help="Password is required", required=True)
-    register_args.add_argument("confirmPassword", type=str, help="Confirm Password is required", required=True)
 
     emailErr = ""
     usernameErr = ""
@@ -48,6 +50,7 @@ class RegisterApiHandler(Resource):
         except:
             response = jsonify(message="An error occured while adding user to the database")
             return response
-            
-        response = jsonify(message="User added successfully")
+
+        access_token = create_access_token(identity=user.id)
+        response = jsonify(access_token=access_token, message="User added successfully", emailErr="success", usernameErr="success")
         return response

@@ -4,18 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 const Register = ({type}) => {
 
-    // const [getMessage, setGetMessage] = useState({})
-
-    // useEffect(()=>{
-    //     // axios.get('http://localhost:5000/flask/hello').then(response => {
-    //     //   console.log("SUCCESS", response)
-    //     //   setGetMessage(response)
-    //     // }).catch(error => {
-    //     //   console.log(error)
-    //     // })
-    
-    //   }, [])
-
     const [email, setEmail]                     = useState("");
     const [username, setUsername]               = useState("");
     const [password, setPassword]               = useState("");
@@ -102,30 +90,58 @@ const Register = ({type}) => {
         if (valid){
             setIsPending(true);
 
-            axios.post('http://localhost:5000/register', register, {headers: {
-                'Authorization': '',
-                'Content-Type': 'application/json',
-            }})
-            .then((res) => {
-                setIsPending(false);
-                setEmailMsg(res.data.emailErr);
-                setUsernameMsg(res.data.usernameErr);
-                console.log(emailMsg);
-                console.log(usernameMsg);
-                console.log(emailMsg=="");
+            // register
+            if(type === "register") {
+                axios.post('http://localhost:5000/register', register, {headers: {
+                    'Authorization': '',
+                    'Content-Type': 'application/json',
+                }})
+                .then((res) => {
+                    setIsPending(false);
+                    setEmailMsg(res.data.emailErr);
+                    setUsernameMsg(res.data.usernameErr);
 
-                let emailUsernameCheck = false;
+                    let emailUsernameCheck = false;
 
-                if (emailMsg == "" && usernameMsg == ""){
-                    
-                    console.log("here");
-                    history.push('/');
-                    document.location.reload();
-                }
-                
-            }).catch((error) => {
-                console.log(error);
-            });
+                   if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
+                        console.log("here");
+                        sessionStorage.setItem("token", res.data.access_token)
+                        history.push('/');
+                        document.location.reload();
+                   }
+
+                }).catch((error) => {
+                    setIsPending(false);
+                    console.log(error);
+                });
+            }
+
+            // edit profile
+            if(type === "edit") {
+                const access_token = sessionStorage.getItem("token");
+
+                axios.post('http://localhost:5000/profile', register, { headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                    'Content-type': 'application/json'
+                }})
+                    .then((res) => {
+                        setIsPending(false);
+                        setEmailMsg(res.data.emailErr);
+                        setUsernameMsg(res.data.usernameErr);
+
+                        let emailUsernameCheck = false;
+
+                       if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
+                            console.log("here");
+                            history.push('/');
+                            document.location.reload();
+                       }
+                    })
+                    .catch((error) => {
+                        setIsPending(false);
+                        console.log(error);
+                        });
+            }
         }
     }
 

@@ -4,11 +4,16 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin  # comment this on deployement
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
+from api.ProfileApiHandler import ProfileApiHandler
+# from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
+from api.AddReviewApiHandler import AddReviewApiHandler
+from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
+from api.GetDatasetAPIHandler import GetDatasetAPIHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -21,6 +26,7 @@ app = Flask(__name__, static_url_path='', static_folder='../client/public')
 CORS(app)
 api = Api(app)
 
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # app.config['CORS_HEADERS'] = 'Content-Type'
@@ -52,10 +58,13 @@ def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 api.add_resource(RegisterApiHandler, '/register')
-api.add_resource(AddDatasetApiHandler, '/adddataset')
-api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
+api.add_resource(AddDatasetApiHandler, '/addDataSet')
+api.add_resource(GetDatasetAPIHandler, '/getDataset')
 api.add_resource(LoginApiHandler, '/login')
 api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
+api.add_resource(AddReviewApiHandler, '/addReview')
+api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
+api.add_resource(ProfileApiHandler, '/profile')
 
 if __name__ == "__main__":
     app.run(debug=True)
