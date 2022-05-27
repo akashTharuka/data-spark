@@ -12,8 +12,5 @@ input()
 # response = requests.post(BASE+'/AddDataset/1/1/testdata/name123')
 # print(response.json())
 
-# response = requests.put(BASE+'/review/3/3/abcd/5')
-# print(response.json())
-
-# response = requests.get(BASE+'/review/3')
-# print(response.json())
+response = requests.post(BASE+'/SearchDataset/1')
+print(response.json())

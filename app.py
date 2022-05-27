@@ -9,6 +9,8 @@ from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
+from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetAPIHandler import GetDatasetAPIHandler
@@ -59,6 +61,7 @@ api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/addDataSet')
 api.add_resource(GetDatasetAPIHandler, '/getDataset')
 api.add_resource(LoginApiHandler, '/login')
+api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
 api.add_resource(AddReviewApiHandler, '/addReview')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
