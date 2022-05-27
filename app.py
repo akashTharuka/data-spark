@@ -8,6 +8,7 @@ from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -54,6 +55,7 @@ api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/adddataset')
 api.add_resource(SearchDatasetAPIHandler, '/SearchDataset')
 api.add_resource(LoginApiHandler, '/login')
+api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
 
 if __name__ == "__main__":
     app.run(debug=True)

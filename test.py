@@ -13,4 +13,4 @@ input()
 # print(response.json())
 
 response = requests.post(BASE+'/SearchDataset/1')
-#print(response.json())
+print(response.json())

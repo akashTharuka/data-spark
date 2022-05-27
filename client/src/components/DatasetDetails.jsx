@@ -11,6 +11,32 @@ const DatasetDetails = (props) => {
 	// 		3. Details to display the dataset itself
 	// 		4. Other details about the dataset
 
+	// const getALLDataSets = () => {
+	// 	fetch('http://localhost:5000/SearchDataset', {
+	// 		method: 'GET',
+	// 		headers: {"Content-Type": "application/json"},
+	// 		body: JSON.stringify()
+	// 	}).then(response => response.json())
+	// 	.then( data => {console.log('The response was....', data);
+	// 		console.log(' dataset loadded');
+			
+	// 		// history.go(-1);
+	// 	})
+	// }
+
+	const viewDetails = () => {
+		fetch('http://localhost:5000/viewDetails', {
+			method: 'GET',
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify()
+		}).then(response => response.json())
+		.then( data => {console.log('The response was....', data);
+			console.log(' dataset loadded');
+			
+			// history.go(-1);
+		})
+	}
+
 	const getReviews = () => {
 		let content = [];
 		for (let i = 0; i < 10; i++){
@@ -74,7 +100,8 @@ const DatasetDetails = (props) => {
 
 			{/* dataset details will be displayed here */}
 			<div className="row dataset-details mx-auto my-5 justify-content-center">
-				Details Here
+				Details here
+				{viewDetails()}
 			</div>
 
 			<div className="reviews row mx-auto my-4">
