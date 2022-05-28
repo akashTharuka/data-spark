@@ -15,6 +15,7 @@ from api.AddDatasetAPIHandler import AddDatasetApiHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetAPIHandler import GetDatasetAPIHandler
+from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -24,8 +25,11 @@ load_dotenv()
 import os
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
-CORS(app)
+CORS(app) #, expose_headers='Authorization'
 api = Api(app)
+
+# UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api\datasets'
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 # Setup the Flask-JWT-Extended extension
@@ -67,6 +71,7 @@ api.add_resource(AddReviewApiHandler, '/addReview')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(AuthenticateApiHandler, '/authenticate')
+api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 
 if __name__ == "__main__":
     app.run(debug=True)
