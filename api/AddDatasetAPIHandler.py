@@ -28,7 +28,6 @@ class AddDatasetApiHandler(Resource):
         token = args.get('token')
 
         identity = get_jwt_identity(token);
-        print(identity);
 
         dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title,file_path=file_path)
 

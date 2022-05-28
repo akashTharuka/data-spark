@@ -7,21 +7,57 @@ import Review from './Review';
 
 const DatasetDetails = (props) => {
 
-	// need the following data about a dataset
-	// 		1. Title
-	// 		2. Description
-	// 		3. Details to display the dataset itself
-	// 		4. Other details about the dataset
 	const params = useParams();
 
-	const [datasetDetails, setDatasetDetails] = useState(null);
-	const [allReviews, setAllReviews] = useState([]);
+	// basic data for the page
+	const [datasetDetails, setDatasetDetails] 	= useState(null);
+	const [allReviews, setAllReviews] 			= useState([]);
+	// first five rows of data
+	const [columns ,setColumns] 				= useState([]);
+	const [rows, setRows] 						= useState([]);
+	// metadata
+	const [missingValues, setMissingValues]		= useState([]);
+	const [uniqueValues, setUniqueValues]		= useState([]);
+	const [numColumns ,setNumColumns] 			= useState([]);
+	const [meanList, setMeanList] 				= useState([]);
+	const [stdList, setStdList] 				= useState([]);
+	const [minList, setMinList] 				= useState([]);
+	const [maxList, setMaxList] 				= useState([]);
+	const [quantList1, setQuanList1] 			= useState([]);
+	const [quantList2, setQuanList2] 			= useState([]);
+	const [quantList3, setQuanList3] 			= useState([]);
+	const [imgURL, setImgURL]					= useState(null);
 
 	useEffect(() => {
 		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`)
 			.then((res) => {
 				setAllReviews(res.data.reviews);
 				setDatasetDetails(res.data.datasetDetails);
+				setColumns(res.data.result.columns);
+				setRows(res.data.result.rowlists);
+				
+				// set metadata
+				setMissingValues(res.data.result.missing_values);
+				setUniqueValues(res.data.result.unique_values);
+				setNumColumns(res.data.result.num_columns);
+				setMeanList(res.data.result.mean);
+				setStdList(res.data.result.stddev);
+				setMinList(res.data.result.minlis);
+				setMaxList(res.data.result.maxlis);
+				setQuanList1(res.data.result.quantile1);
+				setQuanList2(res.data.result.quantile2);
+				setQuanList3(res.data.result.quantile3);
+
+				// const plot = res.data.result.plot;
+				// const imageBlob = plot.blob();
+
+				// const reader = new FileReader();
+				// reader.readAsDataURL(imageBlob);
+
+				// reader.onloadend = () => {
+				// 	const base64data = reader.result;
+				// 	setImgURL(base64data);
+				// }
 			})
 			.catch(err => {
 				console.log(err);
@@ -29,32 +65,6 @@ const DatasetDetails = (props) => {
 	}, []);
 
 	const reviewsLength = allReviews.length;
-
-	// const getALLDataSets = () => {
-	// 	fetch('http://localhost:5000/SearchDataset', {
-	// 		method: 'GET',
-	// 		headers: {"Content-Type": "application/json"},
-	// 		body: JSON.stringify()
-	// 	}).then(response => response.json())
-	// 	.then( data => {console.log('The response was....', data);
-	// 		console.log(' dataset loadded');
-			
-	// 		// history.go(-1);
-	// 	})
-	// }
-
-	const viewDetails = () => {
-		fetch('http://localhost:5000/viewDetails', {
-			method: 'GET',
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify()
-		}).then(response => response.json())
-		.then( data => {console.log('The response was....', data);
-			console.log(' dataset loadded');
-			
-			// history.go(-1);
-		})
-	}
 
 	const getReviews = () => {
 		let content = [];
@@ -80,6 +90,128 @@ const DatasetDetails = (props) => {
 			);
 		}
 		return content;
+	}
+
+	const getDatasetDetails = () => {
+		return (
+			<table className='table table-striped table-hover'>
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						{columns.map((col, index) => {
+							return (
+								<th scope='col' key={index}>{col}</th>
+							);
+						})}
+					</tr>
+				</thead>
+				<tbody>
+					{rows.map((row, index) => {
+						return (
+							<tr key={index}>
+								<td>{index+1}</td>
+								{row.map((col, index) => {
+									return (
+										<td key={index}>{col}</td>
+									);
+								})}
+							</tr>
+						);
+					})}
+					<tr className='table-danger'>
+						<td>Missing Values</td>
+						{missingValues.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr className='table-info'>
+						<td>Unique Values</td>
+						{uniqueValues.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+				</tbody>
+			</table>
+		);
+	}
+
+	const getMetadata = () => {
+		return (
+			<table className='table table-striped table-hover'>
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						{numColumns.map((col, index) => {
+							return (
+								<th scope='col' key={index}>{col}</th>
+							);
+						})}
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Mean Values</td>
+						{meanList.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>Standard Deviations</td>
+						{stdList.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>Minimum Values</td>
+						{minList.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>Maximum Values</td>
+						{maxList.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>1st Quantiles</td>
+						{quantList1.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>2nd Quantiles</td>
+						{quantList2.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr>
+						<td>3rd Quantiles</td>
+						{quantList3.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+				</tbody>
+			</table>
+		);
 	}
 
 	return (
@@ -124,11 +256,21 @@ const DatasetDetails = (props) => {
 				</div>
 			</div>
 
-			{/* dataset details will be displayed here */}
-			<div className="row dataset-details mx-auto my-5 justify-content-center">
-				Details here
-				{viewDetails()}
+			<div className="dataset-details row my-4 mx-auto">
+				<div className="table-contents col-10 mx-auto">
+					<h6 className="title lead my-4 text-muted">CONTENT</h6>
+					{getDatasetDetails()}
+				</div>
+				<div className="metadata col-10 mx-auto">
+					<h6 className="title lead my-4 text-muted">METADATA</h6>
+					{getMetadata()}
+				</div>
+				{/* <div className="histogram-image col-10 mx-auto">
+					<h6 className="title lead my-4 text-muted">HISTOGRAM</h6>
+					<img src={imgURL} alt="histogram-plot" />
+				</div> */}
 			</div>
+			
 
 			<div className="reviews row mx-auto my-4">
 				<div className="col-10 mx-auto reviews-container d-flex flex-row flex-nowrap overflow-auto">

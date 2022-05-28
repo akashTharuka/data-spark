@@ -1,16 +1,17 @@
 from email.policy import default
 from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS, cross_origin  # comment this on deployement
+from flask_cors import CORS, cross_origin
+from api.AuthenticateApiHandler import AuthenticateApiHandler
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
+from api.AdminLoginApiHandler import AdminLoginApiHandler
 from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
-from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
-from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
+# from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetAPIHandler import GetDatasetAPIHandler
@@ -61,10 +62,12 @@ api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/addDataSet')
 api.add_resource(GetDatasetAPIHandler, '/getDataset')
 api.add_resource(LoginApiHandler, '/login')
-api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
+api.add_resource(AdminLoginApiHandler, '/adminlogin')
 api.add_resource(AddReviewApiHandler, '/addReview')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
+api.add_resource(AuthenticateApiHandler, '/authenticate')
 
 if __name__ == "__main__":
     app.run(debug=True)
+

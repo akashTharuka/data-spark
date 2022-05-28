@@ -15,12 +15,6 @@ class LoginApiHandler(Resource):
 
     msg = ""
 
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "Login Api Handler"
-        }
-
     def post(self):
 
         args = LoginApiHandler.login_args.parse_args()

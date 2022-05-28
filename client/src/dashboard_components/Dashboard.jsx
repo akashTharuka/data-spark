@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import DashboardNav from './DashboardNav';
+import { withRouter } from 'react-router-dom';
 
 const Dashboard = () => {
 
     const [allDatasets, setAllDatasets] = useState([]);
-
-    // useEffect(() => {
-    //     axios.get('http://localhost:5000/getAllDatasets')
-    //         .then(response => {
-    //             setAllDatasets(response.data.datasets);
-    //         });
-    // }, []);
 
     const getAllDatasets = () => {
         let content = [];
@@ -32,7 +26,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Navbar loginStatus={true} />
+            <DashboardNav />
 
             <div className='container my-5'>
                 <nav>
@@ -66,4 +60,4 @@ const Dashboard = () => {
     );
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

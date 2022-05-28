@@ -102,7 +102,7 @@ const Login = () => {
 
                             <div className="d-grid col-6 mx-auto text-center my-4">
                                 { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1">LOGIN</button>}
-                                { isPending && <button type="submit" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1">LOGIN</button>}
+                                { isPending && <button type="submit" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" disabled>LOGIN</button>}
 
                             </div>
                         </form>
