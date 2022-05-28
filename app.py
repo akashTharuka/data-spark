@@ -9,7 +9,7 @@ from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
-from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+# from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
@@ -23,8 +23,11 @@ load_dotenv()
 import os
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
-CORS(app)
+CORS(app) #, expose_headers='Authorization'
 api = Api(app)
+
+# UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api\datasets'
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 # Setup the Flask-JWT-Extended extension

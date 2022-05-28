@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
         self.email = email
         self.username = username
         self.password = generate_password_hash(password)
-        # print(self.password)
+        # print(self.username)
         # self.logged_flag = True
         self.num_uploads = 0
 
