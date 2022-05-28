@@ -41,6 +41,10 @@ class User(db.Model, UserMixin):
     def update_num_uploads(self, num_uploads):
         self.num_uploads += num_uploads
         db.session.commit()
+        
+    def update_password(self,newPassword):
+        self.password = generate_password_hash(newPassword)
+        db.session.commit()
 
     def save(self):
         db.session.add(self)
