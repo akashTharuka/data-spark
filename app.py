@@ -10,10 +10,12 @@ from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+#from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetAPIHandler import GetDatasetAPIHandler
+from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -68,6 +70,7 @@ api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
 api.add_resource(AddReviewApiHandler, '/addReview')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
+api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 
 if __name__ == "__main__":
     app.run(debug=True)
