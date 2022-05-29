@@ -3,17 +3,20 @@ import Register from './Register';
 import axios from 'axios';
 import config from '../config.json';
 
-const Profile = () => {
+const Profile = (props) => {
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail]       = useState("");
     const [username, setUsername] = useState("");
+
+    const [personalDatasets, setPersonalDatasets] = useState([]);
 
     useEffect(() => {
 
         const access_token = sessionStorage.getItem("token");
 
-        if(access_token !== null && access_token !== undefined) {
+        if(access_token) {
             axios.get(config.domain + '/profile', { headers: {
+
                 'Authorization': `Bearer ${access_token}`,
                 'Content-type': 'application/json'
             }})
@@ -23,18 +26,22 @@ const Profile = () => {
             })
             .catch((error) => {
                 console.log(error);
+                sessionStorage.removeItem("token");
+                document.location.reload();
             });
         }
-    });
+    }, []);
 
     // handle profile edit request
     const handleEdit = (e) => {
         e.preventDefault();
-    }
+    } 
+
+    // const datasetLength = personalDatasets.length;
 
     const getPersonalDataSets = () => {
         let content = [];
-        for (let i = 0; i < 6; i++){
+        for (let i = 0; i < 5; i++){
             content.push(
                 <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
                     <div className="card personal" style={{width: "100%", cursor: "pointer"}}>

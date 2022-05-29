@@ -1,30 +1,27 @@
-from audioop import avgpp
-from email.policy import default
-import json
-from turtle import title
-
-from sqlalchemy import false
 from db import db
 
-
 class Dataset(db.Model):
+    # __tablename__ = "dataset"
     id              = db.Column(db.Integer, primary_key=True)
     uploader_id     = db.Column(db.Integer, nullable=False)
     status_id       = db.Column(db.Integer,nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
-    file_path       = db.Column(db.String(200),nullable=False)
+    file_path       = db.Column(db.Text,nullable=False) #String(200)
     file_type       = db.Column(db.String(20), nullable=True)
     file_size       = db.Column(db.Float, nullable=True)
     num_downloads   = db.Column(db.Integer, nullable=True, default = 0)
     avg_rating      = db.Column(db.Float, nullable=True, default = 0.0)
     num_ratings     = db.Column(db.Integer, nullable=True, default = 0)
 
-    def __init__(self, uploader_id, status_id, title, file_path):
+    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size):
         self.uploader_id = uploader_id
         self.status_id = status_id
         self.title = title
         self.file_path = file_path
+        self.description = description 
+        self.file_type = file_type 
+        self.file_size = file_size 
 
     def json(self):
         return {'id': self.id, 
@@ -49,16 +46,22 @@ class Dataset(db.Model):
         self.num_ratings = num_ratings
         
     @classmethod
-    def getAllDatasets(self, status_id):
+    def getDatasets(self, status_id):
         return self.query.filter_by(status_id=status_id).all()
+
+    @classmethod
+    def getAllDatasets(self):
+        return self.query.all()
     
     @classmethod
     def filter_by_id(self, dataset_id):
         return self.query.filter_by(id=dataset_id).first()
     
     def save(self):
+        self.addAditionals(status_id=1,file_type='text',file_size=45,num_downloads=0,avg_rating=3,num_ratings=2)
         db.session.add(self)
         db.session.commit()
+        print("Description: - "  + self.description)
 
     def delete(self):
         db.session.delete(self)
@@ -67,4 +70,4 @@ class Dataset(db.Model):
 
     # Create A String
     def __repr__(self):
-        return '<Name %r>' % self.email
+        return '<Name %r>' % self.id

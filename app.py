@@ -1,19 +1,26 @@
 from email.policy import default
 from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS, cross_origin  # comment this on deployement
+from flask_cors import CORS, cross_origin
+from api.GetAllDatasetsApiHandler import GetAllDatasetsApiHandler
+from api.GetUserApiHandler import GetUserApiHandler
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
+from api.AdminLoginApiHandler import AdminLoginApiHandler
 from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+
 from api.ViewDatasetDetailsApiHandler import ViewDatasetDetailsApiHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
+
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
-from api.GetDatasetAPIHandler import GetDatasetAPIHandler
+from api.GetDatasetsApiHandler import GetDatasetsApiHandler
+from api.ReviewApiHandler import ReviewApiHandler
+from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
 
 from flask_jwt_extended import JWTManager
@@ -23,8 +30,11 @@ load_dotenv()
 import os
 
 app = Flask(__name__, static_url_path='', static_folder='../client/public')
-CORS(app)
+CORS(app) #, expose_headers='Authorization'
 api = Api(app)
+
+# UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api\datasets'
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 # Setup the Flask-JWT-Extended extension
@@ -59,12 +69,16 @@ def serve(path):
 
 api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/addDataSet')
-api.add_resource(GetDatasetAPIHandler, '/getDataset')
+api.add_resource(GetDatasetsApiHandler, '/getDatasets')
+api.add_resource(GetAllDatasetsApiHandler, '/getAllDatasets')
 api.add_resource(LoginApiHandler, '/login')
-api.add_resource(ViewDatasetDetailsApiHandler, '/viewDetails')
-api.add_resource(AddReviewApiHandler, '/addReview')
+api.add_resource(AdminLoginApiHandler, '/adminlogin')
+api.add_resource(ReviewApiHandler, '/review')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
+api.add_resource(UpdatePswdApiHandler,'/updatePassword')
+api.add_resource(GetUserApiHandler, '/getUser')
 
 if __name__ == "__main__":
     app.run(debug=True)
+
