@@ -17,6 +17,7 @@ class ProfileApiHandler(Resource):
 
     emailErr = ""
     usernameErr = ""
+    passwordErr = ""
     valid = True
 
     @jwt_required()
@@ -41,34 +42,36 @@ class ProfileApiHandler(Resource):
             return response
 
         args = ProfileApiHandler.register_args.parse_args()
-        email = args.get("email")
+
+        email    = args.get("email")
         username = args.get("username")
         password = args.get("password")
 
         if not user.verify_password(password):
-            response = jsonify(message="Invalid password")
+            self.passwordErr = "Authentication Error"
+            response = jsonify(message=self.passwordErr)
             return response
 
-        if email != user.email and User.find_by_email(email):
-            self.emailErr = "Email already exists"
-            self.valid = False
+        # if email != user.email and User.find_by_email(email):
+        #     self.emailErr = "Email already exists"
+        #     self.valid = False
 
-        if username != user.username and User.find_by_username(username):
-            self.usernameErr = "Username already exists"
-            self.valid = False
+        # if username != user.username and User.find_by_username(username):
+        #     self.usernameErr = "Username already exists"
+        #     self.valid = False
 
-        if not self.valid:
-            response = jsonify(emailErr=self.emailErr, usernameErr=self.usernameErr)
-            return response
+        # if not self.valid:
+        #     response = jsonify(emailErr=self.emailErr, usernameErr=self.usernameErr)
+        #     return response
 
         try:
             user.update(email, username)
-
+            # print(email, username)
         except:
             response = jsonify(message="An error occured while adding user to the database")
             return response
 
-        response = jsonify(message="User added successfully", emailErr="success", usernameErr="success")
+        response = jsonify(message="", emailErr="success", usernameErr="success")
         return response
 
 

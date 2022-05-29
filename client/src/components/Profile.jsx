@@ -94,11 +94,11 @@ const Profile = (props) => {
                         <button type="button" onClick={handleEdit} className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
                     </div>
 
-                    <Register type="edit" />
+                    <Register type="edit" email={email} username={username} />
                 </div>
 
                 <div className="row my-3 d-flex">
-                    <h2 className="lead">Your Datasets</h2>
+                    <h2 className="lead">Your Recent Datasets</h2>
 
                     {getPersonalDataSets()}
                 </div>

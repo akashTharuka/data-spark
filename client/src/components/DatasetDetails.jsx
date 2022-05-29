@@ -326,7 +326,7 @@ const DatasetDetails = (props) => {
 		<div>
 			{(props.type !== "dashboard") ? <Navbar status={props.status} /> : <DashboardNav />}
 
-			<div className={`col-10 display-5 title mx-auto my-5${(errorMsg === "") ? "d-none" : ""}`}>
+			<div className={`col-10 display-5 title mx-auto my-5 text-center ${(errorMsg === "") ? "d-none" : ""}`}>
 				{errorMsg}
 			</div>
 
