@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-
+import config from '../config.json'
 import Navbar from './Navbar';
 import Upload from './Upload';
 
@@ -12,7 +12,9 @@ const Home = (props) => {
     const [datasets, setDatasets] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/getDatasets')
+
+        axios.get(config.domain + '/getDatasets')
+
             .then(response => {
                 setDatasets(response.data.datasets);
             });

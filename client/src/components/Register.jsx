@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import config from '../config.json'
 
 const Register = ({type}) => {
 
@@ -92,7 +93,7 @@ const Register = ({type}) => {
 
             // register
             if(type === "register") {
-                axios.post('http://localhost:5000/register', register, {headers: {
+                axios.post(config.domain + '/register', register, {headers: {
                     'Authorization': '',
                     'Content-Type': 'application/json',
                 }})
@@ -120,7 +121,7 @@ const Register = ({type}) => {
             if(type === "edit") {
                 const access_token = sessionStorage.getItem("token");
 
-                axios.post('http://localhost:5000/profile', register, { headers: {
+                axios.post(config.domain + '/profile', register, { headers: {
                     'Authorization': `Bearer ${access_token}`,
                     'Content-type': 'application/json'
                 }})

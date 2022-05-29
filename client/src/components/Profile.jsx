@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Register from './Register';
 import axios from 'axios';
+import config from '../config.json';
 
 const Profile = (props) => {
 
@@ -14,7 +15,8 @@ const Profile = (props) => {
         const access_token = sessionStorage.getItem("token");
 
         if(access_token) {
-            axios.get('http://localhost:5000/profile', { headers: {
+            axios.get(config.domain + '/profile', { headers: {
+
                 'Authorization': `Bearer ${access_token}`,
                 'Content-type': 'application/json'
             }})
