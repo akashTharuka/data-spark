@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import flash, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
@@ -43,12 +44,10 @@ class AddDatasetApiHandler(Resource):
         title       = args.get('title')
         file        = args.get('file')
         description = args.get('description')
-        file_type   = args.get('type')
-        file_size   = args.get('size')
-
-
-        target = os.path.join(self.UPLOAD_FOLDER, 'test_docs')
-
+        file_type = args.get('type')
+        file_size = args.get('size')
+        upload_time = datetime.now()
+        target=os.path.join(self.UPLOAD_FOLDER,'test_docs') 
         if not os.path.isdir(target):
             os.mkdir(target)
 
@@ -61,8 +60,7 @@ class AddDatasetApiHandler(Resource):
 
             destination = "/".join([target, unique_filename])    
             file.save(destination)
-
-            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
+            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size, upload_time=upload_time)
         else:
             return jsonify(message="Unsuitable file type")
 

@@ -28,6 +28,7 @@ const Upload = () => {
         console.log(file);
         // console.log(file.type)
         // console.log(file.size)
+        console.log(file.lastModifiedDate)
         console.log(description);
     }
 
