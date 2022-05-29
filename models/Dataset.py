@@ -17,15 +17,15 @@ class Dataset(db.Model):
     category        = db.Column(db.String(50), nullable=True)
     upload_time     = db.Column(db.DateTime(timezone=False), nullable=True)
 
-    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size,upload_time):        
-        self.uploader_id = uploader_id
-        self.status_id = status_id
-        self.title = title
-        self.file_path = file_path
-        self.description = description 
-        self.file_type = file_type 
-        self.file_size = file_size 
-        self.upload_time = upload_time
+    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size, upload_time):        
+        self.uploader_id    = uploader_id
+        self.status_id      = status_id
+        self.title          = title
+        self.file_path      = file_path
+        self.description    = description 
+        self.file_type      = file_type 
+        self.file_size      = file_size 
+        self.upload_time    = upload_time
 
     def json(self):
         return {'id': self.id, 
@@ -74,8 +74,9 @@ class Dataset(db.Model):
         db.session.commit()
         # print("Description: - "  + self.description)
 
-    def update_status(self, status_id):
+    def update_dataset(self, status_id, category):
         self.status_id = status_id
+        self.category = category
         db.session.commit()
 
     def delete(self):

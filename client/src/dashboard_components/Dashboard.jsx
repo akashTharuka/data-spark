@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardNav from './DashboardNav';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import config from '../config.json';
 
 const Dashboard = () => {
 
@@ -18,11 +19,9 @@ const Dashboard = () => {
         })
             .then(response => {
                 if (response.data.valid){
-                    console.log(response.data.msg);
                     setAllDatasets(response.data.datasets);
                 }
                 else{
-                    console.log(response.data.msg);
                     document.location = "/adminlogin";
                 }
                 
@@ -45,11 +44,12 @@ const Dashboard = () => {
                             <div className="card-body">
                                 <h5 className="card-title">{allDatasets[i].title}</h5>
                                 <p className="card-text">{allDatasets[i].description}</p>
-                                <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
+                                <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3 mx-2">View Details</a>
+                                <button className="btn btn-danger shadow-lg px-3 mx-2" onClick={() => handleReject(allDatasets[i].id)}>Reject</button>
                             </div>
                             <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill ${(allDatasets[i].status_id === 1) ? "bg-success" : "bg-danger"}`}>
                                 {(allDatasets[i].status_id === 1) ? "Accepted" : "Pending"}
-                                <span className="visually-hidden">unread messages</span>
+                                <span className="visually-hidden"></span>
                             </span>
                         </div>
                     </div>
@@ -64,11 +64,12 @@ const Dashboard = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{allDatasets[i].title}</h5>
                                     <p className="card-text">{allDatasets[i].description}</p>
-                                    <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
+                                    <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3 mx-2">View Details</a>
+                                    <button className="btn btn-danger shadow-lg px-3 mx-2" onClick={() => handleReject(allDatasets[i].id)}>Reject</button>
                                 </div>
                                 <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill ${(allDatasets[i].status_id === 1) ? "bg-success" : "bg-danger"}`}>
                                     {(allDatasets[i].status_id === 1) ? "Accepted" : "Pending"}
-                                    <span className="visually-hidden">unread messages</span>
+                                    <span className="visually-hidden"></span>
                                 </span>
                             </div>
                         </div>
@@ -84,11 +85,12 @@ const Dashboard = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{allDatasets[i].title}</h5>
                                     <p className="card-text">{allDatasets[i].description}</p>
-                                    <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
+                                    <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3 mx-2">View Details</a>
+                                    <button className="btn btn-danger shadow-lg px-3 mx-2" onClick={() => handleReject(allDatasets[i].id)}>Reject</button>
                                 </div>
                                 <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill ${(allDatasets[i].status_id === 1) ? "bg-success" : "bg-danger"}`}>
                                     {(allDatasets[i].status_id === 1) ? "Accepted" : "Pending"}
-                                    <span className="visually-hidden">unread messages</span>
+                                    <span className="visually-hidden"></span>
                                 </span>
                             </div>
                         </div>
@@ -98,6 +100,26 @@ const Dashboard = () => {
         }
         return content;
     };
+
+    const handleReject = (id) => {
+		const access_token = sessionStorage.getItem("admin_token");
+        const dataset_id = { "dataset_id": id}
+        axios.post(config.domain + '/changeStatus', dataset_id, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+			document.location = "/dashboard";
+        })
+        .catch(error => {
+            console.log(error)
+            sessionStorage.removeItem("admin_token");
+            document.location = "/adminlogin";
+        })
+	}
 
     return (
         <div>

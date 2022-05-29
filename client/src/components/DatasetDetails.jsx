@@ -5,10 +5,12 @@ import config from '../config.json'
 import Navbar from './Navbar';
 import DashboardNav from '../dashboard_components/DashboardNav';
 import Review from './Review';
+import AcceptModel from './AcceptModel';
 
 const DatasetDetails = (props) => {
 
 	const params = useParams();
+
 	const [reviewed, setReviewed] 				= useState(null);
 	const [reviewType, setReviewType]			= useState("add");
 
@@ -254,25 +256,7 @@ const DatasetDetails = (props) => {
 		);
 	}
 
-	// dashboard
-	const handleAccept = () => {
-        const access_token = sessionStorage.getItem("admin_token");
-        const dataset_id = { "dataset_id": params.id}
-        axios.put(config.domain + '/changeStatus', dataset_id, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-                'Content-type': 'application/json'
-            }
-        })
-        .then(response => {
-            console.log(response)
-        })
-        .catch(error => {
-            sessionStorage.removeItem("admin_token");
-            document.location = "/adminlogin";
-        })
-	}
-
+	
 	const handleReject = () => {
 		const access_token = sessionStorage.getItem("admin_token");
         const dataset_id = { "dataset_id": params.id}
@@ -283,12 +267,13 @@ const DatasetDetails = (props) => {
             }
         })
         .then(response => {
-            console.log(response)
+            console.log(response.data);
+			document.location = "/dashboard";
         })
         .catch(error => {
             console.log(error)
-//             sessionStorage.removeItem("admin_token");
-//             document.location = "/adminlogin";
+            // sessionStorage.removeItem("admin_token");
+            // document.location = "/adminlogin";
         })
 	}
 
@@ -310,9 +295,7 @@ const DatasetDetails = (props) => {
 						<h6 className="uploader">{(datasetDetails) ? " - " + datasetDetails.uploaderName + " - " : "Loading"}</h6>
 					</div>
 					<div className="col-10 mx-auto mt-3">
-					{/*   <a href="{{ url_for('download', id={{params.id}} }}"> </a>*/}
-						<button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i><a href={config.domain + "/files/" + params.id}>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</a></button>
-						{/* <button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</button> */}
+						<a className="btn btn-dark px-4 float-start shadow-lg" href={config.domain + "/files/" + params.id}><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</a>
 					</div>
 				</div>
 
@@ -373,9 +356,11 @@ const DatasetDetails = (props) => {
 
 				<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "" : "d-none"}`}>
 					<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
-						<button className="btn btn-lg btn-success my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleAccept}>Accept</button>
+						<button className="btn btn-lg btn-success my-3 mx-1 mx-sm-auto px-4 shadow-lg" data-bs-toggle="modal" data-bs-target="#accept-modal" data-bs-dismiss="modal">Accept</button>
 						<button className="btn btn-lg btn-danger my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleReject}>Reject</button>
 					</div>
+
+					<AcceptModel id={params.id} />
 				</div>
 			</div>
 

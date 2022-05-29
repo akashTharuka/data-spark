@@ -47,8 +47,6 @@ const Home = (props) => {
     // there should be functions here to sort, filter etc.
     
     const [keyword, setKeyword]                     = useState('');
-    const [csvFileType, setCsvFileType]             = useState('');
-    const [txtFileType, setTxtFileType]             = useState('');
     const [sort, setSort]                           = useState('');
 
     const [compSciFilter, setCompSciFilter]         = useState('');
@@ -85,35 +83,6 @@ const Home = (props) => {
                         <span className="search-btn">
                             <i className="fas fa-search"></i>
                         </span>
-                    </div>
-                </div>
-
-                <div className="d-flex-column col-6 col-md-2 align-items-center">
-                    <div className="row">
-                        <label className='col-12 text-start'>file type</label>
-                    </div>
-                        
-                    <div className="row" >
-                        <div className="col-6">
-                            <input 
-                                type="checkbox" 
-                                className='csv filetype me-3' 
-                                id='csv-checkbox' 
-                                value={csvFileType}
-                                onChange={(e) => setCsvFileType(e.target.value)}
-                            />
-                            <label htmlFor="csv-checkbox" className='filetype-label'>.csv</label>
-                        </div>
-
-                        <div className="col-6">
-                            <input type="checkbox" 
-                                className='txt filetype me-3' 
-                                id='txt-checkbox' 
-                                value={txtFileType}
-                                onChange={(e) => setTxtFileType(e.target.value)}
-                            />
-                            <label htmlFor="txt-checkbox" className='filetype-label'>.txt</label>
-                        </div>
                     </div>
                 </div>
 
