@@ -11,7 +11,7 @@ const Upload = () => {
     const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
 
-    const [file, setFile] = useState("");
+
 
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
