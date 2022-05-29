@@ -1,10 +1,11 @@
+from sqlalchemy import false, ForeignKey
 from db import db
 
 class Dataset(db.Model):
     # __tablename__ = "dataset"
     id              = db.Column(db.Integer, primary_key=True)
-    uploader_id     = db.Column(db.Integer, nullable=False)
-    status_id       = db.Column(db.Integer,nullable=False)
+    uploader_id     = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    status_id       = db.Column(db.Integer, ForeignKey('datasetStatus.id'), nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
     file_path       = db.Column(db.Text,nullable=False) #String(200)
@@ -13,6 +14,8 @@ class Dataset(db.Model):
     num_downloads   = db.Column(db.Integer, nullable=True, default = 0)
     avg_rating      = db.Column(db.Float, nullable=True, default = 0.0)
     num_ratings     = db.Column(db.Integer, nullable=True, default = 0)
+    category        = db.Column(db.String(50), nullable=True)
+    upload_time     = db.Column(db.DateTime(timezone=False), nullable=True)
 
     def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size):
         self.uploader_id = uploader_id
@@ -70,4 +73,5 @@ class Dataset(db.Model):
 
     # Create A String
     def __repr__(self):
-        return '<Name %r>' % self.id
+        return '<Title %r>' % self.title
+

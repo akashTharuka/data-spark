@@ -45,6 +45,7 @@ class AddDatasetApiHandler(Resource):
         file = args.get('file')
         description = args.get('description')
         token = args.get('token')
+        
         file_type = args.get('type')
         file_size = args.get('size')
         # identity = get_jwt_identity(token);
@@ -61,7 +62,6 @@ class AddDatasetApiHandler(Resource):
             dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
         else:
             return jsonify(message="Unsuitable file type")
-        
 
         try:
             dataset.save() 
