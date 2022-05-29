@@ -34,7 +34,7 @@ const Upload = () => {
     const validateData = (upload) => {
         let title = upload.title;
         let description = upload.description;
-        let filepath = upload.filepath;
+        let file = upload.file;
         let valid = true;
 
         if (title === ""){
@@ -53,7 +53,7 @@ const Upload = () => {
             setDesErr("success");
         }
 
-        if (filepath === ""){
+        if (file === ""){
             setFilepathErr("Please upload a file");
             valid = false;
         }
@@ -77,7 +77,6 @@ const Upload = () => {
         formdata.append('file', file);
         formdata.append('title', title);
         formdata.append('description', description);
-        formdata.append('token', token);
         formdata.append('type', file.type);
         formdata.append('size', file.size);
 
@@ -86,7 +85,6 @@ const Upload = () => {
         
         if (valid){
             setIsPending(true);
-        
 
             axios.post(config.domain + '/addDataSet', formdata, {
                 headers: {

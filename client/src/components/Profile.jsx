@@ -44,8 +44,6 @@ const Profile = (props) => {
         e.preventDefault();
     } 
 
-    // const datasetLength = personalDatasets.length;
-
     const getPersonalDataSets = () => {
         let content = [];
         for (let i = 0; i < datasets.length; i++){

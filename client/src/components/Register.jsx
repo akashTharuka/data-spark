@@ -141,7 +141,7 @@ const Register = ({type}) => {
                     .catch((error) => {
                         setIsPending(false);
                         console.log(error);
-                        });
+                    });
             }
         }
     }
