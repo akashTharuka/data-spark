@@ -34,7 +34,7 @@ const Review = (props) => {
     const handleReview = (e) => {
         e.preventDefault();
 
-        const reviewBody = {rating, review, dataset_id};
+        const reviewBody = {rating, review, "dataset_id": props.datasetID};
 
         let valid = validateData(reviewBody);
 
@@ -43,7 +43,7 @@ const Review = (props) => {
             setIsPending(true);
             if (props.type === "add"){
 
-                    axios.put(config.domain + '/review', reviewBody, {
+                    axios.post(config.domain + '/review', reviewBody, {
                         headers: { 
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json', 
@@ -62,7 +62,7 @@ const Review = (props) => {
                 });
             }
             else{
-                axios.post(config.domain + '/review', reviewBody, {
+                axios.put(config.domain + '/review', reviewBody, {
                         headers: { 
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json', 
