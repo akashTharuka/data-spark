@@ -58,7 +58,7 @@ app.secret_key = "secret"
 def create_tables():
     from db import db
     db.init_app(app)
-    # db.create_all()
+    db.create_all()
 
 
 @app.route('/', defaults={'path': ''})

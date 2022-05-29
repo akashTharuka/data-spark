@@ -4,8 +4,8 @@ from db import db
 class Dataset(db.Model):
     # __tablename__ = "dataset"
     id              = db.Column(db.Integer, primary_key=True)
-    uploader_id     = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    status_id       = db.Column(db.Integer, ForeignKey('datasetStatus.id'), nullable=False)
+    uploader_id     = db.Column(db.Integer, nullable=False)
+    status_id       = db.Column(db.Integer, nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
     file_path       = db.Column(db.Text,nullable=False) #String(200)
@@ -61,10 +61,10 @@ class Dataset(db.Model):
         return self.query.filter_by(id=dataset_id).first()
     
     def save(self):
-        self.addAditionals(status_id=1,file_type='text',file_size=45,num_downloads=0,avg_rating=3,num_ratings=2)
+        # self.addAditionals(status_id=1,file_type='text',file_size=45,num_downloads=0,avg_rating=3,num_ratings=2)
         db.session.add(self)
         db.session.commit()
-        print("Description: - "  + self.description)
+        # print("Description: - "  + self.description)
 
     def delete(self):
         db.session.delete(self)
