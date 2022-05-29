@@ -21,6 +21,8 @@ const Upload = () => {
         console.log(e.target.files[0]);
         setFile(e.target.files[0]);
         console.log(file);
+        // console.log(file.type)
+        // console.log(file.size)
         console.log(description);
     }
 
@@ -95,7 +97,7 @@ const Upload = () => {
                     if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
                         console.log("here");
                         history.push('/');
-                        // document.location.reload();
+                        document.location.reload();
                     }
 
                 }).catch((error) => {
