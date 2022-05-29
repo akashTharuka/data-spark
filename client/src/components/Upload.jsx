@@ -28,6 +28,7 @@ const Upload = () => {
         console.log(file);
         // console.log(file.type)
         // console.log(file.size)
+        console.log(file.lastModifiedDate)
         console.log(description);
     }
 
@@ -77,7 +78,6 @@ const Upload = () => {
         formdata.append('file', file);
         formdata.append('title', title);
         formdata.append('description', description);
-        formdata.append('token', token);
         formdata.append('type', file.type);
         formdata.append('size', file.size);
 

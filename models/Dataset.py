@@ -4,8 +4,8 @@ from db import db
 class Dataset(db.Model):
     # __tablename__ = "dataset"
     id              = db.Column(db.Integer, primary_key=True)
-    uploader_id     = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    status_id       = db.Column(db.Integer, ForeignKey('datasetStatus.id'), nullable=False)
+    uploader_id     = db.Column(db.Integer, nullable=False)
+    status_id       = db.Column(db.Integer, nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
     file_path       = db.Column(db.Text,nullable=False) #String(200)
@@ -17,7 +17,7 @@ class Dataset(db.Model):
     category        = db.Column(db.String(50), nullable=True)
     upload_time     = db.Column(db.DateTime(timezone=False), nullable=True)
 
-    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size):
+    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size,upload_time):        
         self.uploader_id = uploader_id
         self.status_id = status_id
         self.title = title
@@ -25,6 +25,7 @@ class Dataset(db.Model):
         self.description = description 
         self.file_type = file_type 
         self.file_size = file_size 
+        self.upload_time = upload_time
 
     def json(self):
         return {'id': self.id, 
@@ -37,7 +38,9 @@ class Dataset(db.Model):
                 'file_size': self.file_size, 
                 'num_downloads': self.num_downloads, 
                 'avg_rating': self.avg_rating, 
-                'num_ratings': self.num_ratings}
+                'num_ratings': self.num_ratings,
+                'category': self.category,
+                'upload_time': self.upload_time}
 
     @classmethod
     def addAditionals(self, status_id, file_type, file_size, num_downloads, avg_rating, num_ratings):
@@ -61,7 +64,6 @@ class Dataset(db.Model):
         return self.query.filter_by(id=dataset_id).first()
     
     def save(self):
-        self.addAditionals(status_id=1,file_type='text',file_size=45,num_downloads=0,avg_rating=3,num_ratings=2)
         db.session.add(self)
         db.session.commit()
         print("Description: - "  + self.description)

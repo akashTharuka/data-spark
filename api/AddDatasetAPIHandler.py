@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import flash, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
@@ -24,7 +25,7 @@ class AddDatasetApiHandler(Resource):
 
     ALLOWED_EXTENSIONS = set(['csv'])
     # C:\Projects\data-spark/api\datasets    
-    UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api\datasets'
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
 
     def allowed_file(self,filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
@@ -48,11 +49,9 @@ class AddDatasetApiHandler(Resource):
         title = args.get('title')
         file = args.get('file')
         description = args.get('description')
-        # token = args.get('token')
         file_type = args.get('type')
         file_size = args.get('size')
-        # identity = get_jwt_identity(token);
-        # print(identity);
+        upload_time = datetime.now()
         target=os.path.join(self.UPLOAD_FOLDER,'test_docs') 
         if not os.path.isdir(target):
             os.mkdir(target)
@@ -65,7 +64,7 @@ class AddDatasetApiHandler(Resource):
             print(unique_filename)
             destination="/".join([target, unique_filename])    
             file.save(destination)
-            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
+            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size, upload_time=upload_time)
         else:
             return jsonify(message="Unsuitable file type")
 
