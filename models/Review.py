@@ -11,7 +11,7 @@ class Review(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
     dataset_id  = db.Column(db.Integer, ForeignKey('dataset.id'), nullable=True)
     reviewer_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=True)
-    review      = db.Column(db.Text(), nullable=True)
+    review      = db.Column(db.Text, nullable=True)
     rating      = db.Column(db.Integer, nullable=True)
 
     def __init__(self, dataset_id, reviewer_id, review, rating):

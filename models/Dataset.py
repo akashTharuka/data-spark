@@ -13,12 +13,14 @@ class Dataset(db.Model):
     status_id       = db.Column(db.Integer, ForeignKey('datasetStatus.id'), nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
-    file_path       = db.Column(db.String(200),nullable=False)
+    file_path       = db.Column(db.Text, nullable=False)
     file_type       = db.Column(db.String(20), nullable=True)
     file_size       = db.Column(db.Float, nullable=True)
     num_downloads   = db.Column(db.Integer, nullable=True, default = 0)
     avg_rating      = db.Column(db.Float, nullable=True, default = 0.0)
     num_ratings     = db.Column(db.Integer, nullable=True, default = 0)
+    category        = db.Column(db.String(50), nullable=True)
+    upload_time     = db.Column(db.DateTime(timezone=False), nullable=True)
 
     def __init__(self, uploader_id, status_id, title, file_path):
         self.uploader_id = uploader_id
