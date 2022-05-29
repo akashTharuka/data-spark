@@ -62,6 +62,12 @@ class Dataset(db.Model):
     @classmethod
     def filter_by_id(self, dataset_id):
         return self.query.filter_by(id=dataset_id).first()
+
+    @classmethod
+    def increaseDownloads(self, dataset_id):
+        dataset = self.query.filter_by(id=dataset_id).first()
+        dataset.num_downloads += 1
+        db.session.commit()
     
     def save(self):
         db.session.add(self)

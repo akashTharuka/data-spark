@@ -1,5 +1,5 @@
 from email.policy import default
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request, send_file
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin
 from api.GetAllDatasetsApiHandler import GetAllDatasetsApiHandler
@@ -11,7 +11,6 @@ from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 from api.DatasetStatusApiHandler import DatasetStatusApiHandler
-from api.DownloadApiHandler import DownloadApiHandler
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
@@ -22,6 +21,8 @@ from api.GetDatasetsApiHandler import GetDatasetsApiHandler
 from api.ReviewApiHandler import ReviewApiHandler
 from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
+
+from models.Dataset import Dataset
 
 from flask_jwt_extended import JWTManager
 
@@ -64,6 +65,14 @@ def create_tables():
 def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
+@app.route("/files/<dataset_id>")
+def get_file(dataset_id):
+    dataset = Dataset.filter_by_id(dataset_id)
+    Dataset.increaseDownloads(dataset_id)
+    path = dataset.file_path
+    return send_file(path, as_attachment=True)
+
+
 api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/addDataSet')
 api.add_resource(GetDatasetsApiHandler, '/getDatasets')
@@ -76,7 +85,6 @@ api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
-api.add_resource(DownloadApiHandler, '/download')
 
 if __name__ == "__main__":
     app.run(debug=True)
