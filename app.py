@@ -52,7 +52,7 @@ app.config[
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{}:{}@{}/{}".format(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.secret_key = "secret"
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 @app.before_first_request

@@ -108,6 +108,9 @@ const Upload = () => {
                 }).catch((error) => {
                     setIsPending(false);
                     console.log(error);
+                    sessionStorage.removeItem("token");
+                    history.push('/');
+                    document.location.reload();
                 });
 
         }
@@ -148,6 +151,7 @@ const Upload = () => {
                                             tabIndex="-1"
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
+                                            maxLength="100"
                                             required
                                         ></textarea>
                                         <label htmlFor="fileDescription">Description</label>

@@ -23,8 +23,7 @@ class AddDatasetApiHandler(Resource):
     addDataset_args.add_argument("type", type=str, help="type", location='form', required=False)
     addDataset_args.add_argument("size", type=float, help="size", location='form', required=False)
 
-    ALLOWED_EXTENSIONS = set(['csv'])
-    # C:\Projects\data-spark/api\datasets    
+    ALLOWED_EXTENSIONS = set(['csv'])   
     UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
 
     def allowed_file(self,filename):
@@ -44,10 +43,11 @@ class AddDatasetApiHandler(Resource):
         title       = args.get('title')
         file        = args.get('file')
         description = args.get('description')
-        file_type = args.get('type')
-        file_size = args.get('size')
+        file_type   = args.get('type')
+        file_size   = args.get('size')
         upload_time = datetime.now()
-        target=os.path.join(self.UPLOAD_FOLDER,'test_docs') 
+        target      = os.path.join(self.UPLOAD_FOLDER, 'test_docs') 
+
         if not os.path.isdir(target):
             os.mkdir(target)
 

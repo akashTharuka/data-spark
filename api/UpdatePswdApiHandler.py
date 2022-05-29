@@ -4,51 +4,52 @@ from flask_restful import Api, Resource, reqparse, abort
 from models.User import User
 from flask import jsonify
 
-from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
 class UpdatePswdApiHandler(Resource):
     changePwd_args = reqparse.RequestParser()
-    changePwd_args.add_argument("prePassword", type=str, help="Previous password is required", required=True)
+    changePwd_args.add_argument("oldPassword", type=str, help="Previous password is required", required=True)
     changePwd_args.add_argument("newPassword", type=str, help="New password is required", required=True)
 
-    @jwt_required()
-    def get(self):
-        id = get_jwt_identity()
+    # @jwt_required()
+    # def get(self):
+    #     id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+    #     user = User.find_by_id(id)
 
-        if not user:
-            return make_response(jsonify(msg="Forbidden"), 403)
+    #     if not user:
+    #         return make_response(jsonify(msg="Forbidden"), 403)
 
-        return jsonify(email=user.email, username=user.username)
+    #     return jsonify(email=user.email, username=user.username)
 
     @jwt_required()
     def post(self):
-        id = get_jwt_identity()
+        user_id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+        user = User.find_by_id(user_id)
 
         if not user:
-            response = make_response(jsonify(message="Unauthorized"), 401)
+            response = make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401)
             return response
 
         args = UpdatePswdApiHandler.changePwd_args.parse_args()
-        prePassword = args.get("prePassword")
+        oldPassword = args.get("oldPassword")
         newPassword = args.get("newPassword")
 
-        if not user.verify_password(prePassword):
-            response = jsonify(message="Invalid Password")
+        if not user.verify_password(oldPassword):
+            response = jsonify(msg="Authentication Error")
             return response
+
+
         try:
             user.update_password(newPassword)
-
+            # print(newPassword)
         except:
-            response = jsonify(message="An error occured while updating password")
+            response = jsonify(msg="An error occured while updating password")
             return response
 
-        response = jsonify(message="Password updated successfully")
+        response = jsonify(msg="")
         return response
 
 
