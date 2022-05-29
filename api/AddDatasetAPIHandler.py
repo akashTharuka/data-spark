@@ -38,9 +38,7 @@ class AddDatasetApiHandler(Resource):
         identity    = get_jwt_identity()
         user        = User.find_by_id(identity)
         uploader_id = user.id
-
         status_id   = 2
-
         title       = args.get('title')
         file        = args.get('file')
         description = args.get('description')
