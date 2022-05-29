@@ -27,6 +27,7 @@ function App() {
 					</Route>
 					<Route exact path='/adminlogin' component={DashboardLogin} />
 					<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+					<ProtectedRoute exact path='/dashboard/details/:id' component={DatasetDetails} type="dashboard" />
 				</Switch>
 			</div>
 		</Router>

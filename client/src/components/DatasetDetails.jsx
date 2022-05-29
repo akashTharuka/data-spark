@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Navbar from './Navbar';
+import DashboardNav from '../dashboard_components/DashboardNav';
 import Review from './Review';
 
 const DatasetDetails = (props) => {
@@ -29,38 +30,58 @@ const DatasetDetails = (props) => {
 	const [imgURL, setImgURL]					= useState(null);
 
 	useEffect(() => {
-		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`)
+
+		const token = sessionStorage.getItem("admin_token");
+
+		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`, {
+			headers: {
+				'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+			}
+		})
 			.then((res) => {
-				setAllReviews(res.data.reviews);
-				setDatasetDetails(res.data.datasetDetails);
-				setColumns(res.data.result.columns);
-				setRows(res.data.result.rowlists);
+
+				if (res.data.valid){
+
+					console.log(res.data.msg);
+
+					setAllReviews(res.data.reviews);
+					setDatasetDetails(res.data.datasetDetails);
+					setColumns(res.data.result.columns);
+					setRows(res.data.result.rowlists);
+					// set metadata
+					setMissingValues(res.data.result.missing_values);
+					setUniqueValues(res.data.result.unique_values);
+					setNumColumns(res.data.result.num_columns);
+					setMeanList(res.data.result.mean);
+					setStdList(res.data.result.stddev);
+					setMinList(res.data.result.minlis);
+					setMaxList(res.data.result.maxlis);
+					setQuanList1(res.data.result.quantile1);
+					setQuanList2(res.data.result.quantile2);
+					setQuanList3(res.data.result.quantile3);
+
+					// const plot = res.data.result.plot;
+					// const imageBlob = plot.blob();
+
+					// const reader = new FileReader();
+					// reader.readAsDataURL(imageBlob);
+
+					// reader.onloadend = () => {
+					// 	const base64data = reader.result;
+					// 	setImgURL(base64data);
+					// }
+				}
+				else{
+					console.log(res.data.msg);
+					document.location = "/adminlogin";
+				}
+
 				
-				// set metadata
-				setMissingValues(res.data.result.missing_values);
-				setUniqueValues(res.data.result.unique_values);
-				setNumColumns(res.data.result.num_columns);
-				setMeanList(res.data.result.mean);
-				setStdList(res.data.result.stddev);
-				setMinList(res.data.result.minlis);
-				setMaxList(res.data.result.maxlis);
-				setQuanList1(res.data.result.quantile1);
-				setQuanList2(res.data.result.quantile2);
-				setQuanList3(res.data.result.quantile3);
-
-				// const plot = res.data.result.plot;
-				// const imageBlob = plot.blob();
-
-				// const reader = new FileReader();
-				// reader.readAsDataURL(imageBlob);
-
-				// reader.onloadend = () => {
-				// 	const base64data = reader.result;
-				// 	setImgURL(base64data);
-				// }
 			})
 			.catch(err => {
 				console.log(err);
+				document.location = "/adminlogin";
 			});
 	}, []);
 
@@ -214,9 +235,18 @@ const DatasetDetails = (props) => {
 		);
 	}
 
+	// dashboard
+	const handleAccept = () => {
+		console.log("accepted");
+	}
+
+	const handleReject = () => {
+		console.log("rejected");
+	}
+
 	return (
 		<div>
-			<Navbar status={props.status} />
+			{(props.type !== "dashboard") ? <Navbar status={props.status} /> : <DashboardNav />}
 
 			<div className="row my-4">
 				<div className="col-10 mx-auto d-flex">
@@ -272,7 +302,7 @@ const DatasetDetails = (props) => {
 			</div>
 			
 
-			<div className="reviews row mx-auto my-4">
+			<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "d-none" : ""}`}>
 				<div className="col-10 mx-auto reviews-container d-flex flex-row flex-nowrap overflow-auto">
 					{getReviews()}
 				</div>
@@ -281,6 +311,13 @@ const DatasetDetails = (props) => {
                 </div>
 
 				<Review datasetID={params.id} />
+			</div>
+
+			<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "" : "d-none"}`}>
+				<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
+                    <button className="btn btn-lg btn-success my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleAccept}>Accept</button>
+					<button className="btn btn-lg btn-danger my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleReject}>Reject</button>
+                </div>
 			</div>
 			
 

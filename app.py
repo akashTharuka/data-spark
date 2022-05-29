@@ -2,7 +2,7 @@ from email.policy import default
 from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin
-from api.AuthenticateApiHandler import AuthenticateApiHandler
+from api.GetAllDatasetsApiHandler import GetAllDatasetsApiHandler
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
 from api.AdminLoginApiHandler import AdminLoginApiHandler
@@ -14,7 +14,7 @@ from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
-from api.GetDatasetAPIHandler import GetDatasetAPIHandler
+from api.GetDatasetsApiHandler import GetDatasetsApiHandler
 from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
 
@@ -48,7 +48,7 @@ app.config[
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{}:{}@{}/{}".format(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.secret_key = "secret"
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 @app.before_first_request
@@ -64,13 +64,13 @@ def serve(path):
 
 api.add_resource(RegisterApiHandler, '/register')
 api.add_resource(AddDatasetApiHandler, '/addDataSet')
-api.add_resource(GetDatasetAPIHandler, '/getDataset')
+api.add_resource(GetDatasetsApiHandler, '/getDatasets')
+api.add_resource(GetAllDatasetsApiHandler, '/getAllDatasets')
 api.add_resource(LoginApiHandler, '/login')
 api.add_resource(AdminLoginApiHandler, '/adminlogin')
 api.add_resource(AddReviewApiHandler, '/addReview')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
-api.add_resource(AuthenticateApiHandler, '/authenticate')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 
 if __name__ == "__main__":

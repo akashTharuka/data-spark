@@ -21,6 +21,7 @@ class AdminLoginApiHandler(Resource):
 
         ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
         ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+        ADMIN_IDENTITY = os.getenv("ADMIN_IDENTITY")
 
         if not username == ADMIN_USERNAME or not password == ADMIN_PASSWORD:
             self.msg = "Authentication Error"
@@ -28,6 +29,6 @@ class AdminLoginApiHandler(Resource):
             return response
 
 
-        access_token = create_access_token(identity=ADMIN_USERNAME)
+        access_token = create_access_token(identity=ADMIN_IDENTITY)
         return jsonify(access_token=access_token, msg=self.msg)
 

@@ -9,9 +9,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         <Route 
             {...rest} 
             render = {(props) => {
-
                 if (token){
-                    return <Component {...props} />
+                    return <Component {...props} type={rest.type}  />
                 }
                 else{
                     console.log("else");

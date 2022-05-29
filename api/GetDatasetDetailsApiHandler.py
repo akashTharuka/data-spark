@@ -6,6 +6,8 @@ from models.Review import Review
 from models.User import User
 from models.Dataset import Dataset
 
+from flask_jwt_extended import get_jwt_identity, jwt_required
+
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
@@ -57,7 +59,13 @@ class NpEncoder(json.JSONEncoder):
 
 class GetDatasetDetailsApiHandler(Resource):
 
+    @jwt_required()
     def get(self):
+
+        identity = get_jwt_identity()
+
+        if not identity or identity != os.getenv("ADMIN_IDENTITY"):
+            return jsonify(valid=False, msg="Authentication Error: Invalid Token or Token Expired")
 
         # df = loadDataset(dataset)
         df = pd.read_csv('C:/Users/akash/Downloads/coin_Bitcoin.csv')
@@ -146,5 +154,5 @@ class GetDatasetDetailsApiHandler(Resource):
         
         except: pass
 
-        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result)
+        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result, valid=True, msg="Authentication Successfull")
         return response

@@ -5,15 +5,13 @@ from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.Dataset import Dataset
 
-class GetDatasetAPIHandler(Resource):
-    getDataset_args = reqparse.RequestParser()
-    # searchDataset_args.add_argument("Status_id", type=str, help="Status id", required=True)
+class GetDatasetsApiHandler(Resource):
 
     def get(self):
-        # args = GetDatasetAPIHandler.getDataset_args.parse_args()
+        # 1 = accepted
         status_id = 1
 
-        result = Dataset.getAllDatasets(status_id)
+        result = Dataset.getDatasets(status_id)
 
         datasets = []
         for dataset in result:

@@ -44,8 +44,12 @@ class Dataset(db.Model):
         self.num_ratings = num_ratings
         
     @classmethod
-    def getAllDatasets(self, status_id):
+    def getDatasets(self, status_id):
         return self.query.filter_by(status_id=status_id).all()
+
+    @classmethod
+    def getAllDatasets(self):
+        return self.query.all()
     
     @classmethod
     def filter_by_id(self, dataset_id):
