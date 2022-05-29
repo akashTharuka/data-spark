@@ -45,9 +45,9 @@ class Review(db.Model):
         db.session.commit()
 
     def update(self, review, rating):
-        # dataset = Dataset.filter_by_id(self.dataset_id)
-        # total_rating = (dataset.avg_rating * dataset.num_ratings)
-        # dataset.avg_rating = (total_rating - self.rating + rating)/ (dataset.num_ratings)
+        dataset = Dataset.filter_by_id(self.dataset_id)
+        total_rating = (dataset.avg_rating * dataset.num_ratings)
+        dataset.avg_rating = (total_rating - self.rating + rating)/ (dataset.num_ratings)
         self.rating = rating
         self.review = review
         db.session.commit()
