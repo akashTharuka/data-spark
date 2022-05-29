@@ -3,6 +3,7 @@ from flask import Flask, send_from_directory, request
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin
 from api.GetAllDatasetsApiHandler import GetAllDatasetsApiHandler
+from api.GetUserApiHandler import GetUserApiHandler
 from api.RegisterApiHandler import RegisterApiHandler
 from api.LoginApiHandler import LoginApiHandler
 from api.AdminLoginApiHandler import AdminLoginApiHandler
@@ -12,9 +13,9 @@ from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
-from api.AddReviewApiHandler import AddReviewApiHandler
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetsApiHandler import GetDatasetsApiHandler
+from api.ReviewApiHandler import ReviewApiHandler
 from api.UpdatePswdApiHandler import UpdatePswdApiHandler
 from dotenv import load_dotenv
 
@@ -68,10 +69,11 @@ api.add_resource(GetDatasetsApiHandler, '/getDatasets')
 api.add_resource(GetAllDatasetsApiHandler, '/getAllDatasets')
 api.add_resource(LoginApiHandler, '/login')
 api.add_resource(AdminLoginApiHandler, '/adminlogin')
-api.add_resource(AddReviewApiHandler, '/addReview')
+api.add_resource(ReviewApiHandler, '/review')
 api.add_resource(GetDatasetDetailsApiHandler, '/getDatasetDetails')
 api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
+api.add_resource(GetUserApiHandler, '/getUser')
 
 if __name__ == "__main__":
     app.run(debug=True)

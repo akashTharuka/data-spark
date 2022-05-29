@@ -14,12 +14,14 @@ class Dataset(db.Model):
     avg_rating      = db.Column(db.Float, nullable=True, default = 0.0)
     num_ratings     = db.Column(db.Integer, nullable=True, default = 0)
 
-    def __init__(self, uploader_id, status_id, title, file_path,description):
+    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size):
         self.uploader_id = uploader_id
         self.status_id = status_id
         self.title = title
         self.file_path = file_path
-        self.description = description
+        self.description = description 
+        self.file_type = file_type 
+        self.file_size = file_size 
 
     def json(self):
         return {'id': self.id, 

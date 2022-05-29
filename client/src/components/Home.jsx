@@ -59,7 +59,7 @@ const Home = (props) => {
 
     return (
         <div>
-            <Navbar status={props.status} />
+            <Navbar status={props.status} datasets={datasets} />
 
             <div className="row d-flex justify-content-start">
                 <div className="col-10 col-md-4">

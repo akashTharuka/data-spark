@@ -2,6 +2,7 @@ from flask import flash, make_response, request
 from flask_restful import Api, Resource, reqparse, abort
 # abort can used when data is invalid
 from models.User import User
+from models.Dataset import Dataset
 from flask import jsonify
 
 from flask_jwt_extended import create_access_token
@@ -20,23 +21,23 @@ class ProfileApiHandler(Resource):
 
     @jwt_required()
     def get(self):
-        id = get_jwt_identity()
+        user_id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+        user = User.find_by_id(user_id) 
 
         if not user:
-            return make_response(jsonify(msg="Forbidden"), 403)
+            return make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 403)
 
-        return jsonify(email=user.email, username=user.username)
+        return jsonify(email=user.email, username=user.username, msg="Authorization Successfull")
 
     @jwt_required()
     def post(self):
-        id = get_jwt_identity()
+        user_id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+        user = User.find_by_id(user_id)
 
         if not user:
-            response = make_response(jsonify(message="Unauthorized"), 401)
+            response = make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401)
             return response
 
         args = ProfileApiHandler.register_args.parse_args()

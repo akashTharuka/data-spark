@@ -38,23 +38,48 @@ const Review = (props) => {
         let valid = validateData(reviewBody);
 
         if (valid){
-            setIsPending(true);
             const token = sessionStorage.getItem("token");
+            setIsPending(true);
+            if (props.type === "add"){
 
-            axios.put('http://localhost:5000/addReview', reviewBody, {
-                headers: { 
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json', 
-                },
-            })
-                .then((res) => {
-                    setIsPending(false);
-                    setCommentErr(res.data.msg);
-                    document.location.reload();
-                }).catch((error) => {
-                    setIsPending(false);
-                    console.log(error.message);
+                    axios.put('http://localhost:5000/review', reviewBody, {
+                        headers: { 
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json', 
+                        },
+                    })
+                    .then((res) => {
+                        setIsPending(false);
+                        setCommentErr(res.data.msg);
+                        document.location.reload();
+                        
+                    }).catch((error) => {
+                        setIsPending(false);
+                        console.log(error.message);
+                        sessionStorage.removeItem("token");
+                        document.location.reload();
                 });
+            }
+            else{
+                axios.post('http://localhost:5000/review', reviewBody, {
+                        headers: { 
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json', 
+                        },
+                    })
+                    .then((res) => {
+                        setIsPending(false);
+                        setCommentErr(res.data.msg);
+                        // document.location.reload();
+                        
+                    }).catch((error) => {
+                        setIsPending(false);
+                        console.log(error.message);
+                        // sessionStorage.removeItem("token");
+                        // document.location.reload();
+                });
+            }
+            
         }
     }
 

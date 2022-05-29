@@ -6,7 +6,7 @@ const Upload = () => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
-    const [file, setFile]       = useState('');
+    const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
 
     const [titleErr, setTitleErr]       = useState('');
@@ -68,9 +68,11 @@ const Upload = () => {
 
         const formdata = new FormData();
         formdata.append('file', file);
-        formdata.append('title',title);
-        formdata.append('description',description);
-        formdata.append('token',token);
+        formdata.append('title', title);
+        formdata.append('description', description);
+        formdata.append('token', token);
+        formdata.append('type', file.type);
+        formdata.append('size', file.size);
 
         console.log(formdata);
         console.log(formdata.get('file'));
@@ -84,7 +86,6 @@ const Upload = () => {
                     'Content-Type': 'multipart/form-data',
             }})
                 .then((res) => {
-                    console.log(res)
                     setIsPending(false);
                     setTitleErr(res.data.titleErr);
                     setDesErr(res.data.desErr);
@@ -94,7 +95,7 @@ const Upload = () => {
                     if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
                         console.log("here");
                         history.push('/');
-                        document.location.reload();
+                        // document.location.reload();
                     }
 
                 }).catch((error) => {

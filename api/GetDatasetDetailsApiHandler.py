@@ -6,6 +6,8 @@ from models.Review import Review
 from models.User import User
 from models.Dataset import Dataset
 
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, jwt_required
+
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
@@ -57,10 +59,9 @@ class NpEncoder(json.JSONEncoder):
 
 class GetDatasetDetailsApiHandler(Resource):
 
-    def get(self):
+    reviewed = False
 
-        # df = loadDataset(dataset)
-        df = pd.read_csv('C:/Users/akash/Downloads/coin_Bitcoin.csv')
+    def get(self):
 
         dataset_id = request.args.get('id')
         dataset = Dataset.filter_by_id(dataset_id)
@@ -85,8 +86,13 @@ class GetDatasetDetailsApiHandler(Resource):
             "avgRating": avgRating,
             "uploaderName": uploaderName
         }
+
+        dataset = Dataset.filter_by_id(dataset_id)
+        file_path = dataset.file_path
+        # df = loadDataset(dataset)
+        df = pd.read_csv(file_path)
         
-        reviewArr = Review.getReview(dataset_id)
+        reviewArr = Review.getReviews(dataset_id)
         reviews = []
         for review in reviewArr:
             user = User.find_by_id(review.reviewer_id)
@@ -148,3 +154,19 @@ class GetDatasetDetailsApiHandler(Resource):
 
         response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result)
         return response
+
+
+    @jwt_required()
+    @cross_origin
+    def post(self):
+        user_id = get_jwt_identity()
+        print(user_id)
+
+        review = Review.getReview_by_reviewer_id(user_id)
+
+        if review:
+            self.reviewed = True
+        else:
+            return jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401
+
+        return jsonify(reviewed=self.reviewed)

@@ -1,13 +1,13 @@
+import json
 from sre_constants import SUCCESS
 from flask import flash, jsonify, make_response
+from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
 
 from models.User import User
 from models.Review import Review
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 
 
@@ -29,10 +29,10 @@ class ReviewApiHandler(Resource):
     def put(self):
         reviewer_id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+        user = User.find_by_id(reviewer_id)
 
         if not user:
-            return make_response(jsonify(msg="Forbidden"), 403)
+            return jsonify(msg="Authorization Error: Invalid Token or Token Expired", valid=False)
         
         args = ReviewApiHandler.addreview_args.parse_args()
         dataset_id = args.get('dataset_id')
@@ -43,48 +43,46 @@ class ReviewApiHandler(Resource):
         
         try:
             review.save()
-            print("Riview saved to database")
-            
+            print("Review saved to database")
+            return jsonify(msg="success")
         except:
-            return {"message": "An error occurred adding review to database"}, 500
-        flash("review added Successfully")
+            return jsonify(message="An error occurred adding review to database"), 500
+    
+
+    # def get(self):
+        
+    #     args = ReviewApiHandler.addreview_args.parse_args()
+    #     dataset_id = args.get('dataset_id')
+        
+    #     result = Review.getReview(dataset_id)
+    #     datasets = []
+    #     for x in result:
+    #         datasets.append(x.json())
+    #     return jsonify(datasets=datasets)
     
     @jwt_required()
-    def get(self):
-        
-        args = ReviewApiHandler.addreview_args.parse_args()
-        dataset_id = args.get('dataset_id')
-        
-        result = Review.getReview(dataset_id)
-        datasets = []
-        for x in result:
-            datasets.append(x.json())
-        return jsonify(datasets)
-    
-    @jwt_required()
+    @cross_origin()
     def post(self):
         
         reviewer_id = get_jwt_identity()
 
-        user = User.find_by_id(id)
+        user = User.find_by_id(reviewer_id)
 
         if not user:
-            return make_response(jsonify(msg="Forbidden"), 403)
+            return jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 403
         
         args  = ReviewApiHandler.updatereview_args.parse_args()
-        review_id = args.get('review_id')
+        dataset_id = args.get('dataset_id')
         review = args.get('review')
         rating = args.get('rating')
 
-        review =Review.getReview_by_id(review_id)
+        review = Review.find_added_review(reviewer_id, dataset_id)
         
-        if review.reviewer_id != reviewer_id:
-            return make_response(jsonify(msg="Forbidden"), 403)
+        # if review.reviewer_id != reviewer_id:
+        #     return make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 403)
         
         try:
-            review.update(reviewer_id,review,rating)
-            print("Riview updated")
-            
+            review.update(review, rating)
+            print("Review updated")
         except:
-            return {"message": "An error occurred adding review to database"}, 500
-        flash("review updated Successfully")
+            return jsonify(msg="An error occurred adding review to database"), 500

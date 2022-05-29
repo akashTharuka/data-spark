@@ -8,8 +8,7 @@ import os
 import werkzeug
 from werkzeug.utils import secure_filename
 
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 class AddDatasetApiHandler(Resource):
 
@@ -21,7 +20,7 @@ class AddDatasetApiHandler(Resource):
     addDataset_args.add_argument("file", type=werkzeug.datastructures.FileStorage, help="filepath of the dataset", location='files', required=True) 
 
     ALLOWED_EXTENSIONS = set(['csv'])
-    UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api/datasets'
+    UPLOAD_FOLDER = 'C:\Projects\data-spark/api\datasets'
 
     def allowed_file(self,filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
@@ -41,13 +40,13 @@ class AddDatasetApiHandler(Resource):
 
         args = AddDatasetApiHandler.addDataset_args.parse_args()
         uploader_id = user.id #uploder id should get from the session and put it on here
-        status_id = 1
+        status_id = 2
         title = args.get('title')
         file = args.get('file')
         description = args.get('description')
         token = args.get('token')
-
-        print(status_id)
+        file_type = args.get('type')
+        file_size = args.get('size')
         # identity = get_jwt_identity(token);
         # print(identity);
         target=os.path.join(self.UPLOAD_FOLDER,'test_docs')
@@ -56,9 +55,10 @@ class AddDatasetApiHandler(Resource):
         file = request.files['file'] 
         filename = secure_filename(file.filename)
         destination="/".join([target, filename])
+        
         if self.allowed_file(filename):            
             file.save(destination)
-            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title,file_path=destination,description=description)
+            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
         else:
             return jsonify(message="Unsuitable file type")
         

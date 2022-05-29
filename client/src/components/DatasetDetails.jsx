@@ -9,6 +9,8 @@ import Review from './Review';
 const DatasetDetails = (props) => {
 
 	const params = useParams();
+	const [reviewed, setReviewed] 				= useState(null);
+	const [reviewType, setReviewType]			= useState("add");
 
 	// basic data for the page
 	const [datasetDetails, setDatasetDetails] 	= useState(null);
@@ -30,39 +32,67 @@ const DatasetDetails = (props) => {
 	const [imgURL, setImgURL]					= useState(null);
 
 	useEffect(() => {
-		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`)
-			.then((res) => {
-				setAllReviews(res.data.reviews);
-				setDatasetDetails(res.data.datasetDetails);
-				setColumns(res.data.result.columns);
-				setRows(res.data.result.rowlists);
-				
-				// set metadata
-				setMissingValues(res.data.result.missing_values);
-				setUniqueValues(res.data.result.unique_values);
-				setNumColumns(res.data.result.num_columns);
-				setMeanList(res.data.result.mean);
-				setStdList(res.data.result.stddev);
-				setMinList(res.data.result.minlis);
-				setMaxList(res.data.result.maxlis);
-				setQuanList1(res.data.result.quantile1);
-				setQuanList2(res.data.result.quantile2);
-				setQuanList3(res.data.result.quantile3);
+		const token = sessionStorage.getItem("token");
 
-				// const plot = res.data.result.plot;
-				// const imageBlob = plot.blob();
+		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json', 
+			},
+		})
+		.then((res) => {
+			setAllReviews(res.data.reviews);
+			setDatasetDetails(res.data.datasetDetails);
+			setColumns(res.data.result.columns);
+			setRows(res.data.result.rowlists);
+			
+			// set metadata
+			setMissingValues(res.data.result.missing_values);
+			setUniqueValues(res.data.result.unique_values);
+			setNumColumns(res.data.result.num_columns);
+			setMeanList(res.data.result.mean);
+			setStdList(res.data.result.stddev);
+			setMinList(res.data.result.minlis);
+			setMaxList(res.data.result.maxlis);
+			setQuanList1(res.data.result.quantile1);
+			setQuanList2(res.data.result.quantile2);
+			setQuanList3(res.data.result.quantile3);
 
-				// const reader = new FileReader();
-				// reader.readAsDataURL(imageBlob);
+			// const plot = res.data.result.plot;
+			// const imageBlob = plot.blob();
 
-				// reader.onloadend = () => {
-				// 	const base64data = reader.result;
-				// 	setImgURL(base64data);
-				// }
+			// const reader = new FileReader();
+			// reader.readAsDataURL(imageBlob);
+
+			// reader.onloadend = () => {
+			// 	const base64data = reader.result;
+			// 	setImgURL(base64data);
+			// }
+		})
+		.catch(err => {
+			console.log(err);
+		});
+
+		if (token){
+			let payload = {
+				datasetID: params.id
+			}
+			axios.post(`http://localhost:5000/getUser`, payload, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json', 
+				},
+			})
+			.then(res => {
+				console.log(res.data.reviewed);
+				setReviewed(res.data.reviewed);
 			})
 			.catch(err => {
-				console.log(err);
-			});
+				console.log("error in catch: " + err);
+				sessionStorage.removeItem("token");
+				document.location.reload();
+			})
+		}
 	}, []);
 
 	const reviewsLength = allReviews.length;
@@ -286,11 +316,14 @@ const DatasetDetails = (props) => {
 				<div className="col-10 mx-auto reviews-container d-flex flex-row flex-nowrap overflow-auto">
 					{getReviews()}
 				</div>
-				<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
-                    <button className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
+				<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(reviewed) ? "d-none" : ""}`}>
+                    <button onClick={(e) => setReviewType("add")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
+                </div>
+				<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(! reviewed) ? "d-none" : ""}`}>
+                    <button onClick={(e) => setReviewType("update")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">Update Review</button>
                 </div>
 
-				<Review datasetID={params.id} />
+				<Review datasetID={params.id} type={reviewType} />
 			</div>
 
 			<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "" : "d-none"}`}>
