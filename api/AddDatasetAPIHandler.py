@@ -7,6 +7,7 @@ from models.User import User
 import os
 import werkzeug
 from werkzeug.utils import secure_filename
+import uuid
 
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -18,9 +19,12 @@ class AddDatasetApiHandler(Resource):
     addDataset_args.add_argument("title", type=str, help="title", location='form', required=True)
     addDataset_args.add_argument("description", type=str, help="description", location='form', required=True)
     addDataset_args.add_argument("file", type=werkzeug.datastructures.FileStorage, help="filepath of the dataset", location='files', required=True) 
+    addDataset_args.add_argument("type", type=str, help="type", location='form', required=False)
+    addDataset_args.add_argument("size", type=float, help="size", location='form', required=False)
 
     ALLOWED_EXTENSIONS = set(['csv'])
-    UPLOAD_FOLDER = 'C:\Projects\data-spark/api\datasets'
+    # C:\Projects\data-spark/api\datasets    
+    UPLOAD_FOLDER = 'E:\My Semester 4\Software Engineering\data-spark/api\datasets'
 
     def allowed_file(self,filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
@@ -44,24 +48,26 @@ class AddDatasetApiHandler(Resource):
         title = args.get('title')
         file = args.get('file')
         description = args.get('description')
-        token = args.get('token')
+        # token = args.get('token')
         file_type = args.get('type')
         file_size = args.get('size')
         # identity = get_jwt_identity(token);
         # print(identity);
-        target=os.path.join(self.UPLOAD_FOLDER,'test_docs')
+        target=os.path.join(self.UPLOAD_FOLDER,'test_docs') 
         if not os.path.isdir(target):
             os.mkdir(target)
         file = request.files['file'] 
         filename = secure_filename(file.filename)
-        destination="/".join([target, filename])
         
-        if self.allowed_file(filename):            
+        
+        if self.allowed_file(filename):  
+            unique_filename = filename.rsplit('.', 1)[0].lower() + str(uuid.uuid4()) + '.' + filename.rsplit('.', 1)[1].lower()
+            print(unique_filename)
+            destination="/".join([target, unique_filename])    
             file.save(destination)
             dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
         else:
             return jsonify(message="Unsuitable file type")
-        
 
         try:
             dataset.save() 

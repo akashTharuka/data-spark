@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import config from '../config.json'
 import Navbar from './Navbar';
 import DashboardNav from '../dashboard_components/DashboardNav';
 import Review from './Review';
@@ -32,9 +32,10 @@ const DatasetDetails = (props) => {
 	const [imgURL, setImgURL]					= useState(null);
 
 	useEffect(() => {
+
 		const token = sessionStorage.getItem("token");
 
-		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`, {
+		axios.get(config.domain + `/getDatasetDetails?id=${params.id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				'Content-Type': 'application/json', 

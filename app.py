@@ -13,6 +13,8 @@ from datetime import datetime
 
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
+
+
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetsApiHandler import GetDatasetsApiHandler
 from api.ReviewApiHandler import ReviewApiHandler
@@ -56,7 +58,7 @@ app.secret_key = "secret"
 def create_tables():
     from db import db
     db.init_app(app)
-    db.create_all()
+    # db.create_all()
 
 
 @app.route('/', defaults={'path': ''})
