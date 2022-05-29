@@ -30,24 +30,19 @@ class AddDatasetApiHandler(Resource):
     def allowed_file(self,filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
 
-    def get(self):
-        return {
-            'resultStatus': 'SUCCESS',
-            'message': "Register Api Handler"
-        }
-
     @jwt_required()
     @cross_origin()
     def post(self):
-
-        identity = get_jwt_identity()
-        user = User.find_by_id(identity)
-
         args = AddDatasetApiHandler.addDataset_args.parse_args()
-        uploader_id = user.id #uploder id should get from the session and put it on here
-        status_id = 2
-        title = args.get('title')
-        file = args.get('file')
+
+        identity    = get_jwt_identity()
+        user        = User.find_by_id(identity)
+        uploader_id = user.id
+
+        status_id   = 2
+
+        title       = args.get('title')
+        file        = args.get('file')
         description = args.get('description')
         file_type = args.get('type')
         file_size = args.get('size')
@@ -55,14 +50,15 @@ class AddDatasetApiHandler(Resource):
         target=os.path.join(self.UPLOAD_FOLDER,'test_docs') 
         if not os.path.isdir(target):
             os.mkdir(target)
-        file = request.files['file'] 
+
+        file     = request.files['file'] 
         filename = secure_filename(file.filename)
-        
         
         if self.allowed_file(filename):  
             unique_filename = filename.rsplit('.', 1)[0].lower() + str(uuid.uuid4()) + '.' + filename.rsplit('.', 1)[1].lower()
             print(unique_filename)
-            destination="/".join([target, unique_filename])    
+
+            destination = "/".join([target, unique_filename])    
             file.save(destination)
             dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size, upload_time=upload_time)
         else:

@@ -65,6 +65,7 @@ class GetDatasetDetailsApiHandler(Resource):
 
         dataset_id = request.args.get('id')
         dataset = Dataset.filter_by_id(dataset_id)
+
         title = dataset.title
         description = dataset.description
         fileType = dataset.file_type
@@ -87,7 +88,7 @@ class GetDatasetDetailsApiHandler(Resource):
             "uploaderName": uploaderName
         }
 
-        dataset = Dataset.filter_by_id(dataset_id)
+        # print(datasetDetails)
         file_path = dataset.file_path
         # df = loadDataset(dataset)
         df = pd.read_csv(file_path)
@@ -150,7 +151,8 @@ class GetDatasetDetailsApiHandler(Resource):
             # result['plot'] = plots
             
         
-        except: pass
+        except:
+            pass
 
         response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result)
         return response

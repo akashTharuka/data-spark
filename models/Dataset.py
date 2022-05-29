@@ -66,7 +66,7 @@ class Dataset(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-        print("Description: - "  + self.description)
+        # print("Description: - "  + self.description)
 
     def delete(self):
         db.session.delete(self)

@@ -7,8 +7,9 @@ const Profile = (props) => {
 
     const [email, setEmail]       = useState("");
     const [username, setUsername] = useState("");
+    const [userID, setUserID]     = useState(null);
 
-    const [personalDatasets, setPersonalDatasets] = useState([]);
+    const [datasets, setDatasets] = useState([]);
 
     useEffect(() => {
 
@@ -23,6 +24,7 @@ const Profile = (props) => {
             .then((res) => {
                 setEmail(res.data.email);
                 setUsername(res.data.username);
+                setUserID(res.data.userID);
             })
             .catch((error) => {
                 console.log(error);
@@ -32,30 +34,37 @@ const Profile = (props) => {
         }
     }, []);
 
+    useEffect(() => {
+        if (props.datasets){
+            setDatasets(props.datasets);
+            console.log(datasets);
+        }
+    }, [props.datasets]);
+
     // handle profile edit request
     const handleEdit = (e) => {
         e.preventDefault();
     } 
 
-    // const datasetLength = personalDatasets.length;
-
     const getPersonalDataSets = () => {
         let content = [];
-        for (let i = 0; i < 5; i++){
-            content.push(
-                <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
-                    <div className="card personal" style={{width: "100%", cursor: "pointer"}}>
-                        <div className="card-body d-flex flex-row justify-content-between">
-                            <h5 className="card-title">Card title</h5>
-                            <small className='timeleft'>1 h</small>
-                        </div>
-                        <div className="edit-btns d-flex float-end">
-                            <i className="btn bi bi-pen"></i>
-                            <i className="btn bi bi-trash3"></i>
+        for (let i = 0; i < datasets.length; i++){
+            if (userID === datasets[i].uploader_id){
+                content.push(
+                    <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
+                        <div className="card personal" style={{width: "100%", cursor: "pointer"}}>
+                            <div className="card-body d-flex flex-row justify-content-between">
+                                <h5 className="card-title">{datasets[i].title}</h5>
+                                <small className='timeleft'>1 h</small>
+                            </div>
+                            <div className="edit-btns d-flex float-end">
+                                <i className="btn bi bi-pen"></i>
+                                <i className="btn bi bi-trash3"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            );
+                );
+            }
         }
         return content;
     };
