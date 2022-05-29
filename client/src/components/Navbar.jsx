@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 import Register from './Register';
@@ -43,7 +43,7 @@ const Navbar = (props) => {
 							<i className="bi bi-person me-2"></i>
                             Profile
                         </button>
-						<Profile />
+						<Profile datasets={props.datasets} />
 					</li>
 				</ul>
 			</div>

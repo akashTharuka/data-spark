@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-
+import config from '../config.json'
 import Navbar from './Navbar';
 import Upload from './Upload';
 
@@ -12,7 +12,9 @@ const Home = (props) => {
     const [datasets, setDatasets] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/getDataset')
+
+        axios.get(config.domain + '/getDatasets')
+
             .then(response => {
                 setDatasets(response.data.datasets);
             });
@@ -25,7 +27,7 @@ const Home = (props) => {
         for (let i = 0; i < datasetLength; i++){
             content.push(
                 <div className="d-flex col-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
-                    <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
+                    <div className="card home" style={{minWidth: "18rem", minHeight: "20rem"}}>
                         {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
                         <div className="card-body">
                             <h5 className="card-title">{datasets[i].title}</h5>
@@ -59,7 +61,7 @@ const Home = (props) => {
 
     return (
         <div>
-            <Navbar status={props.status} />
+            <Navbar status={props.status} datasets={datasets} />
 
             <div className="row d-flex justify-content-start">
                 <div className="col-10 col-md-4">

@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { Home, DatasetDetails } from './components';
-import { DashboardLogin, Dashboard } from './dashboard_components';
+import { DashboardLogin, Dashboard, ProtectedRoute } from './dashboard_components';
 import { useState, useEffect } from 'react';
+// import createBrowserHistory from 'history/createBrowserHistory';
 
 function App() {
 
@@ -17,23 +18,17 @@ function App() {
 	return (
 		<Router>
 			<div className="App">
-				<div id='content'>
-					<Switch>
-						<Route exact path="/">
-							<Home status={status} />
-						</Route>
-						<Route path="/details/:id">
-							<DatasetDetails status={status} />
-						</Route>
-						<Route path='/dashboardLogin'>
-							<DashboardLogin />
-						</Route>
-						<Route path='/dashboard'>
-							<Dashboard />
-						</Route>
-					</Switch>
-				</div>
-				
+				<Switch>
+					<Route exact path="/">
+						<Home status={status} />
+					</Route>
+					<Route path="/details/:id">
+						<DatasetDetails status={status} />
+					</Route>
+					<Route exact path='/adminlogin' component={DashboardLogin} />
+					<ProtectedRoute exact path='/dashboard' component={Dashboard} />
+					<ProtectedRoute exact path='/dashboard/details/:id' component={DatasetDetails} type="dashboard" />
+				</Switch>
 			</div>
 		</Router>
 	);

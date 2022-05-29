@@ -2,12 +2,16 @@ import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import config from '../config.json'
+
 const Upload = () => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
-    const [filepath, setFilepath]       = useState('fakepath');
+    const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
+
+    const [file, setFile] = useState("");
 
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
@@ -17,8 +21,12 @@ const Upload = () => {
     const history = useHistory();
 
     const handleFile = (e) => {
+
         console.log(e.target.files);
         console.log(e.target.files[0]);
+        setFile(e.target.files[0]);
+        console.log(file);
+        console.log(description);
     }
 
     const validateData = (upload) => {
@@ -27,7 +35,7 @@ const Upload = () => {
         let filepath = upload.filepath;
         let valid = true;
 
-        if (title == ""){
+        if (title === ""){
             setTitleErr("Please enter a title");
             valid = false;
         }
@@ -35,7 +43,7 @@ const Upload = () => {
             setTitleErr("success");
         }
         
-        if (description == ""){
+        if (description === ""){
             setDesErr("Please enter a description");
             valid = false;
         }
@@ -43,7 +51,7 @@ const Upload = () => {
             setDesErr("success");
         }
 
-        if (filepath == ""){
+        if (filepath === ""){
             setFilepathErr("Please upload a file");
             valid = false;
         }
@@ -59,21 +67,48 @@ const Upload = () => {
 
         const token = sessionStorage.getItem("token");
 
-        const upload = {title, description, filepath, token};
+        const upload = {title, description, file, token};
 
         let valid = validateData(upload);
 
+        const formdata = new FormData();
+        formdata.append('file', file);
+        formdata.append('title', title);
+        formdata.append('description', description);
+        formdata.append('token', token);
+        formdata.append('type', file.type);
+        formdata.append('size', file.size);
+
+        console.log(formdata);
+        console.log(formdata.get('file'));
+        
         if (valid){
             setIsPending(true);
         
-            // axios.post('http://localhost:5000/addDataSet', upload)
-            //     .then((res) => {
-            //         setIsPending(false);
-            //         console.log(res.data);
-            //     }).catch((error) => {
-            //         setIsPending(false);
-            //         console.log(error);
-            //     });
+
+            axios.post(config.domain + '/addDataSet', formdata, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+            }})
+                .then((res) => {
+                    setIsPending(false);
+                    setTitleErr(res.data.titleErr);
+                    setDesErr(res.data.desErr);
+                    setFilepathErr(res.data.filepathErr);
+                    console.log(res.data);
+
+                    if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
+                        console.log("here");
+                        history.push('/');
+                        // document.location.reload();
+                    }
+
+                }).catch((error) => {
+                    setIsPending(false);
+                    console.log(error);
+                });
+
         }
         
     }
@@ -90,7 +125,7 @@ const Upload = () => {
                                     <div className="form-floating mb-3">
                                         <input 
                                             type="text" 
-                                            className={`form-control ${(titleErr == "") ? "" : (titleErr != "success") ? "is-invalid" : "is-valid"}`} 
+                                            className={`form-control ${(titleErr === "") ? "" : (titleErr !== "success") ? "is-invalid" : "is-valid"}`} 
                                             id='floatingTitle' 
                                             tabIndex="-1" 
                                             value = {title}
@@ -105,7 +140,7 @@ const Upload = () => {
 
                                     <div className="form-floating mb-3">
                                         <textarea 
-                                            className={`form-control ${(desErr == "") ? "" : (desErr != "success") ? "is-invalid" : "is-valid"}`} 
+                                            className={`form-control ${(desErr === "") ? "" : (desErr !== "success") ? "is-invalid" : "is-valid"}`} 
                                             placeholder="Leave a comment here" 
                                             id="fileDescription" 
                                             style={{height: "100px"}}
@@ -123,8 +158,9 @@ const Upload = () => {
                                     <div className="mb-3">
                                         <label htmlFor="formFileMultiple" className="form-label mx-3">Add Dataset Files</label>
                                         <input 
-                                            className={`form-control ${(filepathErr == "") ? "" : (filepathErr != "success") ? "is-invalid" : "is-valid"}`}
+                                            className={`form-control ${(filepathErr === "") ? "" : (filepathErr !== "success") ? "is-invalid" : "is-valid"}`}
                                             type="file"
+                                            accept=".csv,.txt"
                                             name='file'
                                             id="formFileMultiple" 
                                             tabIndex="-1" 

@@ -25,12 +25,16 @@ class Review(db.Model):
                 'rating': self.rating}
         
     @classmethod
-    def getReview(self,dataset_id):
+    def getReviews(self, dataset_id):
         return self.query.filter_by(dataset_id=dataset_id).all()
     
     @classmethod
-    def getReview_by_id(self,review_id):
+    def getReview_by_id(self, review_id):
         return self.query.filter_by(id=review_id).first()
+
+    @classmethod
+    def find_added_review(self, reviewer_id, dataset_id):
+        return self.query.filter_by(reviewer_id=reviewer_id, dataset_id=dataset_id).first()
     
     def save(self):
         dataset = Dataset.filter_by_id(self.dataset_id)
@@ -40,10 +44,10 @@ class Review(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def update(self,reviewer_id,review,rating):
-        dataset = Dataset.filter_by_id(self.dataset_id)
-        total_rating = (dataset.avg_rating * dataset.num_ratings)
-        dataset.avg_rating = (total_rating - self.rating + rating)/ (dataset.num_ratings)
+    def update(self, review, rating):
+        # dataset = Dataset.filter_by_id(self.dataset_id)
+        # total_rating = (dataset.avg_rating * dataset.num_ratings)
+        # dataset.avg_rating = (total_rating - self.rating + rating)/ (dataset.num_ratings)
         self.rating = rating
         self.review = review
         db.session.commit()
@@ -55,8 +59,6 @@ class Review(db.Model):
         dataset.num_ratings-=1
         db.session.delete(self)
         db.session.commit()
-    
-    
 
     # Create A String
     def __repr__(self):
