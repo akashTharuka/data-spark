@@ -68,7 +68,6 @@ class AddDatasetApiHandler(Resource):
             dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size)
         else:
             return jsonify(message="Unsuitable file type")
-        
 
         try:
             dataset.save() 

@@ -2,6 +2,7 @@ import React from 'react';
 import Rating from './Rating';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import config from '../config.json';
 
 const Review = (props) => {
 
@@ -42,7 +43,7 @@ const Review = (props) => {
             setIsPending(true);
             if (props.type === "add"){
 
-                    axios.put('http://localhost:5000/review', reviewBody, {
+                    axios.put(config.domain + '/review', reviewBody, {
                         headers: { 
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json', 
@@ -61,7 +62,7 @@ const Review = (props) => {
                 });
             }
             else{
-                axios.post('http://localhost:5000/review', reviewBody, {
+                axios.post(config.domain + '/review', reviewBody, {
                         headers: { 
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json', 
@@ -77,6 +78,7 @@ const Review = (props) => {
                         console.log(error.message);
                         // sessionStorage.removeItem("token");
                         // document.location.reload();
+
                 });
             }
             

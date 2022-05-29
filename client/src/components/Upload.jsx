@@ -2,12 +2,16 @@ import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import config from '../config.json'
+
 const Upload = () => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
+
+
 
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
@@ -17,6 +21,7 @@ const Upload = () => {
     const history = useHistory();
 
     const handleFile = (e) => {
+
         console.log(e.target.files);
         console.log(e.target.files[0]);
         setFile(e.target.files[0]);
@@ -82,7 +87,8 @@ const Upload = () => {
         if (valid){
             setIsPending(true);
         
-            axios.post('http://localhost:5000/addDataSet', formdata, {
+
+            axios.post(config.domain + '/addDataSet', formdata, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -104,6 +110,7 @@ const Upload = () => {
                     setIsPending(false);
                     console.log(error);
                 });
+
         }
         
     }
@@ -155,6 +162,7 @@ const Upload = () => {
                                         <input 
                                             className={`form-control ${(filepathErr === "") ? "" : (filepathErr !== "success") ? "is-invalid" : "is-valid"}`}
                                             type="file"
+                                            accept=".csv,.txt"
                                             name='file'
                                             id="formFileMultiple" 
                                             tabIndex="-1" 
