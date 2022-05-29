@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import config from '../config.json'
 import Navbar from './Navbar';
 import Review from './Review';
 
@@ -18,7 +18,7 @@ const DatasetDetails = (props) => {
 	const [allReviews, setAllReviews] = useState([]);
 
 	useEffect(() => {
-		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`)
+		axios.get(config.domain +`/getDatasetDetails?id=${params.id}`)
 			.then((res) => {
 				setAllReviews(res.data.reviews);
 				setDatasetDetails(res.data.datasetDetails);
@@ -44,7 +44,7 @@ const DatasetDetails = (props) => {
 	// }
 
 	const viewDetails = () => {
-		fetch('http://localhost:5000/viewDetails', {
+		fetch('/viewDetails', {
 			method: 'GET',
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify()

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import config from '../config.json'
 
 const Login = () => {
 
@@ -39,7 +40,7 @@ const Login = () => {
         if (valid){
             setIsPending(true);
 
-            axios.post('http://localhost:5000/login', login)
+            axios.post(config.domain + '/login', login)
                 .then((res) => {
                     let msg = res.data.msg;
                     console.log(msg);

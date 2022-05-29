@@ -2,12 +2,16 @@ import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import config from '../config.json'
+
 const Upload = () => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
     const [filepath, setFilepath]       = useState('fakepath');
     const [isPending, setIsPending]     = useState(false);
+
+    const [file, setFile] = useState("");
 
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
@@ -17,8 +21,8 @@ const Upload = () => {
     const history = useHistory();
 
     const handleFile = (e) => {
-        console.log(e.target.files);
-        console.log(e.target.files[0]);
+        // console.log(e.target.files);
+        // console.log(e.target.files[0]);
     }
 
     const validateData = (upload) => {
@@ -66,14 +70,8 @@ const Upload = () => {
         if (valid){
             setIsPending(true);
         
-            // axios.post('http://localhost:5000/addDataSet', upload)
-            //     .then((res) => {
-            //         setIsPending(false);
-            //         console.log(res.data);
-            //     }).catch((error) => {
-            //         setIsPending(false);
-            //         console.log(error);
-            //     });
+            setFile(e.target.files[0]);
+            console.log(e.target.files[0]);
         }
         
     }
@@ -125,6 +123,7 @@ const Upload = () => {
                                         <input 
                                             className={`form-control ${(filepathErr == "") ? "" : (filepathErr != "success") ? "is-invalid" : "is-valid"}`}
                                             type="file"
+                                            accept=".csv,.txt"
                                             name='file'
                                             id="formFileMultiple" 
                                             tabIndex="-1" 

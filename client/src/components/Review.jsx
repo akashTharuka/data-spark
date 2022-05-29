@@ -41,7 +41,7 @@ const Review = (props) => {
             setIsPending(true);
             const token = sessionStorage.getItem("token");
 
-            axios.put('http://localhost:5000/addReview', reviewBody, {
+            axios.put('/addReview', reviewBody, {
                 headers: { 
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json', 
