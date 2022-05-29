@@ -11,7 +11,7 @@ const Profile = () => {
 
         const access_token = sessionStorage.getItem("token");
 
-        if(access_token !== null && access_token !== undefined) {
+        if(access_token) {
             axios.get('http://localhost:5000/profile', { headers: {
                 'Authorization': `Bearer ${access_token}`,
                 'Content-type': 'application/json'

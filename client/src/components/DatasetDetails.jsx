@@ -30,58 +30,38 @@ const DatasetDetails = (props) => {
 	const [imgURL, setImgURL]					= useState(null);
 
 	useEffect(() => {
-
-		const token = sessionStorage.getItem("admin_token");
-
-		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`, {
-			headers: {
-				'Authorization': `Bearer ${token}`,
-                'Content-type': 'application/json'
-			}
-		})
+		axios.get(`http://localhost:5000/getDatasetDetails?id=${params.id}`)
 			.then((res) => {
-
-				if (res.data.valid){
-
-					console.log(res.data.msg);
-
-					setAllReviews(res.data.reviews);
-					setDatasetDetails(res.data.datasetDetails);
-					setColumns(res.data.result.columns);
-					setRows(res.data.result.rowlists);
-					// set metadata
-					setMissingValues(res.data.result.missing_values);
-					setUniqueValues(res.data.result.unique_values);
-					setNumColumns(res.data.result.num_columns);
-					setMeanList(res.data.result.mean);
-					setStdList(res.data.result.stddev);
-					setMinList(res.data.result.minlis);
-					setMaxList(res.data.result.maxlis);
-					setQuanList1(res.data.result.quantile1);
-					setQuanList2(res.data.result.quantile2);
-					setQuanList3(res.data.result.quantile3);
-
-					// const plot = res.data.result.plot;
-					// const imageBlob = plot.blob();
-
-					// const reader = new FileReader();
-					// reader.readAsDataURL(imageBlob);
-
-					// reader.onloadend = () => {
-					// 	const base64data = reader.result;
-					// 	setImgURL(base64data);
-					// }
-				}
-				else{
-					console.log(res.data.msg);
-					document.location = "/adminlogin";
-				}
-
+				setAllReviews(res.data.reviews);
+				setDatasetDetails(res.data.datasetDetails);
+				setColumns(res.data.result.columns);
+				setRows(res.data.result.rowlists);
 				
+				// set metadata
+				setMissingValues(res.data.result.missing_values);
+				setUniqueValues(res.data.result.unique_values);
+				setNumColumns(res.data.result.num_columns);
+				setMeanList(res.data.result.mean);
+				setStdList(res.data.result.stddev);
+				setMinList(res.data.result.minlis);
+				setMaxList(res.data.result.maxlis);
+				setQuanList1(res.data.result.quantile1);
+				setQuanList2(res.data.result.quantile2);
+				setQuanList3(res.data.result.quantile3);
+
+				// const plot = res.data.result.plot;
+				// const imageBlob = plot.blob();
+
+				// const reader = new FileReader();
+				// reader.readAsDataURL(imageBlob);
+
+				// reader.onloadend = () => {
+				// 	const base64data = reader.result;
+				// 	setImgURL(base64data);
+				// }
 			})
 			.catch(err => {
 				console.log(err);
-				document.location = "/adminlogin";
 			});
 	}, []);
 
