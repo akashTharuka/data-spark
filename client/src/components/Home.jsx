@@ -14,9 +14,11 @@ const Home = (props) => {
     useEffect(() => {
 
         axios.get(config.domain + '/getDatasets')
-
             .then(response => {
                 setDatasets(response.data.datasets);
+            })
+            .catch(err => {
+                console.log(err);
             });
     }, []);
 
@@ -27,12 +29,12 @@ const Home = (props) => {
         for (let i = 0; i < datasetLength; i++){
             content.push(
                 <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
-                    <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
+                    <div className="card home position-relative" style={{width: "18rem", minHeight: "20rem"}}>
                         {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
                         <div className="card-body">
                             <h5 className="card-title">{datasets[i].title}</h5>
                             <p className="card-text">{datasets[i].description}</p>
-                            <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
+                            <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3 position-absolute bottom-0 end-0 mb-2 me-2">View Details</a>
                         </div>
                     </div>
                 </div>

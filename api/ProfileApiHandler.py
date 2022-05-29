@@ -38,7 +38,7 @@ class ProfileApiHandler(Resource):
         user = User.find_by_id(user_id)
 
         if not user:
-            response = make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401)
+            response = jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401
             return response
 
         args = ProfileApiHandler.register_args.parse_args()
@@ -51,18 +51,6 @@ class ProfileApiHandler(Resource):
             self.passwordErr = "Authentication Error"
             response = jsonify(message=self.passwordErr)
             return response
-
-        # if email != user.email and User.find_by_email(email):
-        #     self.emailErr = "Email already exists"
-        #     self.valid = False
-
-        # if username != user.username and User.find_by_username(username):
-        #     self.usernameErr = "Username already exists"
-        #     self.valid = False
-
-        # if not self.valid:
-        #     response = jsonify(emailErr=self.emailErr, usernameErr=self.usernameErr)
-        #     return response
 
         try:
             user.update(email, username)

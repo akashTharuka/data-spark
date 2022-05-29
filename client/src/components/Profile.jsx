@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Register from './Register';
+import PasswordModal from './PasswordModal'
 import axios from 'axios';
 import config from '../config.json';
 
@@ -37,14 +38,8 @@ const Profile = (props) => {
     useEffect(() => {
         if (props.datasets){
             setDatasets(props.datasets);
-            console.log(datasets);
         }
     }, [props.datasets]);
-
-    // handle profile edit request
-    const handleEdit = (e) => {
-        e.preventDefault();
-    } 
 
     const getPersonalDataSets = () => {
         let content = [];
@@ -90,11 +85,15 @@ const Profile = (props) => {
                         <label htmlFor="editReadOnlyUsername">Username</label>
                     </div>
 
-                    <div className="d-grid col-6 mx-auto text-center my-4">
-                        <button type="button" onClick={handleEdit} className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">EDIT</button>
+                    <div className="d-grid col-8 mx-auto text-center my-4">
+                        <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">UPDATE ACCOUNT</button>
+                    </div>
+                    <div className="d-grid col-8 mx-auto text-center my-4">
+                        <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-password-modal" data-bs-dismiss="modal">UPDATE PASSWORD</button>
                     </div>
 
                     <Register type="edit" email={email} username={username} />
+                    <PasswordModal />
                 </div>
 
                 <div className="row my-3 d-flex">

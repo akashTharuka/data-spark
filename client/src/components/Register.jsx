@@ -124,16 +124,16 @@ const Register = (props) => {
 
                     let emailUsernameCheck = false;
 
-                   if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
-                        console.log("here");
-                        sessionStorage.setItem("token", res.data.access_token)
-                        history.push('/');
-                        document.location.reload();
-                   }
+                    if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
+                            console.log("here");
+                            sessionStorage.setItem("token", res.data.access_token)
+                            history.push('/');
+                            document.location.reload();
+                    }
 
                 }).catch((error) => {
                     setIsPending(false);
-                    console.log(error);
+                    console.log("here " + error);
                 });
             }
 
@@ -165,6 +165,8 @@ const Register = (props) => {
                     .catch((error) => {
                         setIsPending(false);
                         console.log(error);
+                        history.push('/');
+                        document.location.reload();
                     });
             }
         }
@@ -230,7 +232,7 @@ const Register = (props) => {
                                 <input 
                                     type="password" 
                                     className={`form-control ${(confirmPswMsg == "") ? "" : (confirmPswMsg != "success" ? "is-invalid" : "is-valid")}`}
-                                    id={props.type + 'ConfirmPassword'} 
+                                    id={props.type + 'ConfirmPsw'} 
                                     tabIndex="-1" 
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
