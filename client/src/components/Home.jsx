@@ -24,15 +24,30 @@ const Home = (props) => {
 
     const getDataSets = () => {
         let content = [];
-        for (let i = 0; i < datasetLength; i++){
+        let Searcheddatasets = handleSearch(datasets);
+        /* for (let i = 0; i < datasetLength; i++){
             content.push(
                 <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
                     <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
-                        {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
+                        {/* <img src={images.imageCap} className="card-img-top" alt=''/> }
                         <div className="card-body">
                             <h5 className="card-title">{datasets[i].title}</h5>
                             <p className="card-text">{datasets[i].description}</p>
                             <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            );
+        } */
+
+        for (let i = 0; i < Searcheddatasets.length; i++){
+            content.push(
+                <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
+                    <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
+                        <div className="card-body">
+                            <h5 className="card-title">{Searcheddatasets[i].title}</h5>
+                            <p className="card-text">{Searcheddatasets[i].description}</p>
+                            <a href={`/details/${Searcheddatasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -45,8 +60,8 @@ const Home = (props) => {
     // there should be functions here to sort, filter etc.
     
     const [keyword, setKeyword]                     = useState('');
-    const [csvFileType, setCsvFileType]             = useState('');
-    const [txtFileType, setTxtFileType]             = useState('');
+    const [csvFileType, setCsvFileType]             = useState([false]);
+    const [txtFileType, setTxtFileType]             = useState([false]);
     const [sort, setSort]                           = useState('');
 
     const [compSciFilter, setCompSciFilter]         = useState('');
@@ -58,6 +73,79 @@ const Home = (props) => {
     useEffect(() => {
         console.log(compSciFilter, eduFilter, dataVisualFilter, preModalFilter, allFilter);
     }, [compSciFilter, eduFilter, dataVisualFilter, preModalFilter, allFilter]);
+
+    function handleSearch(datasets) {
+        return datasets.filter(
+            (dataset) => 
+                dataset.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
+                dataset.description.toLowerCase().indexOf(keyword.toLowerCase()) > -1 );
+    }
+
+    function handleSort() {
+        if (sort === "Alphabetical") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.sort((a,b) =>  a.title.localeCompare(b.title));
+                setDatasets(result);
+            });
+
+        } else if (sort === "Downloads") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.sort((a,b) =>  a.num_downloads > b.num_downloads ? -1 : 1);
+                setDatasets(result);
+            });
+
+        } else if (sort === "Ratings") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.sort((a,b) =>  a.avg_rating > b.avg_rating ? -1 : 1);
+                setDatasets(result);
+            });
+
+        } else if (sort === "Date modified") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.sort((a,b) =>  new Date(a.upload_time) > new Date(b.upload_time) ? -1 : 1)
+                setDatasets(result);
+            });
+        }
+
+    }
+
+    /* function handleType() {
+
+        if (csvFileType && !txtFileType) {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.filter((a) =>  a.file_type.indexOf("csv") > -1);
+                setDatasets(result);
+            });
+
+        } else if (txtFileType && !csvFileType) {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.filter((a) => a.file_type.indexOf("text") > -1);
+                setDatasets(result);
+            });
+        } else if ((csvFileType && txtFileType) || (!csvFileType && !txtFileType)) {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.filter((a) =>  
+                        a.file_type.indexOf("csv") > -1 ||
+                        a.file_type.indexOf("text") > -1);
+                setDatasets(result);
+            });
+
+        }
+    } */
 
     return (
         <div>
@@ -98,7 +186,8 @@ const Home = (props) => {
                                 className='csv filetype me-3' 
                                 id='csv-checkbox' 
                                 value={csvFileType}
-                                onChange={(e) => setCsvFileType(e.target.value)}
+                                onChange={(e) => setCsvFileType(e.target.checked)}
+                                //onClick={handleType}
                             />
                             <label htmlFor="csv-checkbox" className='filetype-label'>.csv</label>
                         </div>
@@ -108,7 +197,8 @@ const Home = (props) => {
                                 className='txt filetype me-3' 
                                 id='txt-checkbox' 
                                 value={txtFileType}
-                                onChange={(e) => setTxtFileType(e.target.value)}
+                                onChange={(e) => setTxtFileType(e.target.checked)}
+                                //onClick={handleType}
                             />
                             <label htmlFor="txt-checkbox" className='filetype-label'>.txt</label>
                         </div>
@@ -116,7 +206,7 @@ const Home = (props) => {
                 </div>
 
                 <div className="col-6 col-md-2">
-                    <select className="form-select" aria-label="Default select example" onChange={(e) => setSort(e.target.value)} value={sort}>
+                    <select className="form-select" aria-label="Default select example" onClick={handleSort} onChange={(e) => setSort((e.target.value))} value={sort}>
                         <option defaultValue="SortHere">Sort Here</option>
                         <option value="Alphabetical">Alphabetical</option>
                         <option value="Date modified">Date modified</option>
