@@ -66,6 +66,10 @@ class Dataset(db.Model):
         db.session.commit()
         # print("Description: - "  + self.description)
 
+    def update_status(self, status_id):
+        self.status_id = status_id
+        db.session.commit()
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()

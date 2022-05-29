@@ -256,11 +256,40 @@ const DatasetDetails = (props) => {
 
 	// dashboard
 	const handleAccept = () => {
-		console.log("accepted");
+        const access_token = sessionStorage.getItem("admin_token");
+        const dataset_id = { "dataset_id": params.id}
+        axios.put(config.domain + '/changeStatus', dataset_id, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            sessionStorage.removeItem("admin_token");
+            document.location = "/adminlogin";
+        })
 	}
 
 	const handleReject = () => {
-		console.log("rejected");
+		const access_token = sessionStorage.getItem("admin_token");
+        const dataset_id = { "dataset_id": params.id}
+        axios.post(config.domain + '/changeStatus', dataset_id, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+//             sessionStorage.removeItem("admin_token");
+//             document.location = "/adminlogin";
+        })
 	}
 
 	return (
