@@ -28,7 +28,7 @@ class ProfileApiHandler(Resource):
         if not user:
             return make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 403)
 
-        return jsonify(email=user.email, username=user.username, msg="Authorization Successfull")
+        return jsonify(email=user.email, username=user.username, userID=user.id, msg="Authorization Successfull")
 
     @jwt_required()
     def post(self):
