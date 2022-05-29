@@ -35,8 +35,10 @@ const Profile = (props) => {
     }, []);
 
     useEffect(() => {
-        setDatasets(props.datasets);
-        console.log(datasets);
+        if (props.datasets){
+            setDatasets(props.datasets);
+            console.log(datasets);
+        }
     }, [props.datasets]);
 
     // handle profile edit request

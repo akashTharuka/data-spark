@@ -31,6 +31,8 @@ const DatasetDetails = (props) => {
 	const [quantList3, setQuanList3] 			= useState([]);
 	const [imgURL, setImgURL]					= useState(null);
 
+	const [errorMsg, setErrorMsg]				= useState("");
+
 	useEffect(() => {
 
 		const token = sessionStorage.getItem("token");
@@ -42,33 +44,39 @@ const DatasetDetails = (props) => {
 			},
 		})
 		.then((res) => {
-			setAllReviews(res.data.reviews);
-			setDatasetDetails(res.data.datasetDetails);
-			setColumns(res.data.result.columns);
-			setRows(res.data.result.rowlists);
-			
-			// set metadata
-			setMissingValues(res.data.result.missing_values);
-			setUniqueValues(res.data.result.unique_values);
-			setNumColumns(res.data.result.num_columns);
-			setMeanList(res.data.result.mean);
-			setStdList(res.data.result.stddev);
-			setMinList(res.data.result.minlis);
-			setMaxList(res.data.result.maxlis);
-			setQuanList1(res.data.result.quantile1);
-			setQuanList2(res.data.result.quantile2);
-			setQuanList3(res.data.result.quantile3);
+			// console.log(res.data);
+			if (res.data.result){
+				setAllReviews(res.data.reviews);
+				setDatasetDetails(res.data.datasetDetails);
+				setColumns(res.data.result.columns);
+				setRows(res.data.result.rowlists);
+				
+				// set metadata
+				setMissingValues(res.data.result.missing_values);
+				setUniqueValues(res.data.result.unique_values);
+				setNumColumns(res.data.result.num_columns);
+				setMeanList(res.data.result.mean);
+				setStdList(res.data.result.stddev);
+				setMinList(res.data.result.minlis);
+				setMaxList(res.data.result.maxlis);
+				setQuanList1(res.data.result.quantile1);
+				setQuanList2(res.data.result.quantile2);
+				setQuanList3(res.data.result.quantile3);
 
-			// const plot = res.data.result.plot;
-			// const imageBlob = plot.blob();
+				// const plot = res.data.result.plot;
+				// const imageBlob = plot.blob();
 
-			// const reader = new FileReader();
-			// reader.readAsDataURL(imageBlob);
+				// const reader = new FileReader();
+				// reader.readAsDataURL(imageBlob);
 
-			// reader.onloadend = () => {
-			// 	const base64data = reader.result;
-			// 	setImgURL(base64data);
-			// }
+				// reader.onloadend = () => {
+				// 	const base64data = reader.result;
+				// 	setImgURL(base64data);
+				// }
+			}
+			else{
+				setErrorMsg("These types of files cannot be displayed");
+			}
 		})
 		.catch(err => {
 			console.log(err);
@@ -259,81 +267,86 @@ const DatasetDetails = (props) => {
 		<div>
 			{(props.type !== "dashboard") ? <Navbar status={props.status} /> : <DashboardNav />}
 
-			<div className="row my-4">
-				<div className="col-10 mx-auto d-flex">
-					<h4 className="title display-6 float-start">{(datasetDetails) ? datasetDetails.title : "Loading"}</h4>
-					<small>{(datasetDetails) ? "." + datasetDetails.fileType : "Loading"}</small>
-				</div>
-				<div className="col-10 mx-auto mt-3">
-					<h6 className="uploader">{(datasetDetails) ? " - " + datasetDetails.uploaderName + " - " : "Loading"}</h6>
-				</div>
-				<div className="col-10 mx-auto mt-3">
-					<button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</button>
-				</div>
+			<div className={`col-10 display-5 title mx-auto my-5${(errorMsg === "") ? "d-none" : ""}`}>
+				{errorMsg}
 			</div>
 
-			<div className="row mb-3 ratings">
-				<div className="col-10 mx-auto">
-					<div className="ratings"> 
-						<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 1) ? "rating-color" : ""}`}></i> 
-						<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 2) ? "rating-color" : ""}`}></i> 
-						<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 3) ? "rating-color" : ""}`}></i> 
-						<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 4) ? "rating-color" : ""}`}></i> 
-						<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 5) ? "rating-color" : ""}`}></i> 
-						<span className='mx-3'>{datasetDetails && datasetDetails.avgRating}</span>
+			<div className={`${(errorMsg !== "") ? "d-none" : ""}`}>
+				<div className="row my-4">
+					<div className="col-10 mx-auto d-flex">
+						<h4 className="title display-6 float-start">{(datasetDetails) ? datasetDetails.title : "Loading"}</h4>
+						<small>{(datasetDetails) ? "." + datasetDetails.fileType : "Loading"}</small>
+					</div>
+					<div className="col-10 mx-auto mt-3">
+						<h6 className="uploader">{(datasetDetails) ? " - " + datasetDetails.uploaderName + " - " : "Loading"}</h6>
+					</div>
+					<div className="col-10 mx-auto mt-3">
+						<button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</button>
 					</div>
 				</div>
-				<div className="col-10 mx-auto mt-3">
-					<h6 className="downloads">{(datasetDetails) ? datasetDetails.downloads + " downloads" : "Loading"}</h6>
-				</div>
-			</div>
 
-			<div className="row my-4 mx-auto">
-				<div className="card description text-white bg-dark my-3 mx-auto" style={{maxWidth: '95vw'}}>
-					<div className="card-header">Description</div>
-					<div className="card-body">
-						<p className="card-text text-warning">{(datasetDetails) ? datasetDetails.description : "Loading"}</p>
+				<div className="row mb-3 ratings">
+					<div className="col-10 mx-auto">
+						<div className="ratings"> 
+							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 1) ? "rating-color" : ""}`}></i> 
+							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 2) ? "rating-color" : ""}`}></i> 
+							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 3) ? "rating-color" : ""}`}></i> 
+							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 4) ? "rating-color" : ""}`}></i> 
+							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 5) ? "rating-color" : ""}`}></i> 
+							<span className='mx-3'>{datasetDetails && datasetDetails.avgRating}</span>
+						</div>
+					</div>
+					<div className="col-10 mx-auto mt-3">
+						<h6 className="downloads">{(datasetDetails) ? datasetDetails.downloads + " downloads" : "Loading"}</h6>
+					</div>
+				</div>
+
+				<div className="row my-4 mx-auto">
+					<div className="card description text-white bg-dark my-3 mx-auto" style={{maxWidth: '95vw'}}>
+						<div className="card-header">Description</div>
+						<div className="card-body">
+							<p className="card-text text-warning">{(datasetDetails) ? datasetDetails.description : "Loading"}</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="dataset-details row my-4 mx-auto">
+					<div className="table-contents col-10 mx-auto">
+						<h6 className="title lead my-4 text-muted">CONTENT</h6>
+						{getDatasetDetails()}
+					</div>
+					<div className="metadata col-10 mx-auto">
+						<h6 className="title lead my-4 text-muted">METADATA</h6>
+						{getMetadata()}
+					</div>
+					{/* <div className="histogram-image col-10 mx-auto">
+						<h6 className="title lead my-4 text-muted">HISTOGRAM</h6>
+						<img src={imgURL} alt="histogram-plot" />
+					</div> */}
+				</div>
+				
+
+				<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "d-none" : ""}`}>
+					<div className="col-10 mx-auto reviews-container d-flex flex-row flex-nowrap overflow-auto">
+						{getReviews()}
+					</div>
+					<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(reviewed) ? "d-none" : ""}`}>
+						<button onClick={(e) => setReviewType("add")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
+					</div>
+					<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(! reviewed) ? "d-none" : ""}`}>
+						<button onClick={(e) => setReviewType("update")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">Update Review</button>
+					</div>
+
+					<Review datasetID={params.id} type={reviewType} />
+				</div>
+
+				<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "" : "d-none"}`}>
+					<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
+						<button className="btn btn-lg btn-success my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleAccept}>Accept</button>
+						<button className="btn btn-lg btn-danger my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleReject}>Reject</button>
 					</div>
 				</div>
 			</div>
-
-			<div className="dataset-details row my-4 mx-auto">
-				<div className="table-contents col-10 mx-auto">
-					<h6 className="title lead my-4 text-muted">CONTENT</h6>
-					{getDatasetDetails()}
-				</div>
-				<div className="metadata col-10 mx-auto">
-					<h6 className="title lead my-4 text-muted">METADATA</h6>
-					{getMetadata()}
-				</div>
-				{/* <div className="histogram-image col-10 mx-auto">
-					<h6 className="title lead my-4 text-muted">HISTOGRAM</h6>
-					<img src={imgURL} alt="histogram-plot" />
-				</div> */}
-			</div>
-			
-
-			<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "d-none" : ""}`}>
-				<div className="col-10 mx-auto reviews-container d-flex flex-row flex-nowrap overflow-auto">
-					{getReviews()}
-				</div>
-				<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(reviewed) ? "d-none" : ""}`}>
-                    <button onClick={(e) => setReviewType("add")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">+Add Review</button>
-                </div>
-				<div className={`col-10 col-md-4 mx-auto my-4 d-flex justify-content-center ${(! reviewed) ? "d-none" : ""}`}>
-                    <button onClick={(e) => setReviewType("update")} className={`btn btn-dark my-3 mx-auto px-4 shadow-lg ${(props.status) ? "" : "d-none"}`} data-bs-toggle="modal" data-bs-target="#addReview-modal" data-bs-dismiss="modal">Update Review</button>
-                </div>
-
-				<Review datasetID={params.id} type={reviewType} />
-			</div>
-
-			<div className={`reviews row mx-auto my-4 ${(props.type === "dashboard") ? "" : "d-none"}`}>
-				<div className="col-10 col-md-4 mx-auto my-4 d-flex justify-content-center">
-                    <button className="btn btn-lg btn-success my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleAccept}>Accept</button>
-					<button className="btn btn-lg btn-danger my-3 mx-1 mx-sm-auto px-4 shadow-lg" onClick={handleReject}>Reject</button>
-                </div>
-			</div>
-			
 
 		</div>
 	);
