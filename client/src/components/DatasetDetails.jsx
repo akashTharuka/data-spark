@@ -292,36 +292,6 @@ const DatasetDetails = (props) => {
         })
 	}
 
-	const handleSubmit = (e) => {
-        e.preventDefault();
-
-        // const token = sessionStorage.getItem("token");
-
-		const id = {"id":params.id};
-        
-		console.log(id);
-     
-		axios.post(config.domain + '/download', id, {
-			headers: {
-				// 'Content-Type': 'application/json',
-		}})
-			.then((res) => {
-				console.log(res.data);
-
-				if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
-					console.log("here");
-					// history.push('/');
-					// document.location.reload();
-				}
-
-			}).catch((error) => {
-				console.log(error);
-			});
-
-        
-        
-    }
-
 	return (
 		<div>
 			{(props.type !== "dashboard") ? <Navbar status={props.status} /> : <DashboardNav />}
@@ -341,7 +311,7 @@ const DatasetDetails = (props) => {
 					</div>
 					<div className="col-10 mx-auto mt-3">
 					{/*   <a href="{{ url_for('download', id={{params.id}} }}"> </a>*/}
-						<button className="btn btn-dark px-4 float-start shadow-lg" onClick={handleSubmit}><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</button>
+						<button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i><a href={config.domain + "/files/" + params.id}>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</a></button>
 						{/* <button className="btn btn-dark px-4 float-start shadow-lg"><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</button> */}
 					</div>
 				</div>
