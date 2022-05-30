@@ -1,8 +1,7 @@
 import os
-from sre_constants import SUCCESS
-from flask import flash, jsonify
+from flask import jsonify
 from flask_cors import cross_origin
-from flask_restful import Api, Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 # abort can used when data is invalid
 from models.Dataset import Dataset
 
@@ -12,6 +11,7 @@ class GetAllDatasetsApiHandler(Resource):
     getDataset_args = reqparse.RequestParser()
 
     @jwt_required()
+    @cross_origin()
     def get(self):
 
         identity = get_jwt_identity()

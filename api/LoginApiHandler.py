@@ -1,6 +1,4 @@
-import json
-from flask import flash, make_response
-from flask_restful import Api, Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 # abort can used when data is invalid
 from models.User import User
 from flask import jsonify

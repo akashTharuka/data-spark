@@ -1,10 +1,7 @@
-from sre_constants import SUCCESS
-from flask import flash, jsonify, request
+from flask import jsonify
 from flask_cors import cross_origin
-from flask_restful import Api, Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 from models.Review import Review
-from models.User import User
-from models.Dataset import Dataset
 
 from flask_jwt_extended import get_jwt_identity, jwt_required
 

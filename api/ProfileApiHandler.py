@@ -21,6 +21,7 @@ class ProfileApiHandler(Resource):
     valid = True
 
     @jwt_required()
+
     def get(self):
         user_id = get_jwt_identity()
 
