@@ -120,8 +120,8 @@ const DatasetEditModel = (props) => {
                                     </div>
                                     
                                     <div className="d-grid col-6 mx-auto text-center my-4">
-                                    { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2" tabIndex="-1">Upload</button>}
-                                    { isPending && <button type="submit" className="btn btn-outline-dark py-2" tabIndex="-1" disabled>Upload</button>}
+                                    { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2" tabIndex="-1">Update</button>}
+                                    { isPending && <button type="submit" className="btn btn-outline-dark py-2" tabIndex="-1" disabled>Update</button>}
                                     </div>
                                 </form>
                             </div>

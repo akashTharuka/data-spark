@@ -58,9 +58,9 @@ const Profile = (props) => {
                 content.push(
                     <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
                         <div className="card personal" style={{width: "100%", cursor: "pointer"}}>
-                            <div className="card-body d-flex flex-row justify-content-between">
+                            <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">{datasets[i].title}</h5>
-                                <small className='timeleft'>1 h</small>
+                                <small className='last-modified'>{datasets[i].upload_time}</small>
                             </div>
                             <div className="edit-btns d-flex float-end">
                                 <i className="btn bi bi-pen" data-bs-toggle="modal" data-bs-target="#dataset-edit-modal" data-bs-dismiss="modal"></i>
