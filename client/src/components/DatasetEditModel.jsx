@@ -64,11 +64,13 @@ const DatasetEditModel = (props) => {
                     'Content-Type': 'multipart/form-data',
             }})
                 .then((res) => {
-                    console.log(res.data);
+                    console.log(res.data.message);
                     setIsPending(false);
+                    document.location.reload();
                 }).catch((error) => {
                     console.log(error);
                     setIsPending(false);
+                    document.location.reload();
                 });
         }
     }

@@ -18,9 +18,11 @@ const ConfirmModel = (props) => {
         })
             .then(response => {
                 console.log(response.data);
+                document.location.reload();
             })
             .catch(error => {
                 console.log(error);
+                document.location.reload();
             })
 	}
 
