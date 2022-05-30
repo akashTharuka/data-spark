@@ -6,8 +6,6 @@ const ConfirmModel = (props) => {
     const handleConfirm = (e) => {
         e.preventDefault();
 
-        console.log(props.id);
-
         const access_token = sessionStorage.getItem("token");
 
         const body = {"dataset_id": props.id}

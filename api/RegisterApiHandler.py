@@ -48,7 +48,7 @@ class RegisterApiHandler(Resource):
         try:
             user.save()
         except:
-            response = jsonify(message="An error occured while adding user to the database")
+            response = jsonify(message="An error occurred while adding user to the database")
             return response
 
         access_token = create_access_token(identity=user.id)

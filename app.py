@@ -11,7 +11,7 @@ from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 from api.DatasetStatusApiHandler import DatasetStatusApiHandler
-
+from api.DeleteDatasetApiHandler import DeleteDatasetApiHandler
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 
@@ -85,6 +85,7 @@ api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
+api.add_resource(DeleteDatasetApiHandler, '/deleteDataset')
 
 if __name__ == "__main__":
     app.run(debug=True)
