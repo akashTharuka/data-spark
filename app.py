@@ -2,6 +2,7 @@ from email.policy import default
 from flask import Flask, send_from_directory, request, send_file
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin
+from api.EditDatasetApiHandler import EditDatasetApiHandler
 from api.GetAllDatasetsApiHandler import GetAllDatasetsApiHandler
 from api.GetUserApiHandler import GetUserApiHandler
 from api.RegisterApiHandler import RegisterApiHandler
@@ -11,7 +12,7 @@ from api.ProfileApiHandler import ProfileApiHandler
 # from api.ProfileApiHandler import ProfileApiHandler
 from datetime import datetime
 from api.DatasetStatusApiHandler import DatasetStatusApiHandler
-from api.DeleteDatasetApiHandler import DeleteDatasetApiHandler
+from api.EditDatasetApiHandler import EditDatasetApiHandler
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
 
@@ -85,7 +86,8 @@ api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
-api.add_resource(DeleteDatasetApiHandler, '/deleteDataset')
+api.add_resource(EditDatasetApiHandler, '/editDataset')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
