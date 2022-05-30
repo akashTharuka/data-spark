@@ -72,6 +72,8 @@ class GetDatasetDetailsApiHandler(Resource):
         fileSize = dataset.file_size
         downloads = dataset.num_downloads
         avgRating = dataset.avg_rating
+        uploadTime = dataset.upload_time
+        category = dataset.category
 
         uploaderID = dataset.uploader_id
         uploader = User.find_by_id(uploaderID)
@@ -79,13 +81,16 @@ class GetDatasetDetailsApiHandler(Resource):
         uploaderName = uploader.username
 
         datasetDetails = {
+            "id": dataset_id,
             "title": title,
             "description": description,
             "fileType": fileType,
             "fileSize": fileSize,
             "downloads": downloads,
             "avgRating": avgRating,
-            "uploaderName": uploaderName
+            "uploaderName": uploaderName,
+            "uploadTime": uploadTime,
+            "category": category
         }
 
         # print(datasetDetails)

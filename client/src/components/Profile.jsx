@@ -3,6 +3,8 @@ import Register from './Register';
 import PasswordModal from './PasswordModal'
 import axios from 'axios';
 import config from '../config.json';
+import DatasetEditModel from './DatasetEditModel';
+import ConfirmModel from './ConfirmModel';
 
 const Profile = (props) => {
 
@@ -41,6 +43,14 @@ const Profile = (props) => {
         }
     }, [props.datasets]);
 
+    const handleEdit = (datasetID) => {
+        console.log("edit dataset details = " + datasetID);
+    }
+
+    const handleDelete = (datasetID) => {
+        console.log("delete dataset = " + datasetID);
+    }
+
     const getPersonalDataSets = () => {
         let content = [];
         for (let i = 0; i < datasets.length; i++){
@@ -53,9 +63,11 @@ const Profile = (props) => {
                                 <small className='timeleft'>1 h</small>
                             </div>
                             <div className="edit-btns d-flex float-end">
-                                <i className="btn bi bi-pen"></i>
-                                <i className="btn bi bi-trash3"></i>
+                                <i className="btn bi bi-pen" data-bs-toggle="modal" data-bs-target="#dataset-edit-modal" data-bs-dismiss="modal"></i>
+                                <i className="btn bi bi-trash3" data-bs-toggle="modal" data-bs-target="#confirm-modal" data-bs-dismiss="modal"></i>
                             </div>
+                            <DatasetEditModel id={datasets[i].id} title={datasets[i].title} description={datasets[i].description} />
+                            <ConfirmModel id={datasets[i].id} />
                         </div>
                     </div>
                 );
@@ -66,13 +78,15 @@ const Profile = (props) => {
 
     return (
         <div className="offcanvas offcanvas-end" tabIndex="-1" id='profileOffCanvas' aria-labelledby='profileOffCanvasLabel' aria-hidden="true">
-            <div className="offcanvas-header">
+            <div className="offcanvas-header text-center">
                 <h5 id="profileOffCanvasLabel" className='title display-6'>PROFILE</h5>
                 <button type='button' className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label='Close' tabIndex="-1"></button>
             </div>
             <div className="offcanvas-body">
                 <div className="row my-3 d-flex">
-                    <h2 className="lead">Account Details</h2>
+                    <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
+                        <h2 className="lead">Account Details</h2>
+                    </div>
                 </div>
                 <div className='col-10 mx-auto pt-4'>
                     <div className="form-floating mb-3">
@@ -97,9 +111,10 @@ const Profile = (props) => {
                 </div>
 
                 <div className="row my-3 d-flex">
-                    <h2 className="lead">Your Recent Datasets</h2>
-
-                    {getPersonalDataSets()}
+                    <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
+                        <h2 className="lead">Your Datasets</h2>
+                    </div>
+                    {(props.datasets) ? getPersonalDataSets() : "Loading"}
                 </div>
             </div>
         </div>

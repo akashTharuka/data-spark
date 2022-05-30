@@ -44,8 +44,9 @@ const Dashboard = () => {
                             <div className="card-body">
                                 <h5 className="card-title">{allDatasets[i].title}</h5>
                                 <p className="card-text">{allDatasets[i].description}</p>
-                                <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3 mx-2">View Details</a>
-                                <button className="btn btn-danger shadow-lg px-3 mx-2" onClick={() => handleReject(allDatasets[i].id)}>Reject</button>
+                                <small className='last-modified'><strong>Last modified:</strong><br /> {allDatasets[i].upload_time}</small><br />
+                                <a href={`/dashboard/details/${allDatasets[i].id}`} className="btn btn-warning shadow-lg px-3 mx-2 mt-3">View Details</a>
+                                <button className="btn btn-danger shadow-lg px-3 mx-2 mt-3" onClick={() => handleReject(allDatasets[i].id)}>Reject</button>
                             </div>
                             <span className={`position-absolute top-0 start-100 translate-middle badge rounded-pill ${(allDatasets[i].status_id === 1) ? "bg-success" : "bg-danger"}`}>
                                 {(allDatasets[i].status_id === 1) ? "Accepted" : "Pending"}

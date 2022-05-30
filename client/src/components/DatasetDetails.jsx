@@ -297,6 +297,12 @@ const DatasetDetails = (props) => {
 					<div className="col-10 mx-auto mt-3">
 						<a className="btn btn-dark px-4 float-start shadow-lg" href={config.domain + "/files/" + params.id}><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</a>
 					</div>
+					<div className="col-10 mx-auto mt-3">
+						<small className='category'><strong>Category &nbsp;|&nbsp;</strong> {(datasetDetails) ? (datasetDetails.category) ? datasetDetails.category : "Not Assigned" : "Loading"}</small>
+					</div>
+					<div className="col-10 mx-auto mt-3">
+						<small className='last-modified'><strong>Last modified &nbsp;|&nbsp;</strong> {(datasetDetails) ? datasetDetails.uploadTime : "Loading"}</small>
+					</div>
 				</div>
 
 				<div className="row mb-3 ratings">
