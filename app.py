@@ -15,7 +15,7 @@ from api.DatasetStatusApiHandler import DatasetStatusApiHandler
 from api.EditDatasetApiHandler import EditDatasetApiHandler
 from api.AddDatasetAPIHandler import AddDatasetApiHandler
 # from api.SearchDatasetAPIHandler import SearchDatasetAPIHandler
-
+from api.DeleteDatasetApiHandler import DeleteDatasetApiHandler
 
 from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetsApiHandler import GetDatasetsApiHandler
@@ -87,7 +87,7 @@ api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
 api.add_resource(EditDatasetApiHandler, '/editDataset')
-
+api.add_resource(DeleteDatasetApiHandler, '/deleteDataset')
 
 if __name__ == "__main__":
     app.run(debug=True)
