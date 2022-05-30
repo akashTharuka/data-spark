@@ -27,6 +27,7 @@ class EditDatasetApiHandler(Resource):
         dataset_id = args.get('dataset_id')
         title       = args.get('title')
         description = args.get('description')
+        upload_time = datetime.now()
         
         dataset = Dataset.filter_by_id(dataset_id)
         
@@ -46,7 +47,7 @@ class EditDatasetApiHandler(Resource):
             return response
 
         try:
-            dataset.edit(title,description)
+            dataset.edit(title,description, upload_time)
         except:
             return jsonify(message="An error occurred Editing Dataset"), 500
                 
