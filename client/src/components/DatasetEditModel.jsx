@@ -1,41 +1,26 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import config from '../config.json'
 
-const Upload = () => {
+const DatasetEditModel = (props) => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
-    const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
-
-
 
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
-    const [filepathErr, setFilepathErr] = useState('');
 
+    useEffect(() => {
+        setTitle(props.title);
+        setDescription(props.description);
+    }, []);
 
-    const history = useHistory();
-
-    const handleFile = (e) => {
-
-        console.log(e.target.files);
-        console.log(e.target.files[0]);
-        setFile(e.target.files[0]);
-        console.log(file);
-        // console.log(file.type)
-        // console.log(file.size)
-        console.log(file.lastModifiedDate)
-        console.log(description);
-    }
-
-    const validateData = (upload) => {
-        let title = upload.title;
-        let description = upload.description;
-        let file = upload.file;
+    const validateData = (edit) => {
+        let title = edit.title;
+        let description = edit.description;
         let valid = true;
 
         if (title === ""){
@@ -54,76 +39,43 @@ const Upload = () => {
             setDesErr("success");
         }
 
-        if (file === ""){
-            setFilepathErr("Please upload a file");
-            valid = false;
-        }
-        else{
-            setFilepathErr("success");
-        }
-
         return valid;
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        console.log(props.id);
+
         const token = sessionStorage.getItem("token");
 
-        const upload = {title, description, file, token};
+        const body = {title, description};
 
-        let valid = validateData(upload);
-
-        const formdata = new FormData();
-        formdata.append('file', file);
-        formdata.append('title', title);
-        formdata.append('description', description);
-        formdata.append('type', file.type);
-        formdata.append('size', file.size);
-
-        // console.log(formdata);
-        // console.log(formdata.get('file'));
+        let valid = validateData(body);
         
         if (valid){
             setIsPending(true);
 
-            axios.post(config.domain + '/addDataSet', formdata, {
+            axios.post(config.domain + '/updateDataSet', body, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
             }})
                 .then((res) => {
-                    setIsPending(false);
-                    setTitleErr(res.data.titleErr);
-                    setDesErr(res.data.desErr);
-                    setFilepathErr(res.data.filepathErr);
                     console.log(res.data);
-
-                    if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
-                        console.log("here");
-                        history.push('/');
-                        document.location.reload();
-                    }
-
                 }).catch((error) => {
-                    setIsPending(false);
                     console.log(error);
-                    sessionStorage.removeItem("token");
-                    history.push('/');
-                    document.location.reload();
                 });
-
         }
-        
     }
 
     return (
         <div>
-            <div className='modal fade p-5' id='upload-modal' aria-hidden='true' aria-labelledby='upload-modal' tabIndex="-1">
+            <div className='modal fade p-5' id='dataset-edit-modal' aria-hidden='true' aria-labelledby='dataset-edit-modal' tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-body">
-                                <h2 className="title display-6 my-4 text-center">ADD DATASET</h2>
+                                <h2 className="title display-6 my-4 text-center">EDIT DATASET</h2>
                                 <form className='col-10 mx-auto pt-4'>
                                     {/* add the classnames "invalid" or "valid" to the input parent div to see error and success */}
                                     <div className="form-floating mb-3">
@@ -134,6 +86,7 @@ const Upload = () => {
                                             tabIndex="-1" 
                                             value = {title}
                                             onChange={(e) => setTitle(e.target.value)}
+                                            placeholder='title'
                                             required
                                         />
                                         <label htmlFor="floatingTitle">Title</label>
@@ -159,35 +112,6 @@ const Upload = () => {
                                             {desErr}
                                         </div>
                                     </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="formFileMultiple" className="form-label mx-3">Add Dataset Files</label>
-                                        <input 
-                                            className={`form-control ${(filepathErr === "") ? "" : (filepathErr !== "success") ? "is-invalid" : "is-valid"}`}
-                                            type="file"
-                                            accept=".csv,.txt"
-                                            name='file'
-                                            id="formFileMultiple" 
-                                            tabIndex="-1" 
-                                            onChange={(e) => handleFile(e)}
-                                            multiple 
-                                        />
-                                        <div className="invalid-feedback">
-                                            {filepathErr}
-                                        </div>
-                                    </div>
-
-                                    {/* <div className="mb-3">
-                                        <label htmlFor="formFileImage" className="form-label mx-3">Add Image</label>
-                                        <input 
-                                            className="form-control is-invalid" 
-                                            type="file" id="formFileImage" 
-                                            tabIndex="-1" 
-                                        />
-                                        <div className="invalid-feedback">
-                                            Error message
-                                        </div>
-                                    </div> */}
                                     
                                     <div className="d-grid col-6 mx-auto text-center my-4">
                                     { !isPending && <button type="submit" onClick={handleSubmit} className="btn btn-outline-dark py-2" tabIndex="-1">Upload</button>}
@@ -202,4 +126,4 @@ const Upload = () => {
     );
 }
 
-export default Upload;
+export default DatasetEditModel;

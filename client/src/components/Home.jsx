@@ -32,8 +32,10 @@ const Home = (props) => {
                     <div className="card home position-relative" style={{width: "18rem", minHeight: "20rem"}}>
                         {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
                         <div className="card-body">
-                            <h5 className="card-title">{datasets[i].title}</h5>
+                            <h5 className="card-title mb-3"><strong>{datasets[i].title}</strong></h5>
                             <p className="card-text">{datasets[i].description}</p>
+                            <small className='last-modified'><strong>Last modified:</strong><br /> {datasets[i].upload_time}</small><br />
+                            <small className='category'><strong>Category | </strong> {datasets[i].category}</small>
                             <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3 position-absolute bottom-0 end-0 mb-2 me-2">View Details</a>
                         </div>
                     </div>
