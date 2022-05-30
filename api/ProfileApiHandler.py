@@ -10,10 +10,10 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
 class ProfileApiHandler(Resource):
-    register_args = reqparse.RequestParser()
-    register_args.add_argument("email", type=str, help="Email is required", required=True)
-    register_args.add_argument("username", type=str, help="Username is required", required=True)
-    register_args.add_argument("password", type=str, help="Password is required", required=True)
+    profile_args = reqparse.RequestParser()
+    profile_args.add_argument("email", type=str, help="Email is required", required=True)
+    profile_args.add_argument("username", type=str, help="Username is required", required=True)
+    profile_args.add_argument("password", type=str, help="Password is required", required=True)
 
     emailErr = ""
     usernameErr = ""
@@ -41,7 +41,7 @@ class ProfileApiHandler(Resource):
             response = jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 401
             return response
 
-        args = ProfileApiHandler.register_args.parse_args()
+        args = ProfileApiHandler.profile_args.parse_args()
 
         email    = args.get("email")
         username = args.get("username")
