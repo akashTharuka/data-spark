@@ -88,7 +88,7 @@ const DatasetDetails = (props) => {
 			let payload = {
 				datasetID: params.id
 			}
-			axios.post(`http://localhost:5000/getUser`, payload, {
+			axios.post(config.domain + `/getUser`, payload, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-Type': 'application/json', 
