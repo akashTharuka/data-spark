@@ -29,7 +29,8 @@ const Home = (props) => {
             content.push(
                 <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
                     <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
-                        {/* <img src={images.imageCap} className="card-img-top" alt=''/> }
+                        {// <img src={images.imageCap} className="card-img-top" alt=''/> 
+                        }
                         <div className="card-body">
                             <h5 className="card-title">{datasets[i].title}</h5>
                             <p className="card-text">{datasets[i].description}</p>
@@ -56,7 +57,6 @@ const Home = (props) => {
         return content;
     };
 
-
     // there should be functions here to sort, filter etc.
     
     const [keyword, setKeyword]                     = useState('');
@@ -64,15 +64,15 @@ const Home = (props) => {
     const [txtFileType, setTxtFileType]             = useState([false]);
     const [sort, setSort]                           = useState('');
 
-    const [compSciFilter, setCompSciFilter]         = useState('');
-    const [eduFilter, setEduFilter]                 = useState('');
-    const [dataVisualFilter, setDatavisualFilter]   = useState('');
-    const [preModalFilter, setPreTModalFilter]      = useState('');
-    const [allFilter, setAllFilter]                 = useState('');
+    //const [compSciFilter, setCompSciFilter]         = useState('');
+    //const [eduFilter, setEduFilter]                 = useState('');
+    //const [dataVisualFilter, setDatavisualFilter]   = useState('');
+    //const [preModalFilter, setPreTModalFilter]      = useState('');
+    //const [allFilter, setAllFilter]                 = useState(true);
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(compSciFilter, eduFilter, dataVisualFilter, preModalFilter, allFilter);
-    }, [compSciFilter, eduFilter, dataVisualFilter, preModalFilter, allFilter]);
+    }, [compSciFilter, eduFilter, dataVisualFilter, preModalFilter, allFilter]); */
 
     function handleSearch(datasets) {
         return datasets.filter(
@@ -117,35 +117,55 @@ const Home = (props) => {
 
     }
 
-    /* function handleType() {
-
-        if (csvFileType && !txtFileType) {
+    const handleToggle = (value) => {
+        if (value === "ComputerScience") {
             axios.get(config.domain + '/getDatasets')
 
             .then(response => {
-                const result = response.data.datasets.filter((a) =>  a.file_type.indexOf("csv") > -1);
+                const result = response.data.datasets.filter((dataset) => dataset.category.indexOf("ComputerScience") > -1)
                 setDatasets(result);
             });
+        }
 
-        } else if (txtFileType && !csvFileType) {
+        if (value === "Education") {
             axios.get(config.domain + '/getDatasets')
 
             .then(response => {
-                const result = response.data.datasets.filter((a) => a.file_type.indexOf("text") > -1);
+                const result = response.data.datasets.filter((dataset) => dataset.category.indexOf("Education") > -1)
                 setDatasets(result);
             });
-        } else if ((csvFileType && txtFileType) || (!csvFileType && !txtFileType)) {
+        }
+
+        if (value === "DataVisualization") {
             axios.get(config.domain + '/getDatasets')
 
             .then(response => {
-                const result = response.data.datasets.filter((a) =>  
-                        a.file_type.indexOf("csv") > -1 ||
-                        a.file_type.indexOf("text") > -1);
+                const result = response.data.datasets.filter((dataset) => dataset.category.indexOf("DataVisualization") > -1)
                 setDatasets(result);
             });
 
         }
-    } */
+
+        if (value === "PreTrainedModal") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets.filter((dataset) => dataset.category.indexOf("PreTrainedModal") > -1)
+                setDatasets(result);
+            });
+        }
+
+        if (value === "All") {
+            axios.get(config.domain + '/getDatasets')
+
+            .then(response => {
+                const result = response.data.datasets
+                setDatasets(result);
+            });
+        }
+
+
+    }
 
     return (
         <div>
@@ -217,19 +237,19 @@ const Home = (props) => {
 
                 <div className="d-flex col-12 align-items-center mx-auto my-4 d-flex">
                     <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" onClick={(e) => setCompSciFilter((e.target.checked) ? "ComputerScience" : "")} className="btn-check" id="btncheck1" autoComplete="off" />
+                        <input type="button" onClick={() => handleToggle("ComputerScience")} className="btn-check" id="btncheck1" autoComplete="off" />
                         <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck1">Computer Science</label>
 
-                        <input type="checkbox" onClick={(e) => setEduFilter((e.target.checked) ? "Education" : "")} className="btn-check" id="btncheck2" autoComplete="off" />
+                        <input type="button" onClick={() => handleToggle("Education")} className="btn-check" id="btncheck2" autoComplete="off" />
                         <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck2">Education</label>
 
-                        <input type="checkbox" onClick={(e) => setDatavisualFilter((e.target.checked) ? "DataVisualization" : "")} className="btn-check" id="btncheck3" autoComplete="off" />
+                        <input type="button" onClick={() => handleToggle("DataVisualization")} className="btn-check" id="btncheck3" autoComplete="off" />
                         <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck3">Data Visualization</label>
 
-                        <input type="checkbox" onClick={(e) => setPreTModalFilter((e.target.checked) ? "PreTrainedModal" : "")} className="btn-check" id="btncheck4" autoComplete="off" />
+                        <input type="button" onClick={() => handleToggle("PreTrainedModal")} className="btn-check" id="btncheck4" autoComplete="off" />
                         <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck4">Pre-trained Modal</label>
 
-                        <input type="checkbox" onClick={(e) => setAllFilter((e.target.checked) ? "All" : "")} className="btn-check" id="btncheck5" autoComplete="off" />
+                        <input type="button" onClick={() => handleToggle("All")} className="btn-check" id="btncheck5" autoComplete="off" />
                         <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck5">All</label>
                     </div>
                 </div>
