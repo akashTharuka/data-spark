@@ -69,6 +69,11 @@ class Dataset(db.Model):
         dataset.num_downloads += 1
         db.session.commit()
     
+    def edit(self,title,description):
+        self.title = title
+        self.description = description
+        db.session.commit()
+    
     def save(self):
         db.session.add(self)
         db.session.commit()
