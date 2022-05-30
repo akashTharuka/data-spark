@@ -46,7 +46,7 @@ class EditDatasetApiHandler(Resource):
             return response
 
         try:
-            dataset.Edit(title,description) 
+            dataset.edit(title,description)
         except:
             return jsonify(message="An error occurred Editing Dataset"), 500
                 

@@ -86,7 +86,7 @@ api.add_resource(ProfileApiHandler, '/profile')
 api.add_resource(UpdatePswdApiHandler,'/updatePassword')
 api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
-api.add_resource(EditDatasetApiHandler, '/editDataset')
+api.add_resource(EditDatasetApiHandler, '/updateDataSet')
 api.add_resource(DeleteDatasetApiHandler, '/deleteDataset')
 
 if __name__ == "__main__":

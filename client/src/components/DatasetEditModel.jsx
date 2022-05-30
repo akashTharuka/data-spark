@@ -8,6 +8,7 @@ const DatasetEditModel = (props) => {
 
     const [title, setTitle]             = useState('');
     const [description, setDescription] = useState('');
+    const [dataset_id, setDataset_id]     = useState('');
     const [isPending, setIsPending]     = useState(false);
 
     const [titleErr, setTitleErr]       = useState('');
@@ -16,6 +17,7 @@ const DatasetEditModel = (props) => {
     useEffect(() => {
         setTitle(props.title);
         setDescription(props.description);
+        setDataset_id(props.id)
     }, []);
 
     const validateData = (edit) => {
@@ -49,7 +51,7 @@ const DatasetEditModel = (props) => {
 
         const token = sessionStorage.getItem("token");
 
-        const body = {title, description};
+        const body = {dataset_id, title, description};
 
         let valid = validateData(body);
         
@@ -63,8 +65,10 @@ const DatasetEditModel = (props) => {
             }})
                 .then((res) => {
                     console.log(res.data);
+                    setIsPending(false);
                 }).catch((error) => {
                     console.log(error);
+                    setIsPending(false);
                 });
         }
     }
