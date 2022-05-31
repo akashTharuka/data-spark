@@ -1,4 +1,3 @@
-from sre_constants import SUCCESS
 from flask import flash, jsonify
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
@@ -7,6 +6,7 @@ from models.Dataset import Dataset
 
 class GetDatasetsApiHandler(Resource):
 
+    @cross_origin()
     def get(self):
         # 1 = accepted
         status_id = 1

@@ -1,5 +1,4 @@
-from sre_constants import SUCCESS
-from flask import flash, jsonify, request, send_file
+from flask import jsonify, request, send_file
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
 from models.Review import Review

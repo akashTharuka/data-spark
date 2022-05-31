@@ -1,5 +1,5 @@
 import os
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 # abort can used when data is invalid
 from flask import jsonify
 

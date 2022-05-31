@@ -1,4 +1,3 @@
-from sqlalchemy import false, ForeignKey
 from db import db
 
 class Dataset(db.Model):

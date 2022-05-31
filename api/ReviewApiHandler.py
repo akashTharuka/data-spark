@@ -1,5 +1,3 @@
-import json
-from sre_constants import SUCCESS
 from flask import flash, jsonify, make_response
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
