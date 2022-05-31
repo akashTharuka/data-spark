@@ -113,7 +113,7 @@ const DatasetDetails = (props) => {
 		for (let i = 0; i < reviewsLength; i++){
 			content.push(
 				<div className="col" key={i}>
-					<div className="card review bg-light m-3" style={{width: '25rem', minHeight: "15rem"}}>
+					<div className="card review bg-light mx-auto" style={{width: '24rem', minHeight: "15rem"}}>
 						<div className="card-body d-flex flex-column">
 							<h5 className="card-title text-center text-light fs-3">{allReviews[i].reviewer}</h5>
 							<div className="ratings text-center"> 

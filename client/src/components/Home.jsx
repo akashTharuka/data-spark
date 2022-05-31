@@ -64,7 +64,7 @@ const Home = (props) => {
     const getEmptyDatasets = () => {
         let content = [];
         content.push (
-            <div className="col-md-20 text-center align-middle fw-bold fs-1" key={0}>
+            <div className="col-10 title text-center display-6 fs-4 mx-auto my-5 text-danger" key={0}>
                 No Datasets are Available for this Category !!!
             </div>
         )
