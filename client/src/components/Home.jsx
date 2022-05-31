@@ -52,27 +52,6 @@ const Home = (props) => {
     }
 
     const getDatasets = () => {
-        // let content = [];
-        // for (let i = 0; i < datasets.length; i++){
-        //     content.push(
-        //         <div className="card dataset bg-light my-3 mx-auto col-10 col-md-5 mx-1 d-flex" key={i} style={{border: 'none'}}>
-        //             <div className="card-title mt-3 mb-0 ms-3 fs-3">{datasets[i].title}</div>
-        //             <div className="subtitle small ms-3 text-muted">
-        //                 <time dateTime={datasets[i].upload_time}>
-        //                     <i className="fas fa-calendar-alt me-2"></i>{datasets[i].upload_time}
-        //                 </time>
-        //                 <div className="category">
-        //                     <span><i className="fa fa-folder me-2"></i><strong>{datasets[i].category}</strong></span>
-        //                 </div>
-        //             </div>
-        //             <div className="card-body">
-        //                 <p className="card-text text-dark">{datasets[i].description.substring(0, 200) + ". . . "}<strong>see more</strong></p>
-        //             </div>
-        //             <a href={`/details/${datasets[i].id}`} className="btn btn-outline-dark shadow-md mb-3 me-auto px-3">View Details</a>
-        //         </div>
-        //     );
-        // }
-        // return content;
         let searchedDatasets = handleAllSearch(datasets);
         return outputDatasets(searchedDatasets);
     };
