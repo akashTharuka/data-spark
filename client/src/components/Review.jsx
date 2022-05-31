@@ -71,13 +71,13 @@ const Review = (props) => {
                     .then((res) => {
                         setIsPending(false);
                         setCommentErr(res.data.msg);
-                        // document.location.reload();
+                        document.location.reload();
                         
                     }).catch((error) => {
                         setIsPending(false);
                         console.log(error.message);
-                        // sessionStorage.removeItem("token");
-                        // document.location.reload();
+                        sessionStorage.removeItem("token");
+                        document.location.reload();
 
                 });
             }
@@ -100,6 +100,7 @@ const Review = (props) => {
                                     id="floatingTextarea" 
                                     style={{height: "150px"}}
                                     value={review}
+                                    maxLength="200"
                                     onChange={(e) => setReview(e.target.value)}
                                 ></textarea>
                                 <label htmlFor="floatingTextarea">Comments</label>

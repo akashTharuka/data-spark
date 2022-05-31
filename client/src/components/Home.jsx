@@ -73,7 +73,7 @@ const Home = (props) => {
             </div>
 
             <Upload />
-            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2">
+            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-auto">
                 <div className="search col-10 col-md-8">
                     <div className="search-box ps-3">
                         <input 
@@ -88,8 +88,10 @@ const Home = (props) => {
                         </span>
                     </div>
                 </div>
+            </div>
 
-                <div className="col-6 col-md-2">
+            <div className="row d-flex flex-column mx-2 my-2">
+                <div className="col-10 col-md-3 d-flex flex-column my-2 mx-auto">
                     <select className="form-select" aria-label="Default select example" onChange={(e) => setSort(e.target.value)} value={sort}>
                         <option defaultValue="SortHere">Sort Here</option>
                         <option value="Alphabetical">Alphabetical</option>
@@ -99,25 +101,27 @@ const Home = (props) => {
                     </select>
                 </div>
 
-                <div className="d-flex col-12 align-items-center mx-auto my-4 d-flex">
-                    <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                <div className="d-flex flex-column col-10 col-xl-7 mx-auto my-2">
+                    <div className="btn-group flex-wrap my-2" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" onClick={(e) => setCompSciFilter((e.target.checked) ? "ComputerScience" : "")} className="btn-check" id="btncheck1" autoComplete="off" />
-                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck1">Computer Science</label>
+                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck1">Computer Science</label>
 
                         <input type="checkbox" onClick={(e) => setEduFilter((e.target.checked) ? "Education" : "")} className="btn-check" id="btncheck2" autoComplete="off" />
-                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck2">Education</label>
+                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck2">Education</label>
 
                         <input type="checkbox" onClick={(e) => setDatavisualFilter((e.target.checked) ? "DataVisualization" : "")} className="btn-check" id="btncheck3" autoComplete="off" />
-                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck3">Data Visualization</label>
+                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck3">Data Visualization</label>
 
                         <input type="checkbox" onClick={(e) => setPreTModalFilter((e.target.checked) ? "PreTrainedModal" : "")} className="btn-check" id="btncheck4" autoComplete="off" />
-                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck4">Pre-trained Modal</label>
+                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck4">Pre-trained Modal</label>
 
                         <input type="checkbox" onClick={(e) => setAllFilter((e.target.checked) ? "All" : "")} className="btn-check" id="btncheck5" autoComplete="off" />
-                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck5">All</label>
+                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck5">All</label>
                     </div>
                 </div>
+            </div>
 
+            <div className="row d-flex my-2">
                 <div className="d-flex col-10 align-items-center mx-auto my-4">
                     <span className='lead dataset-count'>{datasetLength} Datasets</span>
                 </div>
@@ -125,7 +129,6 @@ const Home = (props) => {
                 <div className="row d-flex justify-content-evenly my-4">
                     {getDataSets()}
                 </div>
-                
             </div>
         </div>
     );

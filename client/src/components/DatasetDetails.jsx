@@ -113,19 +113,18 @@ const DatasetDetails = (props) => {
 		for (let i = 0; i < reviewsLength; i++){
 			content.push(
 				<div className="col" key={i}>
-					<div className="card review m-3" style={{width: '25rem', minHeight: "15rem"}}>
-					{/* <img src="..." className="card-img-top" alt="..." /> */}
-						<div className="card-body">
-							<h5 className="card-title">{allReviews[i].reviewer}</h5>
-							<div className="ratings"> 
+					<div className="card review bg-light m-3" style={{width: '25rem', minHeight: "15rem"}}>
+						<div className="card-body d-flex flex-column">
+							<h5 className="card-title text-center text-light fs-3">{allReviews[i].reviewer}</h5>
+							<div className="ratings text-center"> 
 								<i className={`fa fa-star ${(allReviews[i].rating >= 1) ? "rating-color" : ""}`}></i> 
 								<i className={`fa fa-star ${(allReviews[i].rating >= 2) ? "rating-color" : ""}`}></i> 
 								<i className={`fa fa-star ${(allReviews[i].rating >= 3) ? "rating-color" : ""}`}></i> 
 								<i className={`fa fa-star ${(allReviews[i].rating >= 4) ? "rating-color" : ""}`}></i> 
 								<i className={`fa fa-star ${(allReviews[i].rating >= 5) ? "rating-color" : ""}`}></i> 
-								<span className='mx-3'>{allReviews[i].rating}</span>
 							</div>
-							<p className="card-text">{allReviews[i].comment}</p>
+							{/* <span className='mx-auto'>{allReviews[i].rating}</span> */}
+							<p className="card-text text-center text-light small mt-3">{allReviews[i].comment}</p>
 						</div>
 					</div>
 				</div>

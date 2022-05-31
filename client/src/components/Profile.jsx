@@ -62,7 +62,7 @@ const Profile = (props) => {
             if (userID === datasets[i].uploader_id){
                 content.push(
                     <div className="d-flex flex-column align-items center mx-auto my-3" key={i}>
-                        <div className="card personal" style={{width: "100%", cursor: "pointer"}}>
+                        <div className="card personal bg-light" style={{width: "100%", cursor: "pointer"}}>
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">{datasets[i].title}</h5>
                                 <small className='last-modified'>{datasets[i].upload_time}</small>
@@ -118,7 +118,7 @@ const Profile = (props) => {
                     {/* <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
                         <h2 className="lead">Your Datasets</h2>
                     </div> */}
-                    {(props.datasets) ? getPersonalDataSets() : "Loading"}
+                    {(props.datasets) ? getPersonalDataSets() : ""}
                 </div>
             </div>
         </div>
