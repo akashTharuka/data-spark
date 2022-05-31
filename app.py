@@ -65,7 +65,9 @@ def serve(path):
 def get_file(dataset_id):
     dataset = Dataset.filter_by_id(dataset_id)
     Dataset.increaseDownloads(dataset_id)
-    path = dataset.file_path
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
+    target      = os.path.join(UPLOAD_FOLDER, 'test_docs')
+    path = "/".join([target, dataset.file_name])
     return send_file(path, as_attachment=True)
 
 

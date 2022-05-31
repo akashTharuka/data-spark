@@ -15,8 +15,6 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 class AddDatasetApiHandler(Resource):
 
     addDataset_args = reqparse.RequestParser()
-    addDataset_args.add_argument("uploader_id", type=int, help="Uploader id ",location='form', required=False)
-    addDataset_args.add_argument("Status_id", type=int, help="Status id", location='form', required=False)
     addDataset_args.add_argument("title", type=str, help="title", location='form', required=True)
     addDataset_args.add_argument("description", type=str, help="description", location='form', required=True)
     addDataset_args.add_argument("file", type=werkzeug.datastructures.FileStorage, help="filepath of the dataset", location='files', required=True) 
@@ -58,7 +56,7 @@ class AddDatasetApiHandler(Resource):
 
             destination = "/".join([target, unique_filename])    
             file.save(destination)
-            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_path=destination,description=description, file_type=file_type, file_size=file_size, upload_time=upload_time)
+            dataset = Dataset(uploader_id=uploader_id, status_id=status_id, title=title, file_name=unique_filename,description=description, file_type=file_type, file_size=file_size, upload_time=upload_time)
         else:
             return jsonify(message="Unsuitable file type")
 

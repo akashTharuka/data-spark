@@ -4,6 +4,8 @@ from flask_restful import Api, Resource, reqparse, abort
 from models.Review import Review
 from models.User import User
 from models.Dataset import Dataset
+import os.path
+from os import path
 
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, jwt_required
 
@@ -13,22 +15,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import json
-
-def datasetList():
-    datasets = [x.split('.')[0] for f in ['datasets'] for x in os.listdir(f)]
-    extensions = [x.split('.')[1] for f in ['datasets'] for x in os.listdir(f)]
-    folders = [f for f in ['datasets'] for x in os.listdir(f)]
-    return datasets, extensions, folders
-
-def loadDataset(dataset):
-    datasets, extensions, folders = datasetList()
-    if dataset in datasets:
-        extension = extensions[datasets.index(dataset)]
-        if extension == 'txt':
-            df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'))
-        elif extension == 'csv':
-            df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'))
-        return df
 
 def plot_histsmooth(df):
     sns.set()
@@ -44,17 +30,6 @@ def plot_histsmooth(df):
     import base64
     figdata_png = base64.b64encode(figfile.getvalue()).decode('utf8')
     return figdata_png #.decode('ascii')
-
-class NpEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.integer):
-            return int(obj)
-        if isinstance(obj, np.floating):
-            return float(obj)
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return super(NpEncoder, self).default(obj)
-
 
 class GetDatasetDetailsApiHandler(Resource):
 
@@ -93,9 +68,15 @@ class GetDatasetDetailsApiHandler(Resource):
         }
 
         # print(datasetDetails)
-        file_path = dataset.file_path
-        # df = loadDataset(dataset)
-        df = pd.read_csv(file_path)
+        file_name = dataset.file_name
+        UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
+        target      = os.path.join(UPLOAD_FOLDER, 'test_docs')
+        destination = "/".join([target, file_name])
+
+        if not path.exists(destination):
+            return jsonify(msg="File Not Found Error")
+
+        df = pd.read_csv(destination)
         
         reviewArr = Review.getReviews(dataset_id)
         reviews = []
