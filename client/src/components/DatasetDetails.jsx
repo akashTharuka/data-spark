@@ -289,43 +289,155 @@ const DatasetDetails = (props) => {
 				<div className="row my-4">
 					<div className="col-10 mx-auto d-flex">
 						<h4 className="title display-6 float-start">{(datasetDetails) ? datasetDetails.title : "Loading"}</h4>
-						<small>{(datasetDetails) ? "." + datasetDetails.fileType : "Loading"}</small>
 					</div>
 					<div className="col-10 mx-auto mt-3">
 						<h6 className="uploader">{(datasetDetails) ? " - " + datasetDetails.uploaderName + " - " : "Loading"}</h6>
 					</div>
 					<div className="col-10 mx-auto mt-3">
-						<a className="btn btn-dark px-4 float-start shadow-lg" href={config.domain + "/files/" + params.id}><i className="bi bi-download me-3"></i>Download{(datasetDetails) ? " [ " + datasetDetails.fileSize + "B ]" : ""}</a>
+						<a className="btn btn-dark px-4 float-start shadow-lg" href={config.domain + "/files/" + params.id}><i className="bi bi-download me-3"></i>Download</a>
 					</div>
 					<div className="col-10 mx-auto mt-3">
-						<small className='category'><strong>Category &nbsp;|&nbsp;</strong> {(datasetDetails) ? (datasetDetails.category) ? datasetDetails.category : "Not Assigned" : "Loading"}</small>
-					</div>
-					<div className="col-10 mx-auto mt-3">
-						<small className='last-modified'><strong>Last modified &nbsp;|&nbsp;</strong> {(datasetDetails) ? datasetDetails.uploadTime : "Loading"}</small>
-					</div>
-				</div>
-
-				<div className="row mb-3 ratings">
-					<div className="col-10 mx-auto">
-						<div className="ratings"> 
-							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 1) ? "rating-color" : ""}`}></i> 
-							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 2) ? "rating-color" : ""}`}></i> 
-							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 3) ? "rating-color" : ""}`}></i> 
-							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 4) ? "rating-color" : ""}`}></i> 
-							<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 5) ? "rating-color" : ""}`}></i> 
-							<span className='mx-3'>{datasetDetails && datasetDetails.avgRating}</span>
+						<div className="row">
+							<div className="rate col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>Rating</h3>
+													<div className="ratings"> 
+														<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 1) ? "rating-color" : ""}`}></i> 
+														<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 2) ? "rating-color" : ""}`}></i> 
+														<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 3) ? "rating-color" : ""}`}></i> 
+														<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 4) ? "rating-color" : ""}`}></i> 
+														<i className={`fa fa-star ${(datasetDetails && datasetDetails.avgRating >= 5) ? "rating-color" : ""}`}></i>
+													</div>
+												</div>
+												<div className="align-self-center ms-auto">
+													<span className='text-warning fs-1'>{datasetDetails && datasetDetails.avgRating}</span>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="category col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>Category</h3>
+													<span className='text-primary'>{(datasetDetails) ? (datasetDetails.category) ? datasetDetails.category : "Not Assigned" : "Loading"}</span>
+												</div>
+												<div className="align-self-center ms-auto">
+													<i className="fa fa-folder text-primary fs-1"></i>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="modified-date col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>Last Modified</h3>
+													<span className='text-success'>{(datasetDetails) ? datasetDetails.uploadTime : "Loading"}</span>
+												</div>
+												<div className="align-self-center ms-auto">
+													<i className="fa fa-calendar-check text-success fs-1"></i>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="downloads col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>Downloads</h3>
+													<span className='text-danger'>{(datasetDetails) ? datasetDetails.downloads + " downloads" : "Loading"}</span>
+												</div>
+												<div className="align-self-center ms-auto">
+													<i className="fa fa-download text-danger fs-1"></i>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="file-type col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>File Type</h3>
+													<span className='text-info'>{(datasetDetails) ? "." + datasetDetails.fileType : "Loading"}</span>
+												</div>
+												<div className="align-self-center ms-auto">
+													<i className="fa fa-file text-info fs-1"></i>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="file-size col-lg-4 my-2">
+								<div className="card">
+									<div className="card-content">
+										<div className="card-body">
+											<div className="media d-flex">
+												<div className="media-body text-start">
+													<h3>File Size</h3>
+													<span className='text-warning'>{(datasetDetails) ?  datasetDetails.fileSize + " Bytes" : "Loading"}</span>
+												</div>
+												<div className="align-self-center ms-auto">
+													<i className="fa fa-window-restore text-warning fs-1"></i>
+												</div>
+											</div>
+											{/* <div className="progress mt-1 mb-0" style={{height: "7px"}}>
+												<div className="progress-bar bg-primary" role="progressbar" style={{width: "80%"}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div> */}
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div className="col-10 mx-auto mt-3">
-						<h6 className="downloads">{(datasetDetails) ? datasetDetails.downloads + " downloads" : "Loading"}</h6>
 					</div>
 				</div>
 
 				<div className="row my-4 mx-auto">
-					<div className="card description text-white bg-dark my-3 mx-auto" style={{maxWidth: '95vw'}}>
-						<div className="card-header">Description</div>
+					<div className="card description bg-light my-3 mx-auto" style={{maxWidth: '95vw', border: 'none'}}>
+						<div className="card-title mt-3 mb-0 ms-3 fs-3">Little Something to know about the dataset</div>
+						<div className="subtitle small ms-3 text-muted">
+							<time dateTime={(datasetDetails) ? datasetDetails.uploadTime : "Loading"}>
+								<i className="fas fa-calendar-alt me-2"></i>{(datasetDetails) ? datasetDetails.uploadTime : "Loading"}
+							</time>
+						</div>
 						<div className="card-body">
-							<p className="card-text text-warning">{(datasetDetails) ? datasetDetails.description : "Loading"}</p>
+							<p className="card-text text-dark">{(datasetDetails) ? datasetDetails.description : "Loading"}</p>
 						</div>
 					</div>
 				</div>

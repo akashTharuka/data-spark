@@ -64,6 +64,10 @@ class Dataset(db.Model):
         return self.query.filter_by(id=dataset_id).first()
 
     @classmethod
+    def get_num_of_uploads(self, user_id):
+        return self.query.filter_by(uploader_id=user_id).count()
+
+    @classmethod
     def increaseDownloads(self, dataset_id):
         dataset = self.query.filter_by(id=dataset_id).first()
         dataset.num_downloads += 1

@@ -110,7 +110,7 @@ const DatasetEditModel = (props) => {
                                             tabIndex="-1"
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            maxLength="100"
+                                            maxLength="400"
                                             required
                                         ></textarea>
                                         <label htmlFor="fileDescription">Description</label>

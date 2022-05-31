@@ -28,8 +28,10 @@ class ProfileApiHandler(Resource):
 
         if not user:
             return make_response(jsonify(msg="Authorization Error: Invalid Token or Token Expired"), 403)
+        
+        num_of_uploads = Dataset.get_num_of_uploads(user_id)
 
-        return jsonify(email=user.email, username=user.username, userID=user.id, msg="Authorization Successfull")
+        return jsonify(email=user.email, username=user.username, userID=user.id, msg="Authorization Successfull", num_of_uploads=num_of_uploads)
 
     @jwt_required()
     def post(self):

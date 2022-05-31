@@ -6,13 +6,25 @@ import config from '../config.json';
 import DatasetEditModel from './DatasetEditModel';
 import ConfirmModel from './ConfirmModel';
 
+import { images } from '../javascript/imageImports.js';
+
 const Profile = (props) => {
 
     const [email, setEmail]       = useState("");
     const [username, setUsername] = useState("");
     const [userID, setUserID]     = useState(null);
+    const [numOfUploads ,setNumOfUploads] = useState(0);
+
+    const [background, setBackground] = useState(null);
 
     const [datasets, setDatasets] = useState([]);
+
+    const imageArray = [images.background2, images.background3, images.background4, images.background5];
+
+    useEffect(() => {
+        let randomIndex = Math.floor(Math.random()*4);
+        setBackground(imageArray[randomIndex]);
+    }, []);
 
     useEffect(() => {
 
@@ -28,6 +40,7 @@ const Profile = (props) => {
                 setEmail(res.data.email);
                 setUsername(res.data.username);
                 setUserID(res.data.userID);
+                setNumOfUploads(res.data.num_of_uploads);
             })
             .catch((error) => {
                 console.log(error);
@@ -42,14 +55,6 @@ const Profile = (props) => {
             setDatasets(props.datasets);
         }
     }, [props.datasets]);
-
-    const handleEdit = (datasetID) => {
-        console.log("edit dataset details = " + datasetID);
-    }
-
-    const handleDelete = (datasetID) => {
-        console.log("delete dataset = " + datasetID);
-    }
 
     const getPersonalDataSets = () => {
         let content = [];
@@ -78,42 +83,41 @@ const Profile = (props) => {
 
     return (
         <div className="offcanvas offcanvas-end" tabIndex="-1" id='profileOffCanvas' aria-labelledby='profileOffCanvasLabel' aria-hidden="true">
-            <div className="offcanvas-header text-center">
-                <h5 id="profileOffCanvasLabel" className='title display-6'>PROFILE</h5>
-                <button type='button' className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label='Close' tabIndex="-1"></button>
-            </div>
             <div className="offcanvas-body">
-                <div className="row my-3 d-flex">
-                    <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
-                        <h2 className="lead">Account Details</h2>
-                    </div>
+                <div className="row mx-auto d-flex justify-content-center mb-2">
+                    <button type='button' className="btn btn-sm text-muted" data-bs-dismiss="offcanvas" aria-label='Close' tabIndex="-1">CLOSE</button>
                 </div>
-                <div className='col-10 mx-auto pt-4'>
-                    <div className="form-floating mb-3">
-                        <input type="email" readOnly className="form-control" id='editReadOnlyEmail' tabIndex="-1" value={email} />
-                        <label htmlFor="editReadOnlyEmail">Email address</label>
-                    </div>
 
-                    <div className="form-floating mb-3">
-                        <input type="text" readOnly className="form-control" id='editReadOnlyUsername' tabIndex="-1" value={username} />
-                        <label htmlFor="editReadOnlyUsername">Username</label>
-                    </div>
+                <div className="row mb-3 mx-auto">
+                    <div className="profile-card card" style={{minHeight: "30rem", backgroundImage: `url(${background})`, border: "none"}}>
+                        <div className="card-body">
+                            <h6 className="card-title display-6 title text-center">PROFILE</h6>
+                            <h5 className="username text-center text-dark fs-4 mt-5">{username}</h5>
+                            <h6 className="email text-center">{email}</h6>
 
-                    <div className="d-grid col-8 mx-auto text-center my-4">
-                        <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal">UPDATE ACCOUNT</button>
-                    </div>
-                    <div className="d-grid col-8 mx-auto text-center my-4">
-                        <button type="button" className="btn btn-outline-dark py-2 shadow-lg" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-password-modal" data-bs-dismiss="modal">UPDATE PASSWORD</button>
-                    </div>
+                            <div className="col-10 mx-auto mt-5 justify-content-center d-flex">
+                                <button type="button" className="btn btn-sm btn-outline-dark py-2 mx-auto mt-3 px-4" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-modal" data-bs-dismiss="modal" style={{minWidth: "11rem"}}>update profile</button>
+                            </div>
+                            <div className="col-10 mx-auto justify-content-center d-flex">
+                                <button type="button" className="btn btn-sm btn-outline-dark py-2 mx-auto mt-3 px-4" tabIndex="-1" data-bs-toggle="modal" data-bs-target="#edit-password-modal" data-bs-dismiss="modal" style={{minWidth: "11rem"}}>update password</button>
+                            </div>
 
+                            <div className="row mx-auto mt-5">
+                                <div className="col-4 mx-auto d-flex flex-column">
+                                    <span className="uploads-num fs-1 text-dark text-center fw-bolder ">{numOfUploads}</span>
+                                    <span className="uploads-label small text-dark text-center">uploads</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <Register type="edit" email={email} username={username} />
                     <PasswordModal />
                 </div>
 
                 <div className="row my-3 d-flex">
-                    <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
+                    {/* <div className="row text-center bg-warning pt-3 pb-2 mx-auto">
                         <h2 className="lead">Your Datasets</h2>
-                    </div>
+                    </div> */}
                     {(props.datasets) ? getPersonalDataSets() : "Loading"}
                 </div>
             </div>

@@ -5,8 +5,6 @@ import config from '../config.json'
 import Navbar from './Navbar';
 import Upload from './Upload';
 
-import { images } from '../javascript/imageImports';
-
 const Home = (props) => {
 
     const [datasets, setDatasets] = useState([]);
@@ -28,17 +26,20 @@ const Home = (props) => {
         let content = [];
         for (let i = 0; i < datasetLength; i++){
             content.push(
-                <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i}>
-                    <div className="card home position-relative" style={{width: "18rem", minHeight: "20rem"}}>
-                        {/* <img src={images.imageCap} className="card-img-top" alt=''/> */}
-                        <div className="card-body">
-                            <h5 className="card-title mb-3"><strong>{datasets[i].title}</strong></h5>
-                            <p className="card-text">{datasets[i].description}</p>
-                            <small className='last-modified'><strong>Last modified:</strong><br /> {datasets[i].upload_time}</small><br />
-                            <small className='category'><strong>Category | </strong> {datasets[i].category}</small>
-                            <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3 position-absolute bottom-0 end-0 mb-2 me-2">View Details</a>
+                <div className="card dataset bg-light my-3 mx-auto col-10 col-md-5 mx-1 d-flex" key={i} style={{border: 'none'}}>
+                    <div className="card-title mt-3 mb-0 ms-3 fs-3">{datasets[i].title}</div>
+                    <div className="subtitle small ms-3 text-muted">
+                        <time dateTime={datasets[i].upload_time}>
+                            <i className="fas fa-calendar-alt me-2"></i>{datasets[i].upload_time}
+                        </time>
+                        <div className="category">
+                            <span><i className="fa fa-folder me-2"></i><strong>{datasets[i].category}</strong></span>
                         </div>
                     </div>
+                    <div className="card-body">
+                        <p className="card-text text-dark">{datasets[i].description.substring(0, 200) + ". . . "}<strong>see more</strong></p>
+                    </div>
+                    <a href={`/details/${datasets[i].id}`} className="btn btn-outline-dark shadow-md mb-3 me-auto px-3">View Details</a>
                 </div>
             );
         }
