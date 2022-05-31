@@ -52,27 +52,6 @@ const Home = (props) => {
     }
 
     const getDatasets = () => {
-        // let content = [];
-        // for (let i = 0; i < datasets.length; i++){
-        //     content.push(
-        //         <div className="card dataset bg-light my-3 mx-auto col-10 col-md-5 mx-1 d-flex" key={i} style={{border: 'none'}}>
-        //             <div className="card-title mt-3 mb-0 ms-3 fs-3">{datasets[i].title}</div>
-        //             <div className="subtitle small ms-3 text-muted">
-        //                 <time dateTime={datasets[i].upload_time}>
-        //                     <i className="fas fa-calendar-alt me-2"></i>{datasets[i].upload_time}
-        //                 </time>
-        //                 <div className="category">
-        //                     <span><i className="fa fa-folder me-2"></i><strong>{datasets[i].category}</strong></span>
-        //                 </div>
-        //             </div>
-        //             <div className="card-body">
-        //                 <p className="card-text text-dark">{datasets[i].description.substring(0, 200) + ". . . "}<strong>see more</strong></p>
-        //             </div>
-        //             <a href={`/details/${datasets[i].id}`} className="btn btn-outline-dark shadow-md mb-3 me-auto px-3">View Details</a>
-        //         </div>
-        //     );
-        // }
-        // return content;
         let searchedDatasets = handleAllSearch(datasets);
         return outputDatasets(searchedDatasets);
     };
@@ -82,9 +61,21 @@ const Home = (props) => {
         return outputDatasets(searchedDatasets);
     }
 
+    const getEmptyDatasets = () => {
+        let content = [];
+        content.push (
+            <div className="col-md-20 text-center align-middle fw-bold fs-1" key={0}>
+                No Datasets are Available for this Category !!!
+            </div>
+        )
+        return content;
+    }
+
     const [keyword, setKeyword]                         = useState('');
     const [sort, setSort]                               = useState('');
     const [categorizedDatasets, setCategorizedDatasets] = useState([]);
+    const [emptyDatasets, setEmptyDatasets] = useState([]);
+
 
     function handleAllSearch() {
         return datasets.filter(
@@ -101,52 +92,62 @@ const Home = (props) => {
     }
 
     const handleCategory = (value) => {
-        const result = datasets.filter((dataset) => dataset.category === value);
-        setCategorizedDatasets(result);
+        if (value === "All") {
+            setCategorizedDatasets(datasets);
+        } else {
+            const result = datasets.filter((dataset) => dataset.category === value);
+            if (result.length > 0) {
+                setCategorizedDatasets(result);
+            } else {
+                setCategorizedDatasets([]);
+                setEmptyDatasets("No Result So Far...");
+            }
+        }
     }
 
     const handleSort = (e) => {
 
         const sortType = document.getElementById("select_sort_type").value;
         setSort(e.target.value);
+        var result;
 
         if (categorizedDatasets.length > 0) {
 
-            if (sortType === "Alphabetical") {            
-                const result = categorizedDatasets.sort((a,b) =>  a.title.localeCompare(b.title));
-                setCategorizedDatasets(result);
+            if (sortType === "Sort Here") {
+                result = categorizedDatasets
+
+            } else if (sortType === "Alphabetical") {            
+                result = categorizedDatasets.sort((a,b) =>  a.title.localeCompare(b.title));
 
             } else if (sortType === "Downloads") {           
-                const result = categorizedDatasets.sort((a,b) =>  a.num_downloads > b.num_downloads ? -1 : 1);
-                setCategorizedDatasets(result);
+                result = categorizedDatasets.sort((a,b) =>  a.num_downloads > b.num_downloads ? -1 : 1);
 
             } else if (sortType === "Ratings") {
-                const result = categorizedDatasets.sort((a,b) =>  a.avg_rating > b.avg_rating ? -1 : 1);
-                setCategorizedDatasets(result);
+                result = categorizedDatasets.sort((a,b) =>  a.avg_rating > b.avg_rating ? -1 : 1);
 
             } else if (sortType === "Date modified") {
-                const result = categorizedDatasets.sort((a,b) =>  new Date(a.upload_time) > new Date(b.upload_time) ? -1 : 1)
-                setCategorizedDatasets(result);
+                result = categorizedDatasets.sort((a,b) =>  new Date(a.upload_time) > new Date(b.upload_time) ? -1 : 1)
             }
+            setCategorizedDatasets(result);
 
         } else {
 
-            if (sortType === "Alphabetical") {            
-                const result = datasets.sort((a,b) =>  a.title.localeCompare(b.title));
-                setDatasets(result);
+            if (sortType === "Sort Here") {
+                result = datasets
+
+            } else if (sortType === "Alphabetical") {            
+                result = datasets.sort((a,b) =>  a.title.localeCompare(b.title));
 
             } else if (sortType === "Downloads") {           
-                const result = datasets.sort((a,b) =>  a.num_downloads > b.num_downloads ? -1 : 1);
-                setDatasets(result);
+                result = datasets.sort((a,b) =>  a.num_downloads > b.num_downloads ? -1 : 1);
 
             } else if (sortType === "Ratings") {
-                const result = datasets.sort((a,b) =>  a.avg_rating > b.avg_rating ? -1 : 1);
-                setDatasets(result);
+                result = datasets.sort((a,b) =>  a.avg_rating > b.avg_rating ? -1 : 1);
 
             } else if (sortType === "Date modified") {
-                const result = datasets.sort((a,b) =>  new Date(a.upload_time) > new Date(b.upload_time) ? -1 : 1)
-                setDatasets(result);
+                result = datasets.sort((a,b) =>  new Date(a.upload_time) > new Date(b.upload_time) ? -1 : 1)
             }
+            setDatasets(result);
         }
     }
 
@@ -191,16 +192,16 @@ const Home = (props) => {
 
                 <div className="d-flex flex-column col-10 col-xl-7 mx-auto my-2">
                     <div className="btn-group flex-wrap my-2" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="button" onClick={() => handleCategory("ComputerScience")} className="btn-check" id="btncheck1" autoComplete="off" />
+                        <input type="button" onClick={() => handleCategory("Computer Science")} className="btn-check" id="btncheck1" autoComplete="off" />
                         <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck1">Computer Science</label>
 
                         <input type="button" onClick={() => handleCategory("Education")} className="btn-check" id="btncheck2" autoComplete="off" />
                         <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck2">Education</label>
 
-                        <input type="button" onClick={() => handleCategory("DataVisualization")} className="btn-check" id="btncheck3" autoComplete="off" />
+                        <input type="button" onClick={() => handleCategory("Data Visualization")} className="btn-check" id="btncheck3" autoComplete="off" />
                         <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck3">Data Visualization</label>
 
-                        <input type="button" onClick={() => handleCategory("PreTrainedModal")} className="btn-check" id="btncheck4" autoComplete="off" />
+                        <input type="button" onClick={() => handleCategory("Pre-trained Modal")} className="btn-check" id="btncheck4" autoComplete="off" />
                         <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck4">Pre-trained Modal</label>
 
                         <input type="button" onClick={() => handleCategory("All")} className="btn-check" id="btncheck5" autoComplete="off" />
@@ -210,20 +211,19 @@ const Home = (props) => {
             </div>
 
             <div className="row d-flex my-2">
-                {/* <div className="d-flex col-10 align-items-center mx-auto my-4">
-                    <span className='lead dataset-count'>{datasetLength} Datasets</span>
-                </div>
-
-                <div className="row d-flex justify-content-evenly my-4">
-                    {getDatasets()}
-                </div> */}
                 {categorizedDatasets.length > 0 && (
                     <>
                     {getCategorizedDatasets()}
                     </>
                 )}
 
-                {categorizedDatasets.length < 1 &&(
+                {categorizedDatasets.length < 1 && emptyDatasets.length > 0 &&(
+                    <>
+                    {getEmptyDatasets()}
+                    </>
+                )}
+
+                {categorizedDatasets.length < 1 && emptyDatasets.length < 1 &&(
                     <>
                     {getDatasets()}
                     </>
