@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config.json'
 import Navbar from './Navbar';
 import Upload from './Upload';
 
-const Home = (props) => {
+import { images } from '../javascript/imageImports';
+
+const Home2 = (props) => {
 
     const [datasets, setDatasets] = useState([]);
 
@@ -13,14 +16,10 @@ const Home = (props) => {
         axios.get(config.domain + '/getDatasets')
             .then(response => {
                 setDatasets(response.data.datasets);
-            })
-            .catch(err => {
-                console.log(err);
             });
     }, []);
 
     const outputDatasets = (datasets) => {
-
         let content = [];
 
         content.push(
@@ -31,60 +30,36 @@ const Home = (props) => {
 
         for (let i = 0; i < datasets.length; i++){
             content.push(
-                <div className="card dataset bg-light my-3 mx-auto col-10 col-md-5 mx-1 d-flex" key={i+1} style={{border: 'none'}}>
-                    <div className="card-title mt-3 mb-0 ms-3 fs-3">{datasets[i].title}</div>
-                    <div className="subtitle small ms-3 text-muted">
-                        <time dateTime={datasets[i].upload_time}>
-                            <i className="fas fa-calendar-alt me-2"></i>{datasets[i].upload_time}
-                        </time>
-                        <div className="category">
-                            <span><i className="fa fa-folder me-2"></i><strong>{datasets[i].category}</strong></span>
+                <div className="d-flex col-10 col-sm-6 col-md-4 col-lg-3 align-items center mx-auto my-4" key={i+1}>
+                    <div className="card home" style={{width: "18rem", minHeight: "20rem"}}>
+                        <div className="card-body">
+                            <h5 className="card-title">{datasets[i].title}</h5>
+                            <p className="card-text">{datasets[i].description}</p>
+                            <a href={`/details/${datasets[i].id}`} className="btn btn-warning shadow-lg px-3">View Details</a>
                         </div>
                     </div>
-                    <div className="card-body">
-                        <p className="card-text text-dark">{datasets[i].description.substring(0, 200) + ". . . "}<strong>see more</strong></p>
-                    </div>
-                    <a href={`/details/${datasets[i].id}`} className="btn btn-outline-dark shadow-md mb-3 me-auto px-3">View Details</a>
                 </div>
             );
-        }
+        } 
         return content;
     }
 
-    const getDatasets = () => {
-        // let content = [];
-        // for (let i = 0; i < datasets.length; i++){
-        //     content.push(
-        //         <div className="card dataset bg-light my-3 mx-auto col-10 col-md-5 mx-1 d-flex" key={i} style={{border: 'none'}}>
-        //             <div className="card-title mt-3 mb-0 ms-3 fs-3">{datasets[i].title}</div>
-        //             <div className="subtitle small ms-3 text-muted">
-        //                 <time dateTime={datasets[i].upload_time}>
-        //                     <i className="fas fa-calendar-alt me-2"></i>{datasets[i].upload_time}
-        //                 </time>
-        //                 <div className="category">
-        //                     <span><i className="fa fa-folder me-2"></i><strong>{datasets[i].category}</strong></span>
-        //                 </div>
-        //             </div>
-        //             <div className="card-body">
-        //                 <p className="card-text text-dark">{datasets[i].description.substring(0, 200) + ". . . "}<strong>see more</strong></p>
-        //             </div>
-        //             <a href={`/details/${datasets[i].id}`} className="btn btn-outline-dark shadow-md mb-3 me-auto px-3">View Details</a>
-        //         </div>
-        //     );
-        // }
-        // return content;
-        let searchedDatasets = handleAllSearch(datasets);
-        return outputDatasets(searchedDatasets);
+    const getDataSets = () => {
+
+        let Searcheddatasets = handleAllSearch(datasets);
+        return outputDatasets(Searcheddatasets);
     };
 
-    const getCategorizedDatasets = () => {
-        let searchedDatasets = handleCategorySearch(datasets);
-        return outputDatasets(searchedDatasets);
-    }
+    const getCategorizedDataSets = () => {
 
-    const [keyword, setKeyword]                         = useState('');
-    const [sort, setSort]                               = useState('');
-    const [categorizedDatasets, setCategorizedDatasets] = useState([]);
+        let Searcheddatasets = handleCategorySearch(datasets);
+        return outputDatasets(Searcheddatasets);
+
+    };
+    
+    const [keyword, setKeyword]                             = useState('');
+    const [sort, setSort]                                   = useState('');
+    const [categorizedDatasets, setCategorizedDatasets]     = useState([]);
 
     function handleAllSearch() {
         return datasets.filter(
@@ -161,13 +136,14 @@ const Home = (props) => {
             </div>
 
             <Upload />
-            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-auto">
+            <div className="row d-flex justify-content-evenly align-items-center my-4 mx-2">
                 <div className="search col-10 col-md-8">
                     <div className="search-box ps-3">
                         <input 
                             className="search-txt" 
                             type="text" 
-                            placeholder="search here..." 
+                            placeholder="search here..."
+                            id="search_text" 
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
                         />
@@ -176,10 +152,8 @@ const Home = (props) => {
                         </span>
                     </div>
                 </div>
-            </div>
 
-            <div className="row d-flex flex-column mx-2 my-2">
-                <div className="col-10 col-md-3 d-flex flex-column my-2 mx-auto">
+                <div className="col-6 col-md-2">
                     <select className="form-select" aria-label="Default select example" id="select_sort_type" onChange={(e) => handleSort(e)}>
                         <option defaultValue="SortHere">Sort Here</option>
                         <option value="Alphabetical">Alphabetical</option>
@@ -189,48 +163,46 @@ const Home = (props) => {
                     </select>
                 </div>
 
-                <div className="d-flex flex-column col-10 col-xl-7 mx-auto my-2">
-                    <div className="btn-group flex-wrap my-2" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="button" onClick={() => handleCategory("ComputerScience")} className="btn-check" id="btncheck1" autoComplete="off" />
-                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck1">Computer Science</label>
+                <div className="d-flex col-12 align-items-center mx-auto my-4 d-flex">
+                    <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <input type="button" onClick={() => handleCategory("ComputerScience")} className="btn-check" id="btncheck1" autoComplete="off"/>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck1">Computer Science</label>
 
                         <input type="button" onClick={() => handleCategory("Education")} className="btn-check" id="btncheck2" autoComplete="off" />
-                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck2">Education</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck2">Education</label>
 
                         <input type="button" onClick={() => handleCategory("DataVisualization")} className="btn-check" id="btncheck3" autoComplete="off" />
-                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck3">Data Visualization</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck3">Data Visualization</label>
 
                         <input type="button" onClick={() => handleCategory("PreTrainedModal")} className="btn-check" id="btncheck4" autoComplete="off" />
-                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck4">Pre-trained Modal</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck4">Pre-trained Modal</label>
 
                         <input type="button" onClick={() => handleCategory("All")} className="btn-check" id="btncheck5" autoComplete="off" />
-                        <label className="col-2 btn btn-outline-dark mx-2 my-2 rounded align-middle" style={{width: "10rem"}} htmlFor="btncheck5">All</label>
+                        <label className="btn btn-outline-dark mx-2 rounded" htmlFor="btncheck5">All</label>
                     </div>
                 </div>
-            </div>
 
-            <div className="row d-flex my-2">
-                {/* <div className="d-flex col-10 align-items-center mx-auto my-4">
-                    <span className='lead dataset-count'>{datasetLength} Datasets</span>
-                </div>
+
 
                 <div className="row d-flex justify-content-evenly my-4">
-                    {getDatasets()}
-                </div> */}
-                {categorizedDatasets.length > 0 && (
-                    <>
-                    {getCategorizedDatasets()}
-                    </>
-                )}
+                    
+                    {categorizedDatasets.length > 0 && (
+                        <>
+                        {getCategorizedDataSets()}
+                        </>
+                    )}
 
-                {categorizedDatasets.length < 1 &&(
-                    <>
-                    {getDatasets()}
-                    </>
-                )}
+                    {categorizedDatasets.length < 1 &&(
+                        <>
+                        {getDataSets()}
+                        </>
+                    )}
+
+                </div>
+                
             </div>
         </div>
     );
 }
 
-export default Home;
+export default Home2;
