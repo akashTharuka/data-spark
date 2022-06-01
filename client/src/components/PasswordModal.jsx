@@ -79,12 +79,12 @@ const Register = (props) => {
             }})
                 .then((res) => {
                     setIsPending(false);
-                    console.log(res.data);
+                    
                     if (res.data.msg !== "") {
                         setOldPswMsg(res.data.msg);
                     }
                     else{
-                        console.log(res.data.msg);
+                        
                         sessionStorage.removeItem("token");
                         history.push('/');
                         document.location.reload();
@@ -92,7 +92,6 @@ const Register = (props) => {
                 })
                 .catch((error) => {
                     setIsPending(false);
-                    console.log(error);
                     history.push('/');
                     document.location.reload();
                 });

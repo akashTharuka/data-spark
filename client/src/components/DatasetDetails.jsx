@@ -48,7 +48,7 @@ const DatasetDetails = (props) => {
 			},
 		})
 		.then((res) => {
-			// console.log(res.data);
+			
 			if (res.data.result){
 				setAllReviews(res.data.reviews);
 				setDatasetDetails(res.data.datasetDetails);
@@ -69,23 +69,14 @@ const DatasetDetails = (props) => {
 
 				setDownloadUrl(res.data.download_url);
 
-				// const plot = res.data.result.plot;
-				// const imageBlob = plot.blob();
-
-				// const reader = new FileReader();
-				// reader.readAsDataURL(imageBlob);
-
-				// reader.onloadend = () => {
-				// 	const base64data = reader.result;
-				// 	setImgURL(base64data);
-				// }
+				
 			}
 			else{
 				setErrorMsg("These types of files cannot be displayed");
 			}
 		})
 		.catch(err => {
-			console.log(err);
+			
 		});
 
 		if (token){
@@ -99,11 +90,11 @@ const DatasetDetails = (props) => {
 				},
 			})
 			.then(res => {
-				console.log(res.data.reviewed);
+				
 				setReviewed(res.data.reviewed);
 			})
 			.catch(err => {
-				console.log("error in catch: " + err);
+				
 				sessionStorage.removeItem("token");
 				document.location.reload();
 			})
@@ -118,10 +109,10 @@ const DatasetDetails = (props) => {
 
 		axios.post(config.domain + '/download', dataset_id)
 			.then((res) => {
-				console.log("download success");
+				
 			})
 			.catch((err) => {
-				console.log(err);
+				
 			})
 	}
 

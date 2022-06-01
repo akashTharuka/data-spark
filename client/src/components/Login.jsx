@@ -43,7 +43,7 @@ const Login = () => {
             axios.post(config.domain + '/login', login)
                 .then((res) => {
                     let msg = res.data.msg;
-                    console.log(msg);
+                    
                     if (msg != ""){
                         setErrMsg(msg);
                     }
@@ -55,7 +55,7 @@ const Login = () => {
                     setIsPending(false);
                 }).catch((error) => {
                     setIsPending(false);
-                    console.log(error);
+                    
                 });
         }
     }

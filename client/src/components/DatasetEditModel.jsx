@@ -47,7 +47,7 @@ const DatasetEditModel = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(props.id);
+        
 
         const token = sessionStorage.getItem("token");
 
@@ -64,11 +64,11 @@ const DatasetEditModel = (props) => {
                     'Content-Type': 'multipart/form-data',
             }})
                 .then((res) => {
-                    console.log(res.data.message);
+                    
                     setIsPending(false);
                     document.location.reload();
                 }).catch((error) => {
-                    console.log(error);
+                    
                     setIsPending(false);
                     document.location.reload();
                 });

@@ -7,10 +7,6 @@ const AcceptModel = (props) => {
     const [category, setCategory] = useState(null);
     const [categoryMsg, setCategoryMsg] = useState("");
 
-    // useEffect(() => {
-    //     console.log(category);
-    // }, [category]);
-
     const validateData = (category) => {
         let valid = true;
 
@@ -42,13 +38,12 @@ const AcceptModel = (props) => {
                 }
             })
                 .then(response => {
-                    console.log(response.data.message);
                     if (response.data.valid){
                         document.location = "/dashboard";
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+
                     sessionStorage.removeItem("admin_token");
                     document.location = "/adminlogin";
                 })

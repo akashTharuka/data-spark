@@ -74,16 +74,6 @@ const Upload = () => {
         const dataset_title = title;
 
         let valid = validateData(upload);
-
-        // const formdata = new FormData();
-        // formdata.append('file', file);
-        // formdata.append('title', title);
-        // formdata.append('description', description);
-        // formdata.append('type', file.type);
-        // formdata.append('size', file.size);
-
-        // console.log(formdata);
-        // console.log(formdata.get('file'));
         
         if (valid){
             setIsPending(true);
@@ -95,7 +85,7 @@ const Upload = () => {
 
 
             const unique_name = file_name.split('.')[0] + unique_code.toString() + '.' + file_name.split('.')[1]
-            console.log(unique_name)
+
         
             const storageRef = ref(storage, `/datasets/${unique_name}`);
             // create an upload task
@@ -112,18 +102,15 @@ const Upload = () => {
                     setPercent(percentGot);
                 },
                 (err) => {
-                    console.log(err)
                     setIsPending(false);  
                     sessionStorage.removeItem("token");
                     history.push('/');
-                    // document.location.reload();
+                    document.location.reload();
                 },
                 () => {
                     // download url
                     getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                        console.log("url:" + url);
-                        // formdata.append('download_url', url);
-                        console.log(dataset_title, description);
+
                         const data = {"dataset_title": dataset_title, "description": description, "type": file.type, "size": file.size, "file_extension": file_extension, "download_url": url}
                         axios.post(config.domain + '/addDataSet', data, {
                             headers: {
@@ -135,20 +122,20 @@ const Upload = () => {
                                 setTitleErr(res.data.titleErr);
                                 setDesErr(res.data.desErr);
                                 setFilepathErr(res.data.filepathErr);
-                                console.log(res.data);
+
 
                                 if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
-                                    console.log("here");
+
                                     history.push('/');
-                                    // document.location.reload();
+                                    document.location.reload();
                                 }
 
                             }).catch((error) => {
                                 setIsPending(false);
-                                console.log(error);
+
                                 sessionStorage.removeItem("token");
                                 history.push('/');
-                                // document.location.reload();
+                                document.location.reload();
                             });
                     });
                 }

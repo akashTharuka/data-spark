@@ -43,7 +43,7 @@ const Profile = (props) => {
                 setNumOfUploads(res.data.num_of_uploads);
             })
             .catch((error) => {
-                console.log(error);
+                
                 sessionStorage.removeItem("token");
                 document.location.reload();
             });

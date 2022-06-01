@@ -15,7 +15,7 @@ const Home = (props) => {
                 setDatasets(response.data.datasets);
             })
             .catch(err => {
-                console.log(err);
+                
             });
     }, []);
 

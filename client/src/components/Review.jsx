@@ -56,7 +56,6 @@ const Review = (props) => {
                         
                     }).catch((error) => {
                         setIsPending(false);
-                        console.log(error.message);
                         sessionStorage.removeItem("token");
                         document.location.reload();
                 });
@@ -75,7 +74,6 @@ const Review = (props) => {
                         
                     }).catch((error) => {
                         setIsPending(false);
-                        console.log(error.message);
                         sessionStorage.removeItem("token");
                         document.location.reload();
 

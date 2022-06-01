@@ -125,7 +125,7 @@ const Register = (props) => {
                     let emailUsernameCheck = false;
 
                     if (res.data.emailErr == "success" && res.data.usernameErr == "success") {
-                            console.log("here");
+                           
                             sessionStorage.setItem("token", res.data.access_token)
                             history.push('/');
                             document.location.reload();
@@ -133,7 +133,6 @@ const Register = (props) => {
 
                 }).catch((error) => {
                     setIsPending(false);
-                    console.log("here " + error);
                 });
             }
 
