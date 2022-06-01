@@ -108,9 +108,9 @@ const Upload = () => {
                 }).catch((error) => {
                     setIsPending(false);
                     console.log(error);
-                    sessionStorage.removeItem("token");
-                    history.push('/');
-                    document.location.reload();
+                    // sessionStorage.removeItem("token");
+                    // history.push('/');
+                    // document.location.reload();
                 });
 
         }

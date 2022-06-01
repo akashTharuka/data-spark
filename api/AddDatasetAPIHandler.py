@@ -63,7 +63,7 @@ class AddDatasetApiHandler(Resource):
         try:
             dataset.save() 
         except:
-            return jsonify(message="An error occurred adding user to database", titleErr="failed", descErr="failed",filepathErr="failed"), 500
+            return jsonify(message="An error occurred adding file to database", titleErr="failed", descErr="failed",filepathErr="failed"), 500
                 
         response = jsonify(message="User added successfully", titleErr="success", desErr="success",filepathErr="success")
         return response
