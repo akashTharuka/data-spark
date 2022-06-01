@@ -70,7 +70,7 @@ const AcceptModel = (props) => {
                                         <option value="Education">Education</option>
                                         <option value="Data Visualization">Data Visualization</option>
                                         <option value="Pre-trained Modal">Pre-trained Modal</option>
-                                        <option value="All">All</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                     <div className="invalid-feedback">
                                         {categoryMsg}
