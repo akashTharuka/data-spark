@@ -158,7 +158,7 @@ class GetDatasetDetailsApiHandler(Resource):
         except:
             pass
 
-        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result)
+        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result, download_url=file_path)
         return response
 
 

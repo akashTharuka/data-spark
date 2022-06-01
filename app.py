@@ -16,6 +16,7 @@ from api.GetDatasetDetailsApiHandler import GetDatasetDetailsApiHandler
 from api.GetDatasetsApiHandler import GetDatasetsApiHandler
 from api.ReviewApiHandler import ReviewApiHandler
 from api.UpdatePswdApiHandler import UpdatePswdApiHandler
+from api.DownloadDSApiHandler import DownloadDSApiHandler
 from dotenv import load_dotenv
 
 from models.Dataset import Dataset
@@ -54,7 +55,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 def create_tables():
     from db import db
     db.init_app(app)
-    db.create_all()
+    # db.create_all()
 
 
 @app.route('/', defaults={'path': ''})
@@ -83,6 +84,7 @@ api.add_resource(GetUserApiHandler, '/getUser')
 api.add_resource(DatasetStatusApiHandler, '/changeStatus')
 api.add_resource(EditDatasetApiHandler, '/updateDataSet')
 api.add_resource(DeleteDatasetApiHandler, '/deleteDataset')
+api.add_resource(DownloadDSApiHandler, '/download')
 
 if __name__ == "__main__":
     app.run(debug=True)

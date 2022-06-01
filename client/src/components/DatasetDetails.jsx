@@ -35,6 +35,8 @@ const DatasetDetails = (props) => {
 
 	const [errorMsg, setErrorMsg]				= useState("");
 
+	const [downloadUrl, setDownloadUrl] 		= useState("");
+
 	useEffect(() => {
 
 		const token = sessionStorage.getItem("token");
@@ -64,6 +66,8 @@ const DatasetDetails = (props) => {
 				setQuanList1(res.data.result.quantile1);
 				setQuanList2(res.data.result.quantile2);
 				setQuanList3(res.data.result.quantile3);
+
+				setDownloadUrl(res.data.download_url);
 
 				// const plot = res.data.result.plot;
 				// const imageBlob = plot.blob();
@@ -105,6 +109,21 @@ const DatasetDetails = (props) => {
 			})
 		}
 	}, []);
+
+	const handleDownload = (e) => {
+		e.preventDefault();
+
+        window.open(downloadUrl, "_blank");
+		const dataset_id = {"dataset_id": params.id};
+
+		axios.post(config.domain + '/download', dataset_id)
+			.then((res) => {
+				console.log("download success");
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+	}
 
 	const reviewsLength = allReviews.length;
 
@@ -293,7 +312,7 @@ const DatasetDetails = (props) => {
 						<h6 className="uploader">{(datasetDetails) ? " - " + datasetDetails.uploaderName + " - " : "Loading"}</h6>
 					</div>
 					<div className="col-10 mx-auto mt-3">
-						<a className="btn btn-dark px-4 float-start shadow-lg" href={config.domain + "/files/" + params.id}><i className="bi bi-download me-3"></i>Download</a>
+						<a className="btn btn-dark px-4 float-start shadow-lg" onClick={handleDownload} ><i className="bi bi-download me-3"></i>Download</a>
 					</div>
 					<div className="col-10 mx-auto mt-3">
 						<div className="row">
