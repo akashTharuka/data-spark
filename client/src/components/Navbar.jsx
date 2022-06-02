@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 import Register from './Register';
@@ -19,7 +19,7 @@ const Navbar = (props) => {
 			</div>
 			
 			<div className="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-				<ul className={`navbar-nav ${(props.loginStatus) ? 'd-none' : ''}`}>
+				<ul className={`navbar-nav ${(props.status) ? 'd-none' : ''}`}>
 					<li className="nav-item m-2">
                         <button type="button" className="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#register-modal" data-bs-dismiss="modal">
                             Register
@@ -31,7 +31,7 @@ const Navbar = (props) => {
                         </button>
 					</li>
 				</ul>
-				<ul className={`navbar-nav ${(props.loginStatus) ? '' : 'd-none'}`}>
+				<ul className={`navbar-nav ${(props.status) ? '' : 'd-none'}`}>
 					<li className="nav-item m-2">
                         <button type="button" className="logout btn btn-outline-danger px-4 shadow-lg" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-dismiss="modal">
                             Logout
@@ -43,7 +43,7 @@ const Navbar = (props) => {
 							<i className="bi bi-person me-2"></i>
                             Profile
                         </button>
-						<Profile />
+						<Profile datasets={props.datasets} />
 					</li>
 				</ul>
 			</div>
