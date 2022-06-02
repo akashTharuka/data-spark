@@ -25,7 +25,7 @@ class AdminLoginApiHandler(Resource):
 
         if not username == ADMIN_USERNAME or not password == ADMIN_PASSWORD:
             self.msg = "Authentication Error"
-            response = jsonify(msg=self.msg);
+            response = jsonify(msg=self.msg)
             return response
 
 

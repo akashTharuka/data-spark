@@ -46,24 +46,38 @@ const DatasetDetails = (props) => {
 			},
 		})
 		.then((res) => {
-			// console.log(res.data);
-			if (res.data.result){
-				setAllReviews(res.data.reviews);
-				setDatasetDetails(res.data.datasetDetails);
-				setColumns(res.data.result.columns);
-				setRows(res.data.result.rowlists);
+			// console.log(res.data)
+			let string = res.data;
+			string = JSON.stringify(string);
+			string = string.replace(/\\n/g, "\\n")  
+				.replace(/\\'/g, "\\'")
+				.replace(/\\"/g, '\\"')
+				.replace(/\\&/g, "\\&")
+				.replace(/\\r/g, "\\r")
+				.replace(/\\t/g, "\\t")
+				.replace(/\\b/g, "\\b")
+				.replace(/\\f/g, "\\f")
+				.replace(/^\s+|\s+$/g, "")
+				.replace(/[\u0000-\u001F]+/g,"");
+			let s = JSON.parse(string);
+			console.log(s);
+			if (s.result){
+				setAllReviews(s.reviews);
+				setDatasetDetails(s.datasetDetails);
+				setColumns(s.result.columns);
+				setRows(s.values);
 				
 				// set metadata
-				setMissingValues(res.data.result.missing_values);
-				setUniqueValues(res.data.result.unique_values);
-				setNumColumns(res.data.result.num_columns);
-				setMeanList(res.data.result.mean);
-				setStdList(res.data.result.stddev);
-				setMinList(res.data.result.minlis);
-				setMaxList(res.data.result.maxlis);
-				setQuanList1(res.data.result.quantile1);
-				setQuanList2(res.data.result.quantile2);
-				setQuanList3(res.data.result.quantile3);
+				setMissingValues(s.result.missing_values);
+				setUniqueValues(s.result.unique_values);
+				setNumColumns(s.result.num_columns);
+				setMeanList(s.result.mean);
+				setStdList(s.result.stddev);
+				setMinList(s.result.minlis);
+				setMaxList(s.result.maxlis);
+				setQuanList1(s.result.quantile1);
+				setQuanList2(s.result.quantile2);
+				setQuanList3(s.result.quantile3);
 
 				// const plot = res.data.result.plot;
 				// const imageBlob = plot.blob();
@@ -136,12 +150,28 @@ const DatasetDetails = (props) => {
 	const getDatasetDetails = () => {
 		return (
 			<table className='table table-striped table-hover'>
-				<thead>
+				<thead className='position-sticky top-0 bg-light shadow-lg'>
 					<tr>
 						<th scope="col">#</th>
 						{columns.map((col, index) => {
 							return (
 								<th scope='col' key={index}>{col}</th>
+							);
+						})}
+					</tr>
+					<tr className='table-danger'>
+						<td>Missing Values</td>
+						{missingValues.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
+							);
+						})}
+					</tr>
+					<tr className='table-info'>
+						<td>Unique Values</td>
+						{uniqueValues.map((col, index) => {
+							return (
+								<td key={index}>{col}</td>
 							);
 						})}
 					</tr>
@@ -159,22 +189,6 @@ const DatasetDetails = (props) => {
 							</tr>
 						);
 					})}
-					<tr className='table-danger'>
-						<td>Missing Values</td>
-						{missingValues.map((col, index) => {
-							return (
-								<td key={index}>{col}</td>
-							);
-						})}
-					</tr>
-					<tr className='table-info'>
-						<td>Unique Values</td>
-						{uniqueValues.map((col, index) => {
-							return (
-								<td key={index}>{col}</td>
-							);
-						})}
-					</tr>
 				</tbody>
 			</table>
 		);
@@ -442,12 +456,13 @@ const DatasetDetails = (props) => {
 				</div>
 
 				<div className="dataset-details row my-4 mx-auto">
-					<div className="table-contents col-10 mx-auto">
-						<h6 className="title lead my-4 text-muted">CONTENT</h6>
+					<h6 className="title lead my-4 text-muted text-center my-5">CONTENT</h6>
+					<div className="table-contents col-10 mx-auto table-responsive position-relative" style={{maxHeight: "80vh", overflowY: "scroll"}}>
 						{getDatasetDetails()}
 					</div>
-					<div className="metadata col-10 mx-auto">
-						<h6 className="title lead my-4 text-muted">METADATA</h6>
+					
+					<h6 className="title lead my-4 text-muted text-center my-5">METADATA</h6>
+					<div className="metadata col-10 mx-auto table-responsive my-4">
 						{getMetadata()}
 					</div>
 					{/* <div className="histogram-image col-10 mx-auto">

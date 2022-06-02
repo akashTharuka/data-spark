@@ -1,4 +1,4 @@
-from flask import jsonify, request, send_file
+from flask import jsonify, request, send_file, make_response
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
 from models.Review import Review
@@ -76,7 +76,7 @@ class GetDatasetDetailsApiHandler(Resource):
         if not path.exists(destination):
             return jsonify(msg="File Not Found Error")
 
-        df = pd.read_csv(destination)
+        df = pd.read_csv(destination, encoding='utf-8-sig')
         
         reviewArr = Review.getReviews(dataset_id)
         reviews = []
@@ -89,7 +89,12 @@ class GetDatasetDetailsApiHandler(Resource):
             reviews.append(feedback)
 
         try:
-            rowlis = df.head(5).values.tolist()
+            # rowlis = df.head(5).values.tolist()
+            rows = df.to_json(orient="values")
+            # print(rows)
+            values = json.loads(rows)
+            # res = json.dumps(values, indent=4)
+            print(f"type of values = ", type(values))
 
             collis = [] #all columns
             missingvallis = [] #missing values in each column
@@ -117,19 +122,19 @@ class GetDatasetDetailsApiHandler(Resource):
                 quant2lis.append(float(np.quantile(df[numcol],0.5).round(3)))
                 quant3lis.append(float(np.quantile(df[numcol],0.75).round(3)))
 
-            result = {}
-            result['rowlists'] = rowlis
-            result['columns'] = collis
-            result['missing_values'] = missingvallis
-            result['unique_values'] = uniquevallis
-            result['num_columns'] = numcollis
-            result['mean'] = meanlis
-            result['stddev'] = stdlis
-            result['minlis'] = minlis
-            result['maxlis'] = maxlis
-            result['quantile1'] = quant1lis
-            result['quantile2'] = quant2lis
-            result['quantile3'] = quant3lis
+            result = {
+                "columns": collis,
+                "missing_values": missingvallis,
+                "unique_values": uniquevallis,
+                "num_columns": numcollis,
+                "mean": meanlis,
+                "stddev": stdlis,
+                "minlis": minlis,
+                "maxlis": maxlis,
+                "quantile1": quant1lis,
+                "quantile2": quant2lis,
+                "quantile3": quant3lis
+            }
 
             #Plotting Histograms
             # plots = plot_histsmooth(df)
@@ -139,8 +144,9 @@ class GetDatasetDetailsApiHandler(Resource):
         except:
             pass
 
-        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result)
+        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result, values=values)
         return response
+        # return jsonify(result=result)
 
 
     @jwt_required()
