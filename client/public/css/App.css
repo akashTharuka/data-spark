@@ -87,6 +87,7 @@ body::-webkit-scrollbar{
 /* reviews */
 ::-webkit-scrollbar{
     width: 5px;
+    height: 5px;
 }
 ::-webkit-scrollbar-thumb{
     background: linear-gradient(to right, #bdc3c7 , #2c3e50);
