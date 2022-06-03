@@ -1,9 +1,9 @@
 .env
 config.py
 venv
-api/__pycache__/
-models/__pycache__/
-__pycache__/
+api/__pycache__/*
+models/__pycache__/*
+__pycache__/*
 .idea/data-spark.iml
 .idea/misc.xml
 .idea/modules.xml

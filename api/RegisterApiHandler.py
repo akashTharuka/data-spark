@@ -1,4 +1,3 @@
-import json
 from flask import flash, jsonify
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort

@@ -1,4 +1,5 @@
 from db import db
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 class Dataset(db.Model):
     # __tablename__ = "dataset"
@@ -7,8 +8,8 @@ class Dataset(db.Model):
     status_id       = db.Column(db.Integer, nullable=False)
     title           = db.Column(db.String(50),nullable=False)
     description     = db.Column(db.Text, nullable=False)
-    file_name       = db.Column(db.Text,nullable=False) #String(200)
-    file_type       = db.Column(db.String(20), nullable=True)
+    file_path       = db.Column(LONGTEXT,nullable=False) #String(200)
+    file_type       = db.Column(db.String(100), nullable=True)
     file_size       = db.Column(db.Float, nullable=True)
     num_downloads   = db.Column(db.Integer, nullable=True, default = 0)
     avg_rating      = db.Column(db.Float, nullable=True, default = 5.0)
@@ -16,11 +17,11 @@ class Dataset(db.Model):
     category        = db.Column(db.String(50), nullable=True)
     upload_time     = db.Column(db.DateTime(timezone=False), nullable=True)
 
-    def __init__(self, uploader_id, status_id, title, file_name, description, file_type, file_size, upload_time):        
+    def __init__(self, uploader_id, status_id, title, file_path, description, file_type, file_size, upload_time):        
         self.uploader_id    = uploader_id
         self.status_id      = status_id
         self.title          = title
-        self.file_name      = file_name
+        self.file_path      = file_path
         self.description    = description 
         self.file_type      = file_type 
         self.file_size      = file_size 
@@ -32,7 +33,7 @@ class Dataset(db.Model):
                 'status_id': self.status_id, 
                 'title': self.title,
                 'description': self.description,
-                'file_name': self.file_name, 
+                'file_path': self.file_path, 
                 'file_type': self.file_type, 
                 'file_size': self.file_size, 
                 'num_downloads': self.num_downloads, 
@@ -64,18 +65,11 @@ class Dataset(db.Model):
 
     @classmethod
     def get_num_of_uploads(self, user_id):
-        return self.query.filter_by(uploader_id=user_id, status_id=1).count()
+        return self.query.filter_by(uploader_id=user_id).count()
 
-    @classmethod
-    def increaseDownloads(self, dataset_id):
-        dataset = self.query.filter_by(id=dataset_id).first()
-        dataset.num_downloads += 1
-        db.session.commit()
 
-    @classmethod
-    def deleteDataset(self, dataset_id):
-        dataset = self.query.filter_by(id=dataset_id).first()
-        db.session.delete(dataset)
+    def increaseDownloads(self):
+        self.num_downloads += 1
         db.session.commit()
     
     def edit(self,title,description, upload_time):
@@ -85,8 +79,10 @@ class Dataset(db.Model):
         db.session.commit()
     
     def save(self):
+        print(self.uploader_id, self.status_id, self.title, self.file_path, self.description, self.file_type, self.file_size, self.upload_time)
         db.session.add(self)
         db.session.commit()
+        # print("Description: - "  + self.description)
 
     def update_dataset(self, status_id, category):
         self.status_id = status_id

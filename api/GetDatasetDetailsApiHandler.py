@@ -1,11 +1,9 @@
-from flask import jsonify, request, send_file, make_response
+from flask import jsonify, request, send_file
 from flask_cors import cross_origin
 from flask_restful import Api, Resource, reqparse, abort
 from models.Review import Review
 from models.User import User
 from models.Dataset import Dataset
-import os.path
-from os import path
 
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, jwt_required
 
@@ -15,6 +13,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import json
+
+def datasetList():
+    datasets = [x.split('.')[0] for f in ['datasets'] for x in os.listdir(f)]
+    extensions = [x.split('.')[1] for f in ['datasets'] for x in os.listdir(f)]
+    folders = [f for f in ['datasets'] for x in os.listdir(f)]
+    return datasets, extensions, folders
+
+def loadDataset(dataset):
+    datasets, extensions, folders = datasetList()
+    if dataset in datasets:
+        extension = extensions[datasets.index(dataset)]
+        if extension == 'txt':
+            df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'))
+        elif extension == 'csv':
+            df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'))
+        return df
 
 def plot_histsmooth(df):
     sns.set()
@@ -30,6 +44,17 @@ def plot_histsmooth(df):
     import base64
     figdata_png = base64.b64encode(figfile.getvalue()).decode('utf8')
     return figdata_png #.decode('ascii')
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
+
 
 class GetDatasetDetailsApiHandler(Resource):
 
@@ -68,15 +93,9 @@ class GetDatasetDetailsApiHandler(Resource):
         }
 
         # print(datasetDetails)
-        file_name = dataset.file_name
-        UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
-        target      = os.path.join(UPLOAD_FOLDER, 'test_docs')
-        destination = "/".join([target, file_name])
-
-        if not path.exists(destination):
-            return jsonify(msg="File Not Found Error"), 401
-
-        df = pd.read_csv(destination, encoding='utf-8-sig')
+        file_path = dataset.file_path
+        # df = loadDataset(dataset)
+        df = pd.read_csv(file_path)
         
         reviewArr = Review.getReviews(dataset_id)
         reviews = []
@@ -93,8 +112,6 @@ class GetDatasetDetailsApiHandler(Resource):
             rows = df.to_json(orient="values")
             # print(rows)
             values = json.loads(rows)
-            # res = json.dumps(values, indent=4)
-            print(f"type of values = ", type(values))
 
             collis = [] #all columns
             missingvallis = [] #missing values in each column
@@ -122,6 +139,20 @@ class GetDatasetDetailsApiHandler(Resource):
                 quant2lis.append(float(np.quantile(df[numcol],0.5).round(3)))
                 quant3lis.append(float(np.quantile(df[numcol],0.75).round(3)))
 
+            # result = {}
+            # result['rowlists'] = rowlis
+            # result['columns'] = collis
+            # result['missing_values'] = missingvallis
+            # result['unique_values'] = uniquevallis
+            # result['num_columns'] = numcollis
+            # result['mean'] = meanlis
+            # result['stddev'] = stdlis
+            # result['minlis'] = minlis
+            # result['maxlis'] = maxlis
+            # result['quantile1'] = quant1lis
+            # result['quantile2'] = quant2lis
+            # result['quantile3'] = quant3lis
+
             result = {
                 "columns": collis,
                 "missing_values": missingvallis,
@@ -144,9 +175,8 @@ class GetDatasetDetailsApiHandler(Resource):
         except:
             pass
 
-        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result, values=values)
+        response = jsonify(reviews=reviews, datasetDetails=datasetDetails, result=result, values=values, download_url=file_path)
         return response
-        # return jsonify(result=result)
 
 
     @jwt_required()
