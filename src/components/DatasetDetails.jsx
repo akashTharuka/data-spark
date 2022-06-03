@@ -54,8 +54,9 @@ const DatasetDetails = (props) => {
 			},
 		})
 		.then((res) => {
-			// console.log(res.data)
-			setDownloadUrl(res.data.download_url);
+			// console.log(res.data.download_url)
+			// setDownloadUrl(res.data.download_url);
+			// console.log(downloadUrl);
 			let string = res.data;
 			string = JSON.stringify(string);
 			string = string.replace(/\\n/g, "\\n")  
@@ -87,7 +88,7 @@ const DatasetDetails = (props) => {
 				setQuanList2(s.result.quantile2);
 				setQuanList3(s.result.quantile3);
 
-				setDownloadUrl(s.result.download_url);
+				setDownloadUrl(s.download_url);
 				// const plot = res.data.result.plot;
 				// const imageBlob = plot.blob();
 
