@@ -68,7 +68,7 @@ const Register = (props) => {
                 valid = false;
             }
             else if (! /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{7,}$/.test(password)){
-                setPswMsg("At least one digit, one lowercase & uppercase, and min 8 characters");
+                setPswMsg("At least one digit, one lowercase & uppercase, and min 8 characters; only digits,lowercase and uppercase characters are allowed");
                 valid = false;
             }
             else{

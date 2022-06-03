@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { images } from '../javascript/imageImports.js';
 import { Redirect, withRouter } from 'react-router-dom';
 import axios from 'axios';
+import config from '../config.json'
 
 const DashboardLogin = (props) => {
 
@@ -37,7 +38,7 @@ const DashboardLogin = (props) => {
         let valid = validateData(login);
 
         if (valid){
-            axios.post('http://localhost:5000/adminlogin', login)
+            axios.post(config.domain + '/adminlogin', login)
                 .then((res) => {
                     let msg = res.data.msg;
                     console.log(msg);

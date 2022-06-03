@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const access_token = sessionStorage.getItem("admin_token");
-        axios.get('http://localhost:5000/getAllDatasets', {
+        axios.get(config.domain + '/getAllDatasets', {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
                 'Content-type': 'application/json'

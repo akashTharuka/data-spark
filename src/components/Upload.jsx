@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react'
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import config from '../config.json'
-import { toast } from 'react-toastify';
+
+// for firebase
+import { storage  } from '../firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { v4 } from "uuid";
 
 const Upload = () => {
 
@@ -11,13 +16,20 @@ const Upload = () => {
     const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
 
+
+
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
     const [filepathErr, setFilepathErr] = useState('');
 
+    // states for firebase
+    const [percent, setPercent]         = useState('');
+
+    const history = useHistory();
 
     const handleFile = (e) => {
         setFile(e.target.files[0]);
+        // console.log(file)
     }
 
     const validateData = (upload) => {
@@ -59,44 +71,75 @@ const Upload = () => {
         const token = sessionStorage.getItem("token");
 
         const upload = {title, description, file, token};
+        const dataset_title = title;
 
         let valid = validateData(upload);
-
-        const formdata = new FormData();
-        formdata.append('file', file);
-        formdata.append('title', title);
-        formdata.append('description', description);
-        formdata.append('type', file.type);
-        formdata.append('size', file.size);
         
         if (valid){
             setIsPending(true);
 
-            axios.post(config.domain + '/addDataSet', formdata, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-            }})
-                .then((res) => {
-                    setIsPending(false);
-                    setTitleErr(res.data.titleErr);
-                    setDesErr(res.data.desErr);
-                    setFilepathErr(res.data.filepathErr);
-                    console.log(res.data);
+            const unique_code = v4()
+            const file_name = file.name
+            const file_extension = file_name.split('.')[1]
+            // formdata.append("file_extension", file_extension);
 
-                    if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
-                        toast.success("File successfully uploaded");
-                        document.location.reload();
-                    }
 
-                }).catch((error) => {
-                    setIsPending(false);
-                    console.log(error);
-                    toast.error("Authentication Error: Session Expired");
+            const unique_name = file_name.split('.')[0] + unique_code.toString() + '.' + file_name.split('.')[1]
+
+        
+            const storageRef = ref(storage, `/datasets/${unique_name}`);
+            // create an upload task
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const percentGot = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+
+                    // update progress
+                    setPercent(percentGot);
+                },
+                (err) => {
+                    setIsPending(false);  
                     sessionStorage.removeItem("token");
+                    history.push('/');
                     document.location.reload();
-                });
+                },
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
 
+                        const data = {"dataset_title": dataset_title, "description": description, "type": file.type, "size": file.size, "file_extension": file_extension, "download_url": url}
+                        axios.post(config.domain + '/addDataSet', data, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                        }})
+                            .then((res) => {
+                                setIsPending(false);
+                                setTitleErr(res.data.titleErr);
+                                setDesErr(res.data.desErr);
+                                setFilepathErr(res.data.filepathErr);
+
+
+                                if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
+
+                                    history.push('/');
+                                    document.location.reload();
+                                }
+
+                            }).catch((error) => {
+                                setIsPending(false);
+
+                                sessionStorage.removeItem("token");
+                                history.push('/');
+                                document.location.reload();
+                            });
+                    });
+                }
+            );       
         }
         
     }
@@ -149,7 +192,7 @@ const Upload = () => {
                                         <input 
                                             className={`form-control ${(filepathErr === "") ? "" : (filepathErr !== "success") ? "is-invalid" : "is-valid"}`}
                                             type="file"
-                                            accept=".csv,.txt"
+                                            
                                             name='file'
                                             id="formFileMultiple" 
                                             tabIndex="-1" 
