@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+import { toast } from 'react-toastify';
 
 const ConfirmModel = (props) => {
 
@@ -18,10 +19,13 @@ const ConfirmModel = (props) => {
         })
             .then(response => {
                 console.log(response.data);
+                toast.success(response.data.message);
                 document.location.reload();
             })
             .catch(error => {
                 console.log(error);
+                toast.error("Authentication Error: Session Expired");
+                sessionStorage.removeItem("token");
                 document.location.reload();
             })
 	}

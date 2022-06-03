@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config.json';
+import { toast } from 'react-toastify';
 
 const AcceptModel = (props) => {
 
     const [category, setCategory] = useState(null);
     const [categoryMsg, setCategoryMsg] = useState("");
-
-    // useEffect(() => {
-    //     console.log(category);
-    // }, [category]);
 
     const validateData = (category) => {
         let valid = true;
@@ -49,6 +46,7 @@ const AcceptModel = (props) => {
                 })
                 .catch(error => {
                     console.log(error);
+                    toast.error("Authentication Error: Session Expired");
                     sessionStorage.removeItem("admin_token");
                     document.location = "/adminlogin";
                 })

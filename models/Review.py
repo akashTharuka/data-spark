@@ -34,7 +34,7 @@ class Review(db.Model):
     def save(self):
         dataset = Dataset.filter_by_id(self.dataset_id)
         total_rating = (dataset.avg_rating * dataset.num_ratings)
-        dataset.avg_rating = (total_rating + self.rating)/ (dataset.num_ratings+1)
+        dataset.avg_rating = round((total_rating + self.rating)/ (dataset.num_ratings+1), 1)
         dataset.num_ratings+=1
         db.session.add(self)
         db.session.commit()

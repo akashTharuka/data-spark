@@ -5,8 +5,8 @@ import { HashLink } from 'react-router-hash-link';
 
 const Navbar = (props) => {
 	return (
-        <div className='bg-dark position-sticky top-0'>
-            <nav className="navbar navbar-expand-sm navbar-light" role="navigation">
+        <div className='navigation bg-dark position-sticky top-0'>
+            <nav className="navbar navbar-expand-sm navbar-dark" role="navigation">
 				<div className="container-fluid">
 					<HashLink className="navbar-brand text-uppercase text-warning" smooth to="#page-top">DATASPARK</HashLink>
 

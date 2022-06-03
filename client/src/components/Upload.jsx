@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import config from '../config.json'
+import { toast } from 'react-toastify';
 
 const Upload = () => {
 
@@ -11,25 +11,13 @@ const Upload = () => {
     const [file, setFile]               = useState('');
     const [isPending, setIsPending]     = useState(false);
 
-
-
     const [titleErr, setTitleErr]       = useState('');
     const [desErr, setDesErr]           = useState('');
     const [filepathErr, setFilepathErr] = useState('');
 
 
-    const history = useHistory();
-
     const handleFile = (e) => {
-
-        console.log(e.target.files);
-        console.log(e.target.files[0]);
         setFile(e.target.files[0]);
-        console.log(file);
-        // console.log(file.type)
-        // console.log(file.size)
-        console.log(file.lastModifiedDate)
-        console.log(description);
     }
 
     const validateData = (upload) => {
@@ -80,9 +68,6 @@ const Upload = () => {
         formdata.append('description', description);
         formdata.append('type', file.type);
         formdata.append('size', file.size);
-
-        // console.log(formdata);
-        // console.log(formdata.get('file'));
         
         if (valid){
             setIsPending(true);
@@ -100,16 +85,15 @@ const Upload = () => {
                     console.log(res.data);
 
                     if(res.data.titleErr==="success" && res.data.desErr==="success" && res.data.filepathErr==="success"){
-                        console.log("here");
-                        history.push('/');
+                        toast.success("File successfully uploaded");
                         document.location.reload();
                     }
 
                 }).catch((error) => {
                     setIsPending(false);
                     console.log(error);
+                    toast.error("Authentication Error: Session Expired");
                     sessionStorage.removeItem("token");
-                    history.push('/');
                     document.location.reload();
                 });
 

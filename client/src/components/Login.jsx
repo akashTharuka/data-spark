@@ -55,7 +55,9 @@ const Login = () => {
                     setIsPending(false);
                 }).catch((error) => {
                     setIsPending(false);
-                    console.log(error);
+                    console.log(error.message);
+                    alert(error.message);
+                    document.location.reload();
                 });
         }
     }

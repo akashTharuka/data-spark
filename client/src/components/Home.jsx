@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import config from '../config.json'
 import Navbar from './Navbar';
@@ -10,18 +10,19 @@ import Logout from './Logout';
 
 import { images } from '../javascript/imageImports.js';
 
+import { toast } from 'react-toastify';
+
 const Home = (props) => {
-
+    
     const [datasets, setDatasets] = useState([]);
-
     useEffect(() => {
-
         axios.get(config.domain + '/getDatasets')
             .then(response => {
                 setDatasets(response.data.datasets);
             })
             .catch(err => {
                 console.log(err);
+                toast.error(err.message + ": Try Reconnecting");
             });
     }, []);
 
@@ -166,14 +167,14 @@ const Home = (props) => {
             <Logout />
             <Profile datasets={props.datasets} />
 
-            <div className="page-intro col-10 mx-auto mb-3 d-flex">
-                <div className="col-7 mx-auto">
-                    <img src={images.intro3} alt="intro-home" style={{height: "450px", width: "600px"}} />
+            <div className="page-intro col-10 mx-auto mb-3 d-flex flex-wrap">
+                <div className="col-10 col-md-7 mx-auto">
+                    <img src={images.intro3} alt="intro-home" className='img-fluid'/>
                 </div>
-                <div className="col-4 mx-auto mt-4 justify-content-center d-flex flex-column">
-                    <div className="display-6 title text-start mb-3">DATASET</div>
-                    <div className="span text-start my-3">The world is a one big data problem. Explore that world with dataspark and share your experience with us.</div>
-                    <button type='button' className={`btn btn-dark p-3 mt-4 shadow-lg me-auto ${(props.status) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
+                <div className="col-10 col-md-4 mx-auto mt-4 justify-content-center d-flex flex-column">
+                    <div className="display-6 title text-center mb-3">DATASET</div>
+                    <div className="span text-center my-3">The world is a one big data problem. Explore that world with dataspark and share your experience with us.</div>
+                    <button type='button' className={`btn btn-dark p-3 mt-4 shadow-lg mx-auto ${(props.status) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
                 </div>
 			</div>
 
@@ -205,9 +206,9 @@ const Home = (props) => {
                 <div className="col-10 col-md-3 d-flex flex-column my-2 mx-auto">
                     <select className="form-select" aria-label="Default select example" id="select_sort_type" onChange={(e) => handleSort(e)}>
                         <option defaultValue="SortHere">Sort Here</option>
-                        <option value="Alphabetical">Alphabetical</option>
+                        <option value="Alphabetical">Title: Ascending</option>
                         <option value="Date modified">Date modified</option>
-                        <option value="Downloads">Downloads</option>
+                        <option value="Downloads">Number of Downloads</option>
                         <option value="Ratings">Ratings</option>
                     </select>
                 </div>

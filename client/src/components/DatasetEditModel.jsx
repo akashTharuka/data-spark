@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
-import config from '../config.json'
+import config from '../config.json';
 
 const DatasetEditModel = (props) => {
 
@@ -70,6 +70,8 @@ const DatasetEditModel = (props) => {
                 }).catch((error) => {
                     console.log(error);
                     setIsPending(false);
+                    toast.error("Authentication Error: Session Expired");
+                    sessionStorage.removeItem("token");
                     document.location.reload();
                 });
         }

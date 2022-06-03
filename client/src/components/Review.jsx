@@ -3,6 +3,7 @@ import Rating from './Rating';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import config from '../config.json';
+import { toast } from 'react-toastify';
 
 const Review = (props) => {
 
@@ -52,11 +53,13 @@ const Review = (props) => {
                     .then((res) => {
                         setIsPending(false);
                         setCommentErr(res.data.msg);
+                        toast.success(res.data.msg);
                         document.location.reload();
                         
                     }).catch((error) => {
                         setIsPending(false);
                         console.log(error.message);
+                        toast.error("Authentication Error: Session Expired");
                         sessionStorage.removeItem("token");
                         document.location.reload();
                 });
@@ -71,11 +74,13 @@ const Review = (props) => {
                     .then((res) => {
                         setIsPending(false);
                         setCommentErr(res.data.msg);
+                        toast.success(res.data.msg);
                         document.location.reload();
                         
                     }).catch((error) => {
                         setIsPending(false);
                         console.log(error.message);
+                        toast.error("Authentication Error: Session Expired");
                         sessionStorage.removeItem("token");
                         document.location.reload();
 

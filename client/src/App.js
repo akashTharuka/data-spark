@@ -1,9 +1,10 @@
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Home, DatasetDetails } from './components';
 import { DashboardLogin, Dashboard, ProtectedRoute } from './dashboard_components';
 import { useState, useEffect } from 'react';
-// import createBrowserHistory from 'history/createBrowserHistory';
+import { toast } from 'react-toastify';
 
+toast.configure();
 function App() {
 
 	const [status, setStatus] = useState(false);

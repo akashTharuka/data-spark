@@ -35,7 +35,7 @@ const Dashboard = () => {
 
     const getAllDatasets = () => {
         let content = [];
-        for (let i = 0; i < allDatasets.length; i++){
+        for (let i = allDatasets.length-1; i >= 0; i--){
             if (type === "all"){
                 content.push(
                     <div className="d-flex col-10 align-items center mx-auto my-4" key={i}>

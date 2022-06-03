@@ -7,6 +7,13 @@ import DashboardNav from '../dashboard_components/DashboardNav';
 import Review from './Review';
 import AcceptModel from './AcceptModel';
 
+import Login from './Login';
+import Register from './Register';
+import Profile from './Profile';
+import Logout from './Logout';
+
+import { toast } from 'react-toastify';
+
 const DatasetDetails = (props) => {
 
 	const params = useParams();
@@ -57,10 +64,9 @@ const DatasetDetails = (props) => {
 				.replace(/\\t/g, "\\t")
 				.replace(/\\b/g, "\\b")
 				.replace(/\\f/g, "\\f")
-				.replace(/^\s+|\s+$/g, "")
-				.replace(/[\u0000-\u001F]+/g,"");
+				.replace(/^\s+|\s+$/g, "");
 			let s = JSON.parse(string);
-			console.log(s);
+			// console.log(s);
 			if (s.result){
 				setAllReviews(s.reviews);
 				setDatasetDetails(s.datasetDetails);
@@ -92,6 +98,7 @@ const DatasetDetails = (props) => {
 			}
 			else{
 				setErrorMsg("These types of files cannot be displayed");
+				toast.error(errorMsg);
 			}
 		})
 		.catch(err => {
@@ -293,6 +300,11 @@ const DatasetDetails = (props) => {
 	return (
 		<div>
 			{(props.type !== "dashboard") ? <Navbar status={props.status} /> : <DashboardNav />}
+
+			<Login />
+            <Register type="register" />
+            <Logout />
+            <Profile datasets={props.datasets} />
 
 			<div className={`col-10 display-5 title mx-auto my-5 text-center ${(errorMsg === "") ? "d-none" : ""}`}>
 				{errorMsg}

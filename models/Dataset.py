@@ -64,7 +64,7 @@ class Dataset(db.Model):
 
     @classmethod
     def get_num_of_uploads(self, user_id):
-        return self.query.filter_by(uploader_id=user_id).count()
+        return self.query.filter_by(uploader_id=user_id, status_id=1).count()
 
     @classmethod
     def increaseDownloads(self, dataset_id):
@@ -87,7 +87,6 @@ class Dataset(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-        # print("Description: - "  + self.description)
 
     def update_dataset(self, status_id, category):
         self.status_id = status_id

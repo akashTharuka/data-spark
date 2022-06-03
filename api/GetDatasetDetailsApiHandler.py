@@ -74,7 +74,7 @@ class GetDatasetDetailsApiHandler(Resource):
         destination = "/".join([target, file_name])
 
         if not path.exists(destination):
-            return jsonify(msg="File Not Found Error")
+            return jsonify(msg="File Not Found Error"), 401
 
         df = pd.read_csv(destination, encoding='utf-8-sig')
         
