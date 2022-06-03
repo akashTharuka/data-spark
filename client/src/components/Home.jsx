@@ -3,6 +3,12 @@ import axios from 'axios';
 import config from '../config.json'
 import Navbar from './Navbar';
 import Upload from './Upload';
+import Login from './Login';
+import Register from './Register';
+import Profile from './Profile';
+import Logout from './Logout';
+
+import { images } from '../javascript/imageImports.js';
 
 const Home = (props) => {
 
@@ -155,9 +161,25 @@ const Home = (props) => {
         <div>
             <Navbar status={props.status} datasets={datasets} />
 
+            <Login />
+            <Register type="register" />
+            <Logout />
+            <Profile datasets={props.datasets} />
+
+            <div className="page-intro col-10 mx-auto mb-3 d-flex">
+                <div className="col-7 mx-auto">
+                    <img src={images.intro3} alt="intro-home" style={{height: "450px", width: "600px"}} />
+                </div>
+                <div className="col-4 mx-auto mt-4 justify-content-center d-flex flex-column">
+                    <div className="display-6 title text-start mb-3">DATASET</div>
+                    <div className="span text-start my-3">The world is a one big data problem. Explore that world with dataspark and share your experience with us.</div>
+                    <button type='button' className={`btn btn-dark p-3 mt-4 shadow-lg me-auto ${(props.status) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
+                </div>
+			</div>
+
             <div className="row d-flex justify-content-start">
                 <div className="col-10 col-md-4">
-                    <button type='button' className={`btn btn-dark m-3 px-4 shadow-lg ${(props.status) ? '' : 'd-none'}`} data-bs-toggle="modal" data-bs-target="#upload-modal" data-bs-dismiss="modal">+Add New Dataset</button>
+                    
                 </div>
             </div>
 

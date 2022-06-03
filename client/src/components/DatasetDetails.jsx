@@ -150,7 +150,7 @@ const DatasetDetails = (props) => {
 	const getDatasetDetails = () => {
 		return (
 			<table className='table table-striped table-hover'>
-				<thead className='position-sticky top-0 bg-light shadow-lg'>
+				<thead className='position-sticky top-0 bg-light'>
 					<tr>
 						<th scope="col">#</th>
 						{columns.map((col, index) => {

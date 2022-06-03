@@ -15,9 +15,12 @@ import background3 from '../images/profile_background/background3.jpg';
 import background4 from '../images/profile_background/background4.jpg';
 import background5 from '../images/profile_background/background5.png';
 
+import intro3 from '../images/data-science-introduction-3.jpg';
+
 export const images = {
     imageCap,
     rating0, rating1, rating2, rating3, rating4, rating5,
     backgroundImage,
-    background1, background2, background3, background4, background5
+    background1, background2, background3, background4, background5,
+    intro3
 }

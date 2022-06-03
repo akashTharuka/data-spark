@@ -28,6 +28,7 @@ body::-webkit-scrollbar{
 	padding: 0.3em;
 	display: flex;
 	align-items: center;
+    z-index: 0;
 }
 .search-btn{
   	position: absolute;
