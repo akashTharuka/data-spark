@@ -165,7 +165,7 @@ const Home = (props) => {
             <Login />
             <Register type="register" />
             <Logout />
-            <Profile datasets={props.datasets} />
+            <Profile datasets={datasets} />
 
             <div className="page-intro col-10 mx-auto mb-3 d-flex flex-wrap">
                 <div className="col-10 col-md-7 mx-auto">
