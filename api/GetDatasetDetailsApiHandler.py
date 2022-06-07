@@ -109,7 +109,7 @@ class GetDatasetDetailsApiHandler(Resource):
 
         try:
             # rowlis = df.head(5).values.tolist()
-            rows = df.to_json(orient="values")
+            rows = df.head(5).to_json(orient="values")
             # print(rows)
             values = json.loads(rows)
 
@@ -131,6 +131,7 @@ class GetDatasetDetailsApiHandler(Resource):
             quant3lis = [] #3rd quantiles of numerical columns
 
             for numcol in numcollis:
+                df[numcol] = df[numcol].fillna(0)
                 meanlis.append(round(float(df[numcol].mean()),3))
                 stdlis.append(round(float(df[numcol].std()),3))
                 minlis.append(float(df[numcol].min()))
