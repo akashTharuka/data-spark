@@ -57,18 +57,18 @@ const DatasetDetails = (props) => {
 			// console.log(res.data.download_url)
 			// setDownloadUrl(res.data.download_url);
 			// console.log(downloadUrl);
-			let string = res.data;
-			string = JSON.stringify(string);
-			string = string.replace(/\\n/g, "\\n")  
-				.replace(/\\'/g, "\\'")
-				.replace(/\\"/g, '\\"')
-				.replace(/\\&/g, "\\&")
-				.replace(/\\r/g, "\\r")
-				.replace(/\\t/g, "\\t")
-				.replace(/\\b/g, "\\b")
-				.replace(/\\f/g, "\\f")
-				.replace(/^\s+|\s+$/g, "");
-			let s = JSON.parse(string);
+			// let string = res.data;
+			// string = JSON.stringify(string);
+			// string = string.replace(/\\n/g, "\\n")  
+			// 	.replace(/\\'/g, "\\'")
+			// 	.replace(/\\"/g, '\\"')
+			// 	.replace(/\\&/g, "\\&")
+			// 	.replace(/\\r/g, "\\r")
+			// 	.replace(/\\t/g, "\\t")
+			// 	.replace(/\\b/g, "\\b")
+			// 	.replace(/\\f/g, "\\f")
+			// 	.replace(/^\s+|\s+$/g, "");
+			let s = res.data;
 			// console.log(s);
 			if (s.result){
 				setAllReviews(s.reviews);
@@ -102,11 +102,11 @@ const DatasetDetails = (props) => {
 			}
 			else{
 				setErrorMsg("These types of files cannot be displayed");
-				toast.error(errorMsg);
 			}
 		})
 		.catch(err => {
 			console.log(err);
+			setErrorMsg("These types of files cannot be displayed");
 		});
 
 		if (token){
@@ -487,7 +487,7 @@ const DatasetDetails = (props) => {
 				</div>
 
 				<div className="dataset-details row my-4 mx-auto">
-					<h6 className="title lead my-4 text-muted text-center my-5">CONTENT</h6>
+					<h6 className="title lead my-4 text-muted text-center my-5">SAMPLE CONTENT</h6>
 					<div className="table-contents col-10 mx-auto table-responsive position-relative" style={{maxHeight: "80vh", overflowY: "scroll"}}>
 						{getDatasetDetails()}
 					</div>
