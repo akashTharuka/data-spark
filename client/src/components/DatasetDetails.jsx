@@ -99,11 +99,11 @@ const DatasetDetails = (props) => {
 			}
 			else{
 				setErrorMsg("These types of files cannot be displayed");
-				toast.error(errorMsg);
 			}
 		})
 		.catch(err => {
 			console.log(err);
+			setErrorMsg("These types of files cannot be displayed");
 		});
 
 		if (token){
@@ -134,7 +134,7 @@ const DatasetDetails = (props) => {
 		let content = [];
 		for (let i = 0; i < reviewsLength; i++){
 			content.push(
-				<div className="col" key={i}>
+				<div className="col mx-2" key={i}>
 					<div className="card review bg-light mx-auto" style={{width: '24rem', minHeight: "15rem"}}>
 						<div className="card-body d-flex flex-column">
 							<h5 className="card-title text-center text-light fs-3">{allReviews[i].reviewer}</h5>
