@@ -1,4 +1,4 @@
-This is the Semester 04 Software Engineering Project
+This is the Semester 04 Software Engineering Group Project
 for a Web-based Data Science Platform - *DATASPARK*
 
 Group members
